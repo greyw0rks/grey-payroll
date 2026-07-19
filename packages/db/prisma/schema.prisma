@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EmployeeStatus {
+  PENDING    // invite sent, not yet activated
+  ACTIVE
+  TERMINATED
+}
+
+enum Currency {
+  USDC
+  CUSD
+}
+
+enum CheckInStatus {
+  ON_TIME
+  LATE
+  MISSED
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum LeaveType {
+  ANNUAL
+  SICK
+  MATERNITY
+  PATERNITY
+  STUDY
+  UNPAID
+  COMPASSIONATE
+}
+
+model Employer {
+  id                     String     @id @default(cuid())
+  clerkUserId            String?    @unique
+  walletAddress          String?    @unique
+  companyName            String
+  email                  String     @unique
+  industry               String?
+  country                String     @default("NG")
+  timezone               String     @default("Africa/Lagos")
+  treasuryContractAddress String?
+  checkInWindowStart     String     @default("07:00") // HH:MM local time
+  checkInWindowEnd       String     @default("10:00")
+  workingDaysPerMonth    Int        @default(22)
+  gracePeriodDays        Int        @default(0)
+  absentPenaltyPercent   Float      @default(10.0)
+  twoFaEnabled           Boolean    @default(false)
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+
+  employees              Employee[]
+  notifications          Notification[]
+}
+
+model Employee {
+  id              String          @id @default(cuid())
+  clerkUserId     String?         @unique
+  walletAddress   String?         @unique
+  employerId      String
+  employer        Employer        @relation(fields: [employerId], references: [id])
+  firstName       String
+  lastName        String
+  jobTitle        String
+  monthlySalary   String          // stored as string to preserve wei precision
+  dailyRate       String          // monthlySalary / workingDaysPerMonth, in wei
+  currency        Currency        @default(USDC)
+  startDate       DateTime
+  status          EmployeeStatus  @default(PENDING)
+  inviteCode      String?         @unique
+  inviteExpiry    DateTime?
+  ipfsDocHash     String?         // employment letter CID
+  phoneNumber     String?
+  emergencyContact String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  checkIns        CheckIn[]
+  salaryReleases  SalaryRelease[]
+  refundRequests  RefundRequest[]
+  leaveRequests   LeaveRequest[]
+  advanceRequests AdvanceRequest[]
+  notifications   Notification[]
+}
+
+model CheckIn {
+  id          String        @id @default(cuid())
+  employeeId  String
+  employee    Employee      @relation(fields: [employeeId], references: [id])
+  date        DateTime      @db.Date   // UTC date, no time component
+  timestamp   DateTime?                // actual check-in time
+  status      CheckInStatus @default(ON_TIME)
+  txHash      String?
+  amount      String?       // wei amount released
+
+  salaryRelease SalaryRelease?
+
+  @@unique([employeeId, date])         // idempotency — one record per employee per day
+}
+
+model SalaryRelease {
+  id          String    @id @default(cuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  checkInId   String    @unique
+  checkIn     CheckIn   @relation(fields: [checkInId], references: [id])
+  amount      String    // in wei
+  txHash      String
+  date        DateTime  @db.Date
+  createdAt   DateTime  @default(now())
+}
+
+model RefundRequest {
+  id              String        @id @default(cuid())
+  employeeId      String
+  employee        Employee      @relation(fields: [employeeId], references: [id])
+  amount          String        // in wei
+  currency        Currency      @default(USDC)
+  category        String        // Transport | Accommodation | Supplies | Meals | Other
+  description     String
+  ipfsDocHash     String        // receipt CID on IPFS
+  onChainId       Int?          // RefundVault request ID
+  status          RequestStatus @default(PENDING)
+  txHash          String?
+  rejectionReason String?
+  reviewedById    String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model LeaveRequest {
+  id           String        @id @default(cuid())
+  employeeId   String
+  employee     Employee      @relation(fields: [employeeId], references: [id])
+  type         LeaveType
+  startDate    DateTime      @db.Date
+  endDate      DateTime      @db.Date
+  totalDays    Int
+  note         String?
+  status       RequestStatus @default(PENDING)
+  approvedById String?
+  rejectionReason String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model AdvanceRequest {
+  id                 String        @id @default(cuid())
+  employeeId         String
+  employee           Employee      @relation(fields: [employeeId], references: [id])
+  amount             String        // in wei
+  outstandingBalance String        @default("0")
+  reason             String
+  isLoan             Boolean       @default(false)
+  onChainId          Int?          // SalaryAdvance contract request ID
+  status             RequestStatus @default(PENDING)
+  txHash             String?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model Notification {
+  id         String   @id @default(cuid())
+  employerId String?
+  employer   Employer? @relation(fields: [employerId], references: [id])
+  employeeId String?
+  employee   Employee? @relation(fields: [employeeId], references: [id])
+  type       String   // LOW_TREASURY | SALARY_RELEASED | REQUEST_APPROVED | etc.
+  title      String
+  message    String
+  read       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}

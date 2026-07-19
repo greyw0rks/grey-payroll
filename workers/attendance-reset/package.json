@@ -1,0 +1,23 @@
+{
+  "name": "@grey/worker-attendance-reset",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@grey/db": "workspace:*",
+    "bullmq": "^5.8.7",
+    "ioredis": "^5.3.2",
+    "date-fns-tz": "^3.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.7",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

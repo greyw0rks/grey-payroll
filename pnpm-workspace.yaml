@@ -1,0 +1,13 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "workers/*"
+
+# Skip Skia platform binaries — 70-74 MB each, bus-error on WSL, only needed for EAS cloud builds.
+# victory-native@36 (SVG-based) doesn't pull these in; v41+ (Skia-based) does.
+neverBuiltDependencies:
+  - react-native-skia-android
+  - react-native-skia-apple-ios
+  - react-native-skia-apple-macos
+  - react-native-skia-apple-tvos
+  - canvaskit-wasm

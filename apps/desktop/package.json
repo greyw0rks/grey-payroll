@@ -1,0 +1,34 @@
+{
+  "name": "@grey/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/main/index.js",
+  "scripts": {
+    "dev": "concurrently \"vite\" \"electron-forge start\"",
+    "build": "vite build && electron-forge make",
+    "build:win": "electron-forge make --platform win32",
+    "build:mac": "electron-forge make --platform darwin",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "@tanstack/react-query": "^5.0.0",
+    "viem": "^2.0.0",
+    "date-fns": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.8.0",
+    "@electron-forge/maker-squirrel": "^7.8.0",
+    "@electron-forge/maker-dmg": "^7.8.0",
+    "@electron-forge/maker-zip": "^7.8.0",
+    "@electron-forge/plugin-vite": "^7.8.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "concurrently": "^9.0.0",
+    "electron": "^34.0.0",
+    "typescript": "~5.8.0",
+    "vite": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.0"
+  }
+}

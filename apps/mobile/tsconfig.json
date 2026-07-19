@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-native",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@grey/config": [
+        "../../packages/config/src/index.ts"
+      ],
+      "@grey/utils": [
+        "../../packages/utils/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "src",
+    "app",
+    "*.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}

@@ -1,0 +1,1 @@
+export { PayrollTreasuryABI } from './PayrollTreasury'

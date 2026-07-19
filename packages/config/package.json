@@ -1,0 +1,22 @@
+{
+  "name": "@grey/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "exports": {
+    "./chains": "./src/chains.ts",
+    "./tokens": "./src/tokens.ts",
+    "./constants": "./src/constants.ts",
+    "./abis": "./src/abis/index.ts"
+  }
+}

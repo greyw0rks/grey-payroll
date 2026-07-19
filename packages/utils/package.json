@@ -1,0 +1,16 @@
+{
+  "name": "@grey/utils",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
