@@ -1,1 +1,1 @@
-export { PayrollTreasuryABI } from './PayrollTreasury'
+export { arcPayrollReadAbi } from '../arc'

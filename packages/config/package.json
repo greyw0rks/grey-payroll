@@ -14,6 +14,7 @@
     "typescript": "^5.7.3"
   },
   "exports": {
+    "./arc": "./src/arc.ts",
     "./chains": "./src/chains.ts",
     "./tokens": "./src/tokens.ts",
     "./constants": "./src/constants.ts",

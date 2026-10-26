@@ -36,3 +36,8 @@ npm-debug.log*
 .vscode/
 .idea/
 *.swp
+
+# Local PostgreSQL cluster and generated Arc bundle
+.local-db/
+.arc-dist/
+.vercel

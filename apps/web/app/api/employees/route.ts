@@ -24,6 +24,9 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json()
   const { firstName, lastName, jobTitle, monthlySalary, currency, startDate, ipfsDocHash } = body
+  if (![firstName, lastName, jobTitle].every(value => typeof value === 'string' && value.trim()) || !/^\d+$/.test(String(monthlySalary)) || BigInt(monthlySalary) <= 0n || currency !== 'USDC' || !Number.isFinite(new Date(startDate).getTime())) {
+    return NextResponse.json({ error: 'Enter the employee name, job title, valid salary, currency and start date.' }, { status: 400 })
+  }
 
   const workingDays = employer.workingDaysPerMonth ?? DEFAULT_WORKING_DAYS_PER_MONTH
   const dailyRateBigInt = BigInt(monthlySalary) / BigInt(workingDays)

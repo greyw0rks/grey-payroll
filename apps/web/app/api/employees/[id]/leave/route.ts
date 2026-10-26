@@ -1,6 +1,6 @@
 import { requireEmployee, isAuthError } from '@/lib/server-auth'
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@grey/db'
+import { prisma, LeaveType } from '@grey/db'
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireEmployee()
@@ -14,6 +14,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   const { type, startDate, endDate, note } = await req.json()
   const start = new Date(startDate)
   const end = new Date(endDate)
+  if (!Object.values(LeaveType).includes(type) || !/^\d{4}-\d{2}-\d{2}$/.test(startDate || '') || !/^\d{4}-\d{2}-\d{2}$/.test(endDate || '') || !Number.isFinite(start.getTime()) || !Number.isFinite(end.getTime()) || end < start) {
+    return NextResponse.json({ error: 'Choose a valid leave type and an end date on or after the start date.' }, { status: 400 })
+  }
   const totalDays = Math.round((end.getTime() - start.getTime()) / 86400000) + 1
 
   const request = await prisma.leaveRequest.create({

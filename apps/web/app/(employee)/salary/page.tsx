@@ -1,5 +1,6 @@
 'use client'
 
+import { formatMoney } from '@/lib/money'
 import { useState, useEffect } from 'react'
 
 interface CheckIn {
@@ -15,6 +16,7 @@ interface EmployeeData {
   monthlySalary: string
   dailyRate: string
   currency: string
+  paidSalaryThisMonth: string
   employer: {
     workingDaysPerMonth: number
   }
@@ -41,13 +43,8 @@ const DAY_TEXT: Record<DayKind, string> = {
   BLANK:   'transparent',
 }
 
-function formatAmount(amount: string | number, currency: string) {
-  const label = currency === 'CUSD' ? 'cUSD' : currency
-  return (
-    Number(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) +
-    ' ' +
-    label
-  )
+function formatAmount(amount: string | bigint, currency: string) {
+  return formatMoney(String(amount), currency)
 }
 
 function isWeekend(year: number, month: number, day: number): boolean {
@@ -129,15 +126,15 @@ export default function SalaryPage() {
   // Monthly breakdown
   const currency = employee.currency
   const workingDays = employee.employer.workingDaysPerMonth
-  const dailyRate = Number(employee.dailyRate)
-  const monthlySalary = Number(employee.monthlySalary)
+  const dailyRate = BigInt(employee.dailyRate)
+  const monthlySalary = BigInt(employee.monthlySalary)
 
   const thisMonthCIs = employee.checkIns.filter(ci => {
     const d = new Date(ci.date)
     return d.getFullYear() === year && d.getMonth() === month
   })
 
-  const earnedTotal = thisMonthCIs.reduce((sum, ci) => sum + Number(ci.amount), 0)
+  const earnedTotal = thisMonthCIs.filter(ci => ci.status !== 'MISSED').reduce((sum, ci) => sum + BigInt(ci.amount || '0'), 0n)
   const missedDays = thisMonthCIs.filter(ci => ci.status === 'MISSED').length
   const checkedInDays = thisMonthCIs.filter(ci => ci.status !== 'MISSED').length
 
@@ -209,11 +206,15 @@ export default function SalaryPage() {
             <span style={{ color: '#8A8D91' }}>Earned to date</span>
             <span className="font-medium">{formatAmount(earnedTotal, currency)}</span>
           </div>
+          <div className="flex justify-between gap-3">
+            <span style={{ color: '#60645F' }}>Paid on Arc this month</span>
+            <span className="font-medium">{formatAmount(employee.paidSalaryThisMonth, 'USDC')}</span>
+          </div>
           {missedDays > 0 && (
             <div className="flex justify-between border-t pt-2.5" style={{ borderColor: '#ECEBE6' }}>
               <span style={{ color: '#8A8D91' }}>Missed ({missedDays} day{missedDays > 1 ? 's' : ''})</span>
               <span className="font-medium" style={{ color: '#791F1F' }}>
-                -{formatAmount(dailyRate * missedDays, currency)}
+                -{formatAmount(dailyRate * BigInt(missedDays), currency)}
               </span>
             </div>
           )}

@@ -36,6 +36,7 @@ export default function EmployeeRegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [invite, setInvite] = useState('')
   const [checkingInvite, setCheckingInvite] = useState(false)
+  const [companyName, setCompanyName] = useState('')
 
   const [form, setForm] = useState({ phoneNumber: '', emergencyContact: '' })
 
@@ -45,6 +46,8 @@ export default function EmployeeRegisterPage() {
     try {
       const res = await fetch(`/api/employees/invite/verify?code=${invite}`)
       if (!res.ok) throw new Error('Invalid or expired invitation code')
+      const verified = await res.json()
+      setCompanyName(verified.companyName)
       setStep('profile')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to verify code')
@@ -93,13 +96,14 @@ export default function EmployeeRegisterPage() {
         {step === 'invite' && (
           <div className="rounded-2xl border p-6 space-y-4" style={{ background: '#FFFFFF', borderColor: '#ECEBE6' }}>
             <div>
-              <label style={labelStyle}>Invitation code</label>
+              <label htmlFor="invitation-code" style={labelStyle}>Invitation code</label>
               <input
+                id="invitation-code"
                 style={{ ...inputStyle, textAlign: 'center', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '18px' }}
                 value={invite}
                 onChange={e => setInvite(e.target.value.toUpperCase())}
-                placeholder="CPY-X7K2"
-                maxLength={8}
+                placeholder="GRY-XXXX-XXXX"
+                maxLength={13}
               />
             </div>
             {error && (
@@ -123,7 +127,7 @@ export default function EmployeeRegisterPage() {
             style={{ background: '#FFFFFF', borderColor: '#ECEBE6' }}
           >
             <div className="p-3 rounded-xl" style={{ background: '#E8FBF0', border: '1px solid #3DDC84' }}>
-              <p className="text-sm font-medium" style={{ color: '#0B3D20' }}>Code verified ✓</p>
+              <p className="text-sm font-medium" style={{ color: '#0B3D20' }}>Join {companyName} by Grey</p>
               <p className="text-xs mt-0.5" style={{ color: '#8A8D91' }}>
                 Code: <span style={{ fontFamily: 'var(--font-jbmono)' }}>{invite}</span>
               </p>

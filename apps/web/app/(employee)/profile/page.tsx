@@ -1,6 +1,8 @@
 'use client'
 
+import { formatMoney } from '@/lib/money'
 import { useState, useEffect } from 'react'
+import { WalletSettings } from '@/components/employee/WalletSettings'
 
 interface EmployeeData {
   id: string
@@ -35,12 +37,7 @@ function StatusPill({ status }: { status: string }) {
 }
 
 function formatAmount(amount: string, currency: string) {
-  const label = currency === 'CUSD' ? 'cUSD' : currency
-  return (
-    Number(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) +
-    ' ' +
-    label
-  )
+  return formatMoney(String(amount), currency)
 }
 
 export default function ProfilePage() {
@@ -81,7 +78,7 @@ export default function ProfilePage() {
   }
 
   const initials = (employee.firstName[0] ?? '') + (employee.lastName[0] ?? '')
-  const currencyLabel = employee.currency === 'CUSD' ? 'cUSD' : employee.currency
+  const currencyLabel = employee.currency === 'LEGACY_ASSET' ? 'Historical asset' : employee.currency
 
   return (
     <div className="space-y-4">
@@ -152,6 +149,7 @@ export default function ProfilePage() {
         ) : (
           <p className="text-sm" style={{ color: '#8A8D91' }}>No wallet connected yet</p>
         )}
+        <WalletSettings address={employee.walletAddress} />
       </div>
     </div>
   )

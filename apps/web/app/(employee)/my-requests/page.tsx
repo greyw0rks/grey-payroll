@@ -1,5 +1,6 @@
 'use client'
 
+import { formatMoney } from '@/lib/money'
 import { useState, useEffect, useCallback } from 'react'
 
 interface AdvanceRequest {
@@ -16,6 +17,8 @@ interface RefundRequest {
   category: string
   description: string
   status: string
+  paymentStatus?: string
+  currency: string
   createdAt: string
 }
 
@@ -61,8 +64,7 @@ const LEAVE_TYPES = [
 ]
 
 function formatAmount(amount: string, currency: string) {
-  const label = currency === 'CUSD' ? 'cUSD' : currency
-  return Number(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' ' + label
+  return formatMoney(String(amount), currency)
 }
 
 function StatusPill({ status }: { status: string }) {
@@ -70,9 +72,12 @@ function StatusPill({ status }: { status: string }) {
     PENDING:  ['#854F0B', '#FEF3DD'],
     APPROVED: ['#1D9E75', '#E8FBF0'],
     REJECTED: ['#791F1F', '#FCEBEB'],
+    PAID: ['#0B3D20', '#E8FBF0'],
+    AWAITING_PAYMENT: ['#854F0B', '#FEF3DD'],
+    HISTORICAL: ['#60645F', '#F4F3EE'],
   }
   const [color, bg] = map[status.toUpperCase()] ?? ['#8A8D91', '#F4F3EE']
-  const label = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
+  const label = status === 'AWAITING_PAYMENT' ? 'Approved · awaiting payment' : status === 'HISTORICAL' ? 'Historical payment' : status === 'PAID' ? 'Paid on Arc' : status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()
   return (
     <span className="text-xs font-medium px-2.5 py-1 rounded-full" style={{ color, background: bg }}>
       {label}
@@ -110,7 +115,7 @@ function buildUnified(employee: EmployeeData): UnifiedRequest[] {
   const refunds: UnifiedRequest[] = employee.refundRequests.map(r => ({
     id: r.id, kind: 'Refund',
     detail: r.description ? `${r.category} — ${r.description}` : r.category,
-    amount: r.amount, status: r.status, createdAt: r.createdAt, currency,
+    amount: r.amount, status: r.paymentStatus ?? r.status, createdAt: r.createdAt, currency: r.currency,
   }))
   const leaves: UnifiedRequest[] = employee.leaveRequests.map(r => ({
     id: r.id, kind: 'Leave',
@@ -134,6 +139,10 @@ export default function EmployeeRequestsPage() {
   const [error, setError] = useState<string | null>(null)
   const [tab, setTab] = useState<TabKind>('All')
   const [openForm, setOpenForm] = useState<FormKind>(null)
+  useEffect(() => {
+    const kind = new URLSearchParams(window.location.search).get('kind')
+    if (kind === 'leave' || kind === 'refund') setOpenForm(kind)
+  }, [])
   const [submitting, setSubmitting] = useState(false)
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -301,7 +310,7 @@ export default function EmployeeRequestsPage() {
         >
           <h3 className="font-display text-sm font-semibold" style={{ color: '#16181C' }}>Request advance</h3>
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#8A8D91' }}>Amount ({currency === 'CUSD' ? 'cUSD' : currency})</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: '#8A8D91' }}>Amount ({currency === 'LEGACY_ASSET' ? 'historical asset' : currency})</label>
             <input
               style={inputStyle}
               type="number"
@@ -349,7 +358,7 @@ export default function EmployeeRequestsPage() {
         >
           <h3 className="font-display text-sm font-semibold" style={{ color: '#16181C' }}>Request refund</h3>
           <div>
-            <label className="block text-xs font-medium mb-1.5" style={{ color: '#8A8D91' }}>Amount ({currency === 'CUSD' ? 'cUSD' : currency})</label>
+            <label className="block text-xs font-medium mb-1.5" style={{ color: '#8A8D91' }}>Amount ({currency === 'LEGACY_ASSET' ? 'historical asset' : currency})</label>
             <input
               style={inputStyle}
               type="number"
@@ -528,7 +537,7 @@ export default function EmployeeRequestsPage() {
                     </span>
                     {r.amount && (
                       <span className="text-sm font-medium">
-                        {formatAmount(r.amount, currency)}
+                        {formatAmount(r.amount, r.currency)}
                       </span>
                     )}
                   </div>

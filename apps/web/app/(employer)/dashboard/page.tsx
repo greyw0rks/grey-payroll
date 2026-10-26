@@ -1,238 +1,39 @@
-import { auth } from '@clerk/nextjs/server'
-import { prisma } from '@grey/db'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { getEmployer, getCompanyOverview } from '@/lib/company-data'
+import { formatMoney } from '@/lib/money'
 import { TreasuryWidget } from '@/components/employer/TreasuryWidget'
-
-function Card({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return (
-    <div
-      className={`rounded-2xl border ${className}`}
-      style={{ background: '#FFFFFF', borderColor: '#ECEBE6' }}
-    >
-      {children}
-    </div>
-  )
-}
-
-function StatusPill({ status }: { status: string }) {
-  const map: Record<string, [string, string]> = {
-    PENDING:  ['#854F0B', '#FEF3DD'],
-    APPROVED: ['#1D9E75', '#E8FBF0'],
-    REJECTED: ['#791F1F', '#FCEBEB'],
-  }
-  const [color, bg] = map[status] ?? ['#8A8D91', '#F4F3EE']
-  const label = status.charAt(0) + status.slice(1).toLowerCase()
-  return (
-    <span className="text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap" style={{ color, background: bg }}>
-      {label}
-    </span>
-  )
-}
-
-function Avatar({ initials }: { initials: string }) {
-  return (
-    <div
-      className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0"
-      style={{ background: '#E8FBF0', color: '#0B3D20' }}
-    >
-      {initials}
-    </div>
-  )
-}
-
-function Bars({ count }: { count: number }) {
-  const months = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
-  // Uniform bars since we don't track monthly aggregates yet
-  const data = Array.from({ length: 12 }, (_, i) => (i === 11 ? 80 : 60 + Math.floor(Math.sin(i) * 15)))
-  const max = Math.max(...data)
-  return (
-    <div>
-      <div className="flex items-end gap-2 h-40">
-        {data.map((v, i) => (
-          <div
-            key={i}
-            className="flex-1 rounded-t-md"
-            style={{
-              height: `${(v / max) * 100}%`,
-              background: i === data.length - 1 ? '#3DDC84' : '#E8FBF0',
-            }}
-          />
-        ))}
-      </div>
-      <div className="flex gap-2 mt-2 text-xs" style={{ color: '#8A8D91' }}>
-        {months.map(m => (
-          <span key={m} className="flex-1 text-center">{m}</span>
-        ))}
-      </div>
-      <p className="text-xs mt-3 text-center" style={{ color: '#8A8D91' }}>
-        {count} active employees · 12 months of payroll
-      </p>
-    </div>
-  )
-}
-
-function formatAmount(amount: string) {
-  return Number(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' USDC'
-}
+import { CopyInvite } from '@/components/ui/CopyInvite'
 
 export default async function EmployerDashboardPage() {
-  const { userId } = await auth()
-  if (!userId) redirect('/sign-in')
-
-  const employer = await prisma.employer.findUnique({
-    where: { clerkUserId: userId },
-    include: {
-      employees: { where: { status: 'ACTIVE' } },
-    },
-  })
-
+  const employer = await getEmployer()
   if (!employer) redirect('/register/employer')
-
-  const [pendingAdvances, pendingRefunds, pendingLeaves] = await Promise.all([
-    prisma.advanceRequest.count({
-      where: { status: 'PENDING', employee: { employerId: employer.id } },
-    }),
-    prisma.refundRequest.count({
-      where: { status: 'PENDING', employee: { employerId: employer.id } },
-    }),
-    prisma.leaveRequest.count({
-      where: { status: 'PENDING', employee: { employerId: employer.id } },
-    }),
-  ])
-
-  const pendingRequests = pendingAdvances + pendingRefunds + pendingLeaves
-
-  const recentAdvances = await prisma.advanceRequest.findMany({
-    where: { employee: { employerId: employer.id } },
-    orderBy: { createdAt: 'desc' },
-    take: 5,
-    include: {
-      employee: { select: { firstName: true, lastName: true } },
-    },
-  })
-
-  const activeCount = employer.employees.length
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-sm mb-1" style={{ color: '#8A8D91' }}>Ready to manage payroll?</p>
-        <h1 className="font-display text-2xl font-semibold" style={{ color: '#16181C' }}>
-          Welcome back, {employer.companyName}
-        </h1>
-      </div>
-
-      {/* Metric cards */}
-      <div className="flex flex-wrap gap-4">
-        {/* Active employees */}
-        <Card className="p-5 flex-1 min-w-[220px]">
-          <p className="text-sm mb-3" style={{ color: '#8A8D91' }}>Active employees</p>
-          <p className="font-display text-2xl font-semibold mb-3" style={{ color: '#16181C' }}>{activeCount}</p>
-          <div className="flex items-end gap-1 h-6">
-            {[16, 22, 14, 26, 18, 24, 16].map((h, i) => (
-              <div
-                key={i}
-                className="w-1.5 rounded-full"
-                style={{ height: h, background: i % 2 === 0 ? '#E8FBF0' : '#3DDC84' }}
-              />
-            ))}
-            <span className="text-xs ml-2" style={{ color: '#8A8D91' }}>this month</span>
-          </div>
-        </Card>
-
-        {/* Pending requests */}
-        <Card className="p-5 flex-1 min-w-[220px]">
-          <p className="text-sm mb-3" style={{ color: '#8A8D91' }}>Pending requests</p>
-          <p className="font-display text-2xl font-semibold mb-3" style={{ color: '#16181C' }}>{pendingRequests}</p>
-          {pendingRequests > 0 ? (
-            <p className="text-xs" style={{ color: '#854F0B' }}>
-              {pendingAdvances > 0 && `${pendingAdvances} advance${pendingAdvances > 1 ? 's' : ''}`}
-              {pendingRefunds > 0 && `${pendingAdvances > 0 ? ', ' : ''}${pendingRefunds} refund${pendingRefunds > 1 ? 's' : ''}`}
-              {pendingLeaves > 0 && `${pendingAdvances + pendingRefunds > 0 ? ', ' : ''}${pendingLeaves} leave`}
-            </p>
-          ) : (
-            <p className="text-xs" style={{ color: '#8A8D91' }}>All clear</p>
-          )}
-        </Card>
-
-        {/* Treasury — live balance pulled by TreasuryWidget in the panel below */}
-        <Card className="p-5 flex-1 min-w-[220px]">
-          <p className="text-sm mb-3" style={{ color: '#8A8D91' }}>Treasury</p>
-          {employer.treasuryContractAddress ? (
-            <>
-              <p className="font-display text-sm font-semibold mb-1" style={{ color: '#1D9E75' }}>Connected</p>
-              <p className="text-xs truncate" style={{ fontFamily: 'var(--font-jbmono)', color: '#8A8D91' }}>
-                {employer.treasuryContractAddress.slice(0, 6)}…{employer.treasuryContractAddress.slice(-4)}
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="font-display text-base font-semibold mb-1" style={{ color: '#854F0B' }}>Not set up</p>
-              <p className="text-xs" style={{ color: '#8A8D91' }}>Use the panel below to connect</p>
-            </>
-          )}
-        </Card>
-      </div>
-
-      {/* Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="p-6 lg:col-span-2">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-display text-base font-semibold">Treasury utilisation</h3>
-            <span
-              className="text-xs px-3 py-1.5 rounded-full"
-              style={{ background: '#F4F3EE', color: '#8A8D91' }}
-            >
-              This year
-            </span>
-          </div>
-          <p className="text-sm mb-5" style={{ color: '#8A8D91' }}>Daily salary releases</p>
-          <Bars count={activeCount} />
-        </Card>
-
-        <TreasuryWidget treasuryContractAddress={employer.treasuryContractAddress} />
-      </div>
-
-      {/* Recent advances */}
-      <Card className="overflow-hidden">
-        <div
-          className="flex items-center justify-between p-5 border-b"
-          style={{ borderColor: '#ECEBE6' }}
-        >
-          <h3 className="font-display text-base font-semibold">Recent advance requests</h3>
-          <a href="/inbox" className="text-sm font-medium" style={{ color: '#0B3D20' }}>View all</a>
-        </div>
-
-        {recentAdvances.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 px-5">
-            <p className="text-sm" style={{ color: '#8A8D91' }}>No advance requests yet</p>
-          </div>
-        ) : (
-          recentAdvances.map((r, i) => (
-            <div
-              key={r.id}
-              className={`flex items-center gap-4 p-4 ${i > 0 ? 'border-t' : ''}`}
-              style={{ borderColor: '#ECEBE6' }}
-            >
-              <Avatar initials={(r.employee.firstName[0] ?? '') + (r.employee.lastName[0] ?? '')} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                  <span className="font-medium text-sm">{r.employee.firstName} {r.employee.lastName}</span>
-                  <span
-                    className="text-xs px-2 py-0.5 rounded-md"
-                    style={{ background: '#FEF3DD', color: '#854F0B' }}
-                  >
-                    Advance
-                  </span>
-                </div>
-                <p className="text-sm truncate" style={{ color: '#8A8D91' }}>{r.reason}</p>
-              </div>
-              <span className="font-medium text-sm whitespace-nowrap">{formatAmount(r.amount)}</span>
-              <StatusPill status={r.status} />
-            </div>
-          ))
-        )}
-      </Card>
+  const overview = await getCompanyOverview(employer.id, employer.timezone)
+  const invites = overview.employees.filter(employee => employee.status === 'PENDING')
+  const checkedInIds = new Set(overview.checkedIn.map(checkIn => checkIn.employeeId))
+  const date = new Intl.DateTimeFormat('en-GB', { timeZone: employer.timezone, weekday: 'long', day: 'numeric', month: 'long' }).format(new Date())
+  return <div className="dashboard-stack">
+    <div className="page-heading"><div><h1>Company overview</h1><p>{date} · {employer.timezone}</p></div><Link className="grey-button grey-button-primary" href="/staff">Add an employee <span aria-hidden="true">+</span></Link></div>
+    <section className="team-summary" aria-label="Today's employee statistics"><dl>
+      <div><dt>Active employees</dt><dd>{overview.activeCount}</dd></div>
+      <div><dt>At work today</dt><dd>{overview.atWorkCount}</dd></div>
+      <div><dt>On leave</dt><dd>{overview.onLeaveCount}</dd></div>
+      <div><dt>Yet to check in</dt><dd>{overview.awaitingCheckInCount}</dd></div>
+    </dl><div className="summary-footer"><span><span className="status-dot" />Attendance for your company’s current day</span><Link href="/staff">{overview.invitedCount} awaiting signup</Link></div></section>
+    <div className="dashboard-columns">
+      <section className="grey-panel"><div className="panel-heading"><div><h2>Today’s team</h2><p>Attendance across {employer.companyName}.</p></div><Link className="text-link" href="/staff">View employees</Link></div>
+        {overview.activeCount === 0 ? <div className="empty-state"><h3>Your team starts here</h3><p>Add an employee and share their invitation code to welcome them into your company.</p><Link className="grey-button" href="/staff">Add your first employee</Link></div> : <div className="table-scroll"><table className="grey-table"><thead><tr><th>Employee</th><th>Job title</th><th>Today</th></tr></thead><tbody>{overview.employees.filter(employee => employee.status === 'ACTIVE').slice(0, 6).map(employee => <tr key={employee.id}><td><Link className="employee-name" href={`/staff/${employee.id}`}><span className="employee-avatar" aria-hidden="true">{employee.firstName[0]}{employee.lastName[0]}</span>{employee.firstName} {employee.lastName}</Link></td><td>{employee.jobTitle}</td><td><span className={`grey-badge ${overview.onLeaveIds.includes(employee.id) ? 'badge-neutral' : checkedInIds.has(employee.id) ? 'badge-success' : 'badge-neutral'}`}>{overview.onLeaveIds.includes(employee.id) ? 'On leave' : checkedInIds.has(employee.id) ? 'Checked in' : 'Not checked in'}</span></td></tr>)}</tbody></table></div>}
+      </section>
+      <TreasuryWidget />
     </div>
-  )
+    <div className="dashboard-columns">
+      <section className="grey-panel"><div className="panel-heading"><div><h2>Requests to review</h2><p>Leave, refunds and advances from your team.</p></div><Link className="text-link" href="/inbox">Open inbox</Link></div>
+        {overview.requests.length === 0 ? <div className="empty-state compact"><h3>You’re all caught up</h3><p>New employee requests will appear here for your review.</p></div> : <ul className="request-list">{overview.requests.map(request => <li key={request.id}><div><span className="request-person">{request.name} <span className="request-kind">{request.kind}</span></span><p>{request.detail}</p></div><span className="request-amount">{request.amount ? formatMoney(request.amount, request.currency) : 'Pending review'}</span></li>)}</ul>}
+      </section>
+      <section className="grey-panel"><div className="panel-heading"><div><h2>Company invitations</h2><p>Codes give employees access to your company.</p></div></div>
+        {invites.length === 0 ? <div className="empty-state compact"><p>Invitations appear after you add an employee.</p><Link className="text-link" href="/staff">Invite an employee</Link></div> : <ul className="invitation-list">{invites.slice(0, 4).map(employee => <li key={employee.id}><div><strong>{employee.firstName} {employee.lastName}</strong><p>{employee.inviteExpiry && employee.inviteExpiry < new Date() ? 'Invitation expired' : 'Waiting to join'}</p><code>{employee.inviteCode || 'Code unavailable'}</code></div>{employee.inviteCode && (!employee.inviteExpiry || employee.inviteExpiry > new Date()) ? <CopyInvite code={employee.inviteCode} /> : null}</li>)}</ul>}
+      </section>
+    </div>
+    <section className="payroll-summary"><div><h2>Verified Arc payroll this month</h2><p>{overview.releaseCount} salary records matched to finalized Arc receipts</p></div><div className="settled-amount"><strong>{formatMoney(overview.settledUsdc)}</strong></div><Link href="/arc-payroll" className="grey-button">Open Arc payroll</Link></section>
+  </div>
 }

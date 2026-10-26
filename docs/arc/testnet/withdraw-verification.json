@@ -1,0 +1,29 @@
+{
+  "verifiedAt": "2026-10-25T17:18:39.184Z",
+  "status": "verified",
+  "stage": "withdraw",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "transactionHash": "0x612a5fbd46afdb2bdec02a96bc42fcb296add163b5c411747b6a0ab44aa97181",
+  "explorerUrl": "https://explorer.testnet.arc.io/tx/0x612a5fbd46afdb2bdec02a96bc42fcb296add163b5c411747b6a0ab44aa97181",
+  "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+  "contractAddress": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "blockNumber": "69065014",
+  "blockHash": "0xaa02c03dad12119b656311917f83ea7f29f9d4bc2eba09832b3122330645fb90",
+  "finalizedBlock": "69065080",
+  "finalizedBlockHash": "0x65bfd26ef31fe0f3ad3bb60158b1eb24612acca9258c9bcfbb7f1e14d18a6d56",
+  "receiptStatus": "success",
+  "employerLedgerWei": "60000000000000000",
+  "runId": null,
+  "events": [
+    {
+      "eventName": "Withdrawn",
+      "args": {
+        "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "amount": "10000000000000000"
+      }
+    }
+  ],
+  "note": "Independent read-only finalized receipt, canonical runtime, exact event and employer-ledger verification. This script never signs or broadcasts."
+}

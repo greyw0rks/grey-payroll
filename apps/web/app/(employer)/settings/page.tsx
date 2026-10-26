@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { getArcChain, isArcChainId } from '@grey/config/arc'
+import { DEFAULT_ARC_CHAIN_ID } from '@/lib/arc-chain'
 
 const inputStyle: React.CSSProperties = {
   padding: '8px 12px',
@@ -41,6 +43,7 @@ export default function SettingsPage() {
   // Employer info for display only
   const [companyName, setCompanyName] = useState('')
   const [treasuryAddress, setTreasuryAddress] = useState<string | null>(null)
+  const [treasuryChainId, setTreasuryChainId] = useState(DEFAULT_ARC_CHAIN_ID)
 
   useEffect(() => {
     async function loadSettings() {
@@ -60,7 +63,8 @@ export default function SettingsPage() {
             setForm(loaded)
             setSaved(loaded)
             setCompanyName(data.companyName ?? '')
-            setTreasuryAddress(data.treasuryContractAddress ?? null)
+            setTreasuryAddress(data.arcTreasuryAddress ?? null)
+            if (data.arcTreasuryAddress && isArcChainId(data.arcChainId)) setTreasuryChainId(data.arcChainId)
           }
         }
       } catch {
@@ -145,7 +149,7 @@ export default function SettingsPage() {
           )}
           <div className="flex items-center justify-between py-2 text-sm border-t" style={{ borderColor: '#ECEBE6' }}>
             <span style={{ color: '#8A8D91' }}>Treasury chain</span>
-            <span className="font-medium">Celo Sepolia</span>
+            <span className="font-medium">{getArcChain(treasuryChainId).name}</span>
           </div>
           <div className="flex items-center justify-between py-2 text-sm border-t" style={{ borderColor: '#ECEBE6' }}>
             <span style={{ color: '#8A8D91' }}>Payroll token</span>

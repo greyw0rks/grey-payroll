@@ -1,0 +1,49 @@
+{
+  "verifiedAt": "2026-10-25T17:17:03.537Z",
+  "status": "verified",
+  "stage": "payroll",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "transactionHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+  "explorerUrl": "https://explorer.testnet.arc.io/tx/0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+  "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+  "contractAddress": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "blockNumber": "69064804",
+  "blockHash": "0x1a1a61dbb2f39187b267e60f5e51f76843a274e74e58be5a19bb3b791cfc8e9c",
+  "finalizedBlock": "69064892",
+  "finalizedBlockHash": "0x30b6c962e1111e2fb646a15b1a8b20fb16e29ac78e0c8a728e874a050e80cabb",
+  "receiptStatus": "success",
+  "employerLedgerWei": "70000000000000000",
+  "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+  "events": [
+    {
+      "eventName": "PayrollExecuted",
+      "args": {
+        "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+        "totalPaid": "30000000000000000",
+        "recipientCount": "2"
+      }
+    },
+    {
+      "eventName": "PaymentSent",
+      "args": {
+        "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+        "recipient": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "amount": "10000000000000000"
+      }
+    },
+    {
+      "eventName": "PaymentSent",
+      "args": {
+        "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+        "recipient": "0xc61Bbc0CF5694EF410A578A9833f77C173790450",
+        "amount": "20000000000000000"
+      }
+    }
+  ],
+  "note": "Independent read-only finalized receipt, canonical runtime, exact event and employer-ledger verification. This script never signs or broadcasts."
+}

@@ -1,0 +1,54 @@
+{
+  "verifiedAt": "2026-10-25T17:19:25.323Z",
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "chainId": 5042002,
+  "address": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "finalizedBlock": "0x41dd9d4",
+  "finalizedBlockHash": "0xbe1107b800775517fd516719a77b506b8eb0aedb9fa0f98056094f18890f78a3",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "explorerUrl": "https://explorer.testnet.arc.io/address/0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "deploymentTransaction": {
+    "hash": "0xa77a7569c714fb50cf235565811cdab09f5770b55c382934228c163c69da835d",
+    "status": "independently-verified",
+    "from": "0x497a821f6f9e53913235fa7dfc34a8820903795f",
+    "smartAccount": "0x5B12Ce46C7194aD57d143bC22847224047b1Ef42",
+    "entryPoint": "0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789",
+    "factory": "0xa3039A54856ed74B5AEc999EeF3fc954Ab010Cf6",
+    "inputSalt": "0xbdce7fd985081340be0f44e8947e09dc5056eea73d69f6ccc57df13cc1b894c9",
+    "deploymentId": "0x72446b374fddcfcf3e149de707ec62dace7d8db01185387bc9b117e951bbe962",
+    "userOperationHash": "0x5644c399985ca2c83485ba497715c170519d347417be46b7338486a99a0ac792",
+    "userOperationSuccess": true,
+    "blockNumber": "0x41dc230",
+    "blockHash": "0xd45210656c58608ab0adede918b3badcef4b75009a400c759c7c62454ca48b20",
+    "receiptStatus": "0x1",
+    "creationBytecodeMatch": true,
+    "deploymentEventMatch": true,
+    "runtimeAtDeploymentMatch": true,
+    "explorerUrl": "https://explorer.testnet.arc.io/tx/0xa77a7569c714fb50cf235565811cdab09f5770b55c382934228c163c69da835d"
+  },
+  "payments": {
+    "deposit": {
+      "status": "verified",
+      "transactionHash": "0xa818d96a0ab109e80fae3c4f90268a0933ba8e3e5877448c28fd81a5c9b944ac",
+      "evidence": "deposit-verification.json"
+    },
+    "payroll": {
+      "status": "verified",
+      "transactionHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+      "evidence": "payroll-verification.json"
+    },
+    "withdrawal": {
+      "status": "verified",
+      "transactionHash": "0x612a5fbd46afdb2bdec02a96bc42fcb296add163b5c411747b6a0ab44aa97181",
+      "evidence": "withdraw-verification.json"
+    },
+    "replay": {
+      "status": "verified",
+      "originalPayrollHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+      "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+      "evidence": "replay-verification.json",
+      "broadcast": false
+    }
+  },
+  "note": "Independent finalized receipt, successful inner smart-wallet operation, canonical creation bytecode, exact factory deployment event and runtime verification. Payment lifecycle proofs are recorded separately below."
+}

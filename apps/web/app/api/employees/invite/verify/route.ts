@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@grey/db'
 
 export async function GET(req: NextRequest) {
-  const code = req.nextUrl.searchParams.get('code')
+  const code = req.nextUrl.searchParams.get('code')?.trim().toUpperCase()
   if (!code) return NextResponse.json({ error: 'Code required' }, { status: 400 })
 
   const employee = await prisma.employee.findUnique({

@@ -27,7 +27,7 @@ const PENDING = [
 ]
 
 const CHAIN = [
-  { dot: '#4ade80', text: <><b>10 salary releases</b> via Celo Sepolia</>,          time: 'Today 08:14 · Block #1240192' },
+  { dot: '#4ade80', text: <><b>10 salary releases</b> · sample activity</>,         time: 'Preview data' },
   { dot: '#5b9cf6', text: <><b>Treasury deposit</b> +$10,000 USDC</>,               time: 'Jun 14 · Block #1228410' },
   { dot: '#4ade80', text: <><b>Refund approved</b> to Tunde $120</>,                time: 'Jun 13 · Block #1223544' },
 ]

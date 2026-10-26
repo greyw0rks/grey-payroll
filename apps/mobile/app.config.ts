@@ -35,7 +35,7 @@ const config: ExpoConfig = {
   extra: {
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
     apiUrl: process.env.API_URL ?? 'http://localhost:3000',
-    chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 11142220),
+    chainId: 5042002,
   },
 }
 

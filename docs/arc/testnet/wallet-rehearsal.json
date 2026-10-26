@@ -1,0 +1,65 @@
+{
+  "verifiedAt": "2026-10-25T17:19:26.378Z",
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "chainId": 5042002,
+  "decimals": 18,
+  "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+  "secondRecipient": "0xc61Bbc0CF5694EF410A578A9833f77C173790450",
+  "contractAddress": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "finalizedBlock": "0x41dd9d4",
+  "finalizedBlockHash": "0xbe1107b800775517fd516719a77b506b8eb0aedb9fa0f98056094f18890f78a3",
+  "walletBalanceWei": "41247941312514690437",
+  "walletBalanceUsdc": "41.247941312514690437",
+  "employerLedgerWei": "60000000000000000",
+  "employerLedgerUsdc": "0.06",
+  "initialEmployerLedgerWei": "0",
+  "plannedDepositUsdc": "0.10",
+  "depositPrincipalAvailable": true,
+  "gasCheck": "Re-estimate gas, fees and current wallet balance in the application immediately before signing. Principal availability alone is not sufficient.",
+  "steps": [
+    {
+      "action": "deposit",
+      "amountUsdc": "0.10",
+      "expectedLedgerWei": "100000000000000000",
+      "status": "verified",
+      "transactionHash": "0xa818d96a0ab109e80fae3c4f90268a0933ba8e3e5877448c28fd81a5c9b944ac",
+      "verifiedAt": "2026-10-25T17:13:40.919Z"
+    },
+    {
+      "action": "payroll",
+      "recipients": [
+        {
+          "address": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+          "amountUsdc": "0.01"
+        },
+        {
+          "address": "0xc61Bbc0CF5694EF410A578A9833f77C173790450",
+          "amountUsdc": "0.02"
+        }
+      ],
+      "expectedLedgerWei": "70000000000000000",
+      "status": "verified",
+      "transactionHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+      "verifiedAt": "2026-10-25T17:17:03.537Z",
+      "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3"
+    },
+    {
+      "action": "withdraw",
+      "amountUsdc": "0.01",
+      "expectedLedgerWei": "60000000000000000",
+      "status": "verified",
+      "transactionHash": "0x612a5fbd46afdb2bdec02a96bc42fcb296add163b5c411747b6a0ab44aa97181",
+      "verifiedAt": "2026-10-25T17:18:39.184Z"
+    },
+    {
+      "action": "replay-check",
+      "method": "Read-only simulation of the original confirmed runId; expect RunAlreadyExecuted. Do not broadcast a replay.",
+      "status": "verified",
+      "transactionHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+      "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+      "verifiedAt": "2026-10-25T17:18:11.319Z"
+    }
+  ],
+  "note": "Public-address reads only; this verifier never signs or broadcasts, links a company or changes company records. Steps retain their original snapshot and receipt verification across refreshes. Preserve the application-generated runId and verify finalized receipts and exact events between steps."
+}

@@ -1,7 +1,8 @@
+import { randomInt } from 'node:crypto'
 const CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
 export function generateInviteCode(): string {
   const prefix = 'GRY'
-  const suffix = Array.from({ length: 4 }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join('')
-  return `${prefix}-${suffix}`
+  const block = () => Array.from({ length: 4 }, () => CHARS[randomInt(CHARS.length)]).join('')
+  return `${prefix}-${block()}-${block()}`
 }

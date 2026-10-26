@@ -20,6 +20,7 @@ export async function requireEmployee(): Promise<AuthError | EmployeeOk> {
   if (!userId) return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
   const employee = await prisma.employee.findUnique({ where: { clerkUserId: userId } })
   if (!employee) return { error: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }) }
+  if (employee.status !== 'ACTIVE') return { error: NextResponse.json({ error: 'Your employee account is not active. Contact your employer.' }, { status: 403 }) }
   return { userId, employee }
 }
 

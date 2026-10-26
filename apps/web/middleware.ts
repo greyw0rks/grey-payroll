@@ -5,6 +5,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/register(.*)',
+  '/login(.*)',
   '/api/employees/invite/verify(.*)',
 ])
 
@@ -14,7 +15,10 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   if (isPublicRoute(req)) return
   const { userId } = await auth()
-  if (!userId) return NextResponse.redirect(new URL('/sign-in', req.url))
+  if (!userId) {
+    if (req.nextUrl.pathname.startsWith('/api/')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return NextResponse.redirect(new URL('/sign-in', req.url))
+  }
 })
 
 export const config = {

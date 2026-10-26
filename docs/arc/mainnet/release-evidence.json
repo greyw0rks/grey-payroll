@@ -1,0 +1,14 @@
+{
+  "status": "awaiting-wallet-deployment",
+  "updatedAt": "2026-10-26T00:00:00.000Z",
+  "chainId": 5042,
+  "contractAddress": null,
+  "deploymentTransaction": null,
+  "canonicalRuntimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "deploymentEvidence": null,
+  "payoutTransaction": null,
+  "payoutEvidence": null,
+  "publicAppUrl": null,
+  "publicRepositoryUrl": "https://github.com/greyw0rks/grey-payroll",
+  "videoStatus": "mainnet-ready-preview-complete"
+}

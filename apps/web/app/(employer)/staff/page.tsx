@@ -1,5 +1,6 @@
 'use client'
 
+import { formatMoney } from '@/lib/money'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { AddEmployeeModal } from '@/components/employer/AddEmployeeModal'
@@ -19,11 +20,7 @@ interface Employee {
 }
 
 function formatAmount(amount: string, currency: string) {
-  return (
-    Number(amount).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) +
-    ' ' +
-    (currency === 'CUSD' ? 'cUSD' : currency)
-  )
+  return formatMoney(String(amount), currency)
 }
 
 function StatusPill({ status }: { status: EmployeeStatus }) {

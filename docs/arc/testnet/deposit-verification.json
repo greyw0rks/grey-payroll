@@ -1,0 +1,29 @@
+{
+  "verifiedAt": "2026-10-25T17:13:40.919Z",
+  "status": "verified",
+  "stage": "deposit",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "transactionHash": "0xa818d96a0ab109e80fae3c4f90268a0933ba8e3e5877448c28fd81a5c9b944ac",
+  "explorerUrl": "https://explorer.testnet.arc.io/tx/0xa818d96a0ab109e80fae3c4f90268a0933ba8e3e5877448c28fd81a5c9b944ac",
+  "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+  "contractAddress": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "blockNumber": "69064154",
+  "blockHash": "0xdc855b5fdbc34d8a3b73b8d332565142c3e0b0558cc98f53628e1838cb87196a",
+  "finalizedBlock": "69064492",
+  "finalizedBlockHash": "0xb5f301d9573bb233aacb3a82cddc552996ce7faf49c6f375ca3622768e2a3bf9",
+  "receiptStatus": "success",
+  "employerLedgerWei": "100000000000000000",
+  "runId": null,
+  "events": [
+    {
+      "eventName": "Deposited",
+      "args": {
+        "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+        "amount": "100000000000000000"
+      }
+    }
+  ],
+  "note": "Independent read-only finalized receipt, canonical runtime, exact event and employer-ledger verification. This script never signs or broadcasts."
+}

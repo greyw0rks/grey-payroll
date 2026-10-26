@@ -31,7 +31,7 @@ export function SettingsView() {
           <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>Connected wallet</div>
             <code style={{ fontSize: 11, color: 'var(--text-info)' }}>0x1a2b3c4d5e6f…</code>
-            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>Network: Celo Sepolia (11142220)</div>
+            <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 4 }}>Network: Arc Testnet (5042002)</div>
           </div>
         </div>
       </div>

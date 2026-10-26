@@ -1,0 +1,17 @@
+{
+  "verifiedAt": "2026-10-25T17:18:11.319Z",
+  "status": "verified",
+  "stage": "replay",
+  "chainId": 5042002,
+  "rpcUrl": "https://rpc.testnet.arc.io",
+  "employer": "0xB9e3A2D811729C11F64313F59922Ab37Afa52010",
+  "contractAddress": "0xb3bd28388099c84d33090b0e53330863b26567b9",
+  "originalPayrollHash": "0x4b5d442bdfc23fdc74727c9987bbcc3a25c14bede76bdc5d1fc75384ea411fd2",
+  "runId": "0x6de0d071991b8cc636f2e541aa5b85a9fe18c69e6297a2f469864b5e33664da3",
+  "runtimeHash": "0xb219b4c8f0374fef7421d4cebb32c81dbd6dbbf44869d7569dad4209f8eeae9d",
+  "finalizedBlock": "69065025",
+  "finalizedBlockHash": "0xebcaf5d659e628a2265c6c3071563dee037bb5666de1f7c861e415fa4ffcf79f",
+  "hasExecuted": true,
+  "simulationRevert": "RunAlreadyExecuted",
+  "broadcast": false
+}

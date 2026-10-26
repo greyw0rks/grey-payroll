@@ -23,13 +23,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
-  const updated = await prisma.refundRequest.update({
-    where: { id },
+  if (refund.status !== 'PENDING' || refund.txHash) return NextResponse.json({ error: 'This refund has already been reviewed or paid.' }, { status: 409 })
+  const claimed = await prisma.refundRequest.updateMany({
+    where: { id, status: 'PENDING', txHash: null, arcPaymentItem: null },
     data: {
       status: action === 'approve' ? 'APPROVED' : 'REJECTED',
       rejectionReason: action === 'reject' ? (rejectionReason ?? null) : null,
+      reviewedById: userId,
     },
   })
-
-  return NextResponse.json({ refund: updated })
+  if (claimed.count !== 1) return NextResponse.json({ error: 'This refund was reviewed or reserved by another operation.' }, { status: 409 })
+  return NextResponse.json({ refund: await prisma.refundRequest.findUnique({ where: { id } }) })
 }

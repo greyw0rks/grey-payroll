@@ -8,7 +8,7 @@ export function TreasuryView() {
       </div>
       <div className="content">
         <div className="kpi-row" style={{ gridTemplateColumns: 'repeat(4,1fr)' }}>
-          <div className="kpi"><div className="kpi-label">Total balance</div><div className="kpi-value">$48,200</div><div className="kpi-sub">USDC · Celo Sepolia</div></div>
+          <div className="kpi"><div className="kpi-label">Total balance</div><div className="kpi-value">$48,200</div><div className="kpi-sub">USDC · preview data</div></div>
           <div className="kpi"><div className="kpi-label">Required buffer</div><div className="kpi-value">$37,900</div><div className="kpi-sub">2 months × 12 staff</div></div>
           <div className="kpi"><div className="kpi-label">Available</div><div className="kpi-value">$10,300</div><div className="kpi-sub">Above minimum</div></div>
           <div className="kpi"><div className="kpi-label">Coverage</div><div className="kpi-value">4.8 mo</div><div className="kpi-sub" style={{ color: 'var(--text-ok)' }}>● Healthy</div></div>

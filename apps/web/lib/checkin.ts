@@ -1,4 +1,9 @@
-import { toZonedTime, fromZonedTime } from 'date-fns-tz'
+import { toZonedTime, fromZonedTime, formatInTimeZone } from 'date-fns-tz'
+
+/** Date-only key for a company-local calendar day, represented at UTC midnight. */
+export function getCompanyDate(now: Date, timezone: string): Date {
+  return new Date(`${formatInTimeZone(now, timezone, 'yyyy-MM-dd')}T00:00:00.000Z`)
+}
 
 /**
  * Returns 'ON_TIME', 'LATE', or null if outside window.

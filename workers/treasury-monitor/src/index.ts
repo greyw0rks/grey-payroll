@@ -1,102 +1,38 @@
 import { Worker, Queue } from 'bullmq'
-import { Redis } from 'ioredis'
-import { createPublicClient, http } from 'viem'
+import { createPublicClient, http, isAddress, keccak256, type Address } from 'viem'
 import { prisma } from '@grey/db'
-import { celo, celoSepolia } from '@grey/config/chains'
-import { PayrollTreasuryABI } from '@grey/config/abis'
+import { arcTestnet, arcPayrollReadAbi, businessAmountToArc, formatArcMoney } from '@grey/config/arc'
 
 const QUEUE_NAME = 'treasury-monitor'
+const redisUrl = new URL(process.env.REDIS_URL ?? 'redis://localhost:6379')
+if (!['redis:', 'rediss:'].includes(redisUrl.protocol)) throw new Error('Configure a Redis connection for treasury monitoring.')
+const connection = { host: redisUrl.hostname, port: Number(redisUrl.port || 6379), username: redisUrl.username ? decodeURIComponent(redisUrl.username) : undefined, password: redisUrl.password ? decodeURIComponent(redisUrl.password) : undefined, db: Number(redisUrl.pathname.slice(1) || 0), tls: redisUrl.protocol === 'rediss:' ? {} : undefined, maxRetriesPerRequest: null }
+const publicClient = createPublicClient({ chain: arcTestnet, transport: http(process.env.ARC_TESTNET_RPC_URL || arcTestnet.rpcUrls.default.http[0]) })
+const queue = new Queue(QUEUE_NAME, { connection })
+const worker = new Worker(QUEUE_NAME, async job => {
+  const employer = await prisma.employer.findUnique({ where: { id: job.data.employerId }, include: { employees: { where: { status: 'ACTIVE', currency: 'USDC' } } } })
+  if (!employer?.arcTreasuryAddress || !employer.arcEmployerWallet) return
+  if (employer.arcChainId !== arcTestnet.id || await publicClient.getChainId() !== arcTestnet.id) throw new Error('Treasury monitor requires Arc Testnet.')
+  const expectedHash = process.env.ARC_PAYROLL_RUNTIME_HASH
+  if (!expectedHash || !/^0x[0-9a-fA-F]{64}$/.test(expectedHash)) throw new Error('Configure the compiled GreyPayroll runtime hash before monitoring.')
+  if (!isAddress(employer.arcTreasuryAddress) || !isAddress(employer.arcEmployerWallet)) throw new Error('Invalid company Arc treasury binding.')
+  const block = await publicClient.getBlock({ blockTag: 'finalized' })
+  const address = employer.arcTreasuryAddress as Address
+  const code = await publicClient.getCode({ address, blockNumber: block.number })
+  if (!code || keccak256(code) !== expectedHash) throw new Error('Company treasury runtime does not match the reviewed GreyPayroll contract.')
+  const balance = await publicClient.readContract({ address, abi: arcPayrollReadAbi, functionName: 'balanceOf', args: [employer.arcEmployerWallet as Address], blockNumber: block.number })
+  const monthly = employer.employees.reduce((sum, employee) => sum + businessAmountToArc(employee.monthlySalary), 0n)
+  if (monthly === 0n || balance >= monthly) return
+  const critical = balance * 2n < monthly
+  await prisma.notification.create({ data: { employerId: employer.id, type: critical ? 'TREASURY_CRITICAL' : 'TREASURY_LOW', title: critical ? 'Treasury critically low' : 'Treasury balance low', message: `Your Arc Testnet treasury holds ${formatArcMoney(balance)}, below ${critical ? 'half a month' : 'one month'} of recorded payroll. Review and fund it from Arc payroll.` } })
+}, { connection, concurrency: 3 })
 
-const redis = new Redis(process.env.REDIS_URL ?? 'redis://localhost:6379', {
-  maxRetriesPerRequest: null,
-})
-
-const chainId = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? 11142220)
-const chain = chainId === 42220 ? celo : celoSepolia
-const rpcUrl = chainId === 42220 ? process.env.CELO_RPC_URL : process.env.CELO_TESTNET_RPC_URL
-
-const publicClient = createPublicClient({ chain, transport: http(rpcUrl) })
-
-const queue = new Queue(QUEUE_NAME, { connection: redis })
-
-const worker = new Worker(
-  QUEUE_NAME,
-  async (job) => {
-    const { employerId } = job.data as { employerId: string }
-
-    const employer = await prisma.employer.findUnique({
-      where: { id: employerId },
-      include: {
-        employees: { where: { status: 'ACTIVE' } },
-      },
-    })
-
-    if (!employer?.treasuryContractAddress) return
-
-    const treasuryAddress = employer.treasuryContractAddress as `0x${string}`
-
-    const [balance, totalBuffer] = await Promise.all([
-      publicClient.readContract({ address: treasuryAddress, abi: PayrollTreasuryABI, functionName: 'getBalance' }),
-      publicClient.readContract({ address: treasuryAddress, abi: PayrollTreasuryABI, functionName: 'totalBuffer' }),
-    ])
-
-    const balanceUSDC = Number(balance) / 1e6
-    const bufferUSDC = Number(totalBuffer) / 1e6
-
-    // Alert thresholds
-    const oneMonthCost = bufferUSDC / 2 // buffer is 2 months
-    const twoWeeksCost = oneMonthCost / 2
-
-    let alertType: string | null = null
-    let message: string | null = null
-
-    if (balanceUSDC < twoWeeksCost) {
-      alertType = 'TREASURY_CRITICAL'
-      message = `CRITICAL: Treasury balance ($${balanceUSDC.toFixed(2)}) is below 2 weeks of payroll. Top up immediately.`
-    } else if (balanceUSDC < oneMonthCost) {
-      alertType = 'TREASURY_LOW'
-      message = `Warning: Treasury balance ($${balanceUSDC.toFixed(2)}) is below 1 month of payroll. Please top up soon.`
-    }
-
-    if (alertType && message) {
-      await prisma.notification.create({
-        data: {
-          employerId,
-          type: alertType,
-          title: alertType === 'TREASURY_CRITICAL' ? 'Treasury critically low' : 'Treasury balance low',
-          message,
-        },
-      })
-      console.log(`[treasury-monitor] Alert created for employer ${employerId}: ${alertType}`)
-    }
-  },
-  { connection: redis, concurrency: 3 }
-)
-
-/** Schedule treasury check for all employers */
 async function scheduleChecks() {
-  const employers = await prisma.employer.findMany({
-    where: { treasuryContractAddress: { not: null } },
-    select: { id: true },
-  })
-
-  for (const employer of employers) {
-    await queue.add('check', { employerId: employer.id }, { removeOnComplete: true })
-  }
-
-  console.log(`[treasury-monitor] Scheduled ${employers.length} treasury checks`)
+  const employers = await prisma.employer.findMany({ where: { arcTreasuryAddress: { not: null }, arcEmployerWallet: { not: null }, arcChainId: arcTestnet.id }, select: { id: true } })
+  await Promise.all(employers.map(employer => queue.add('check', { employerId: employer.id }, { removeOnComplete: true, removeOnFail: 1000 })))
+  console.log(`[treasury-monitor] Scheduled ${employers.length} Arc treasury checks`)
 }
-
-if (process.argv.includes('--schedule')) {
-  scheduleChecks()
-    .then(() => setTimeout(() => process.exit(0), 10000))
-    .catch(console.error)
-}
-
-process.on('SIGTERM', async () => {
-  await worker.close()
-  await redis.quit()
-  process.exit(0)
-})
-
+if (process.argv.includes('--schedule')) void scheduleChecks().catch(error => { console.error(error); process.exitCode = 1 })
+worker.on('failed', (job, error) => console.error(`[treasury-monitor] ${job?.id}: ${error.message}`))
+process.on('SIGTERM', async () => { await worker.close(); await queue.close(); await prisma.$disconnect(); process.exit(0) })
 export { queue, scheduleChecks }
