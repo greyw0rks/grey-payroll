@@ -1,5 +1,24 @@
 import { PrismaClient } from '../generated'
 
+function assertSafeSeedTarget() {
+  const databaseUrl = process.env.DATABASE_URL
+  if (!databaseUrl) throw new Error('DATABASE_URL is required for local demo seeding.')
+
+  let hostname: string
+  try {
+    hostname = new URL(databaseUrl).hostname.toLowerCase()
+  } catch {
+    throw new Error('DATABASE_URL is invalid; demo seeding was stopped.')
+  }
+
+  const isNeon = hostname === 'neon.tech' || hostname.endsWith('.neon.tech')
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production'
+  if (isNeon || isProduction) {
+    throw new Error('Demo seeding is disabled for Neon and production databases.')
+  }
+}
+
+assertSafeSeedTarget()
 const prisma = new PrismaClient()
 
 const USDC = 1_000_000

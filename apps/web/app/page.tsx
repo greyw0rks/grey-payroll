@@ -1,17 +1,17 @@
 import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
 import { prisma } from '@grey/db'
+import { LandingPage } from '@/components/marketing/LandingPage'
 
 export default async function RootPage() {
   const { userId } = await auth()
-  if (!userId) redirect('/sign-in')
+  if (!userId) return <LandingPage workspaceHref={null} />
 
-  // JWT may not have propagated yet — check the DB directly.
-  const employer = await prisma.employer.findUnique({ where: { clerkUserId: userId }, select: { id: true } })
-  if (employer) redirect('/dashboard')
+  // Keep the public landing page visible after sign-in while making the
+  // correct company workspace available without relying on JWT propagation.
+  const [employer, employee] = await Promise.all([
+    prisma.employer.findUnique({ where: { clerkUserId: userId }, select: { id: true } }),
+    prisma.employee.findUnique({ where: { clerkUserId: userId }, select: { id: true } }),
+  ])
 
-  const employee = await prisma.employee.findUnique({ where: { clerkUserId: userId }, select: { id: true } })
-  if (employee) redirect('/home')
-
-  redirect('/register')
+  return <LandingPage workspaceHref={employer ? '/dashboard' : employee ? '/home' : '/register'} />
 }
