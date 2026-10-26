@@ -13,14 +13,17 @@ const isPublicRoute = createRouteMatcher([
 // Middleware only enforces authentication.
 // Role-based routing happens in server components (layouts/pages) which
 // can use Prisma directly — no JWT propagation delay issues.
-export default clerkMiddleware(async (auth, req) => {
-  if (isPublicRoute(req)) return
-  const { userId } = await auth()
-  if (!userId) {
-    if (req.nextUrl.pathname.startsWith('/api/')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    return NextResponse.redirect(new URL('/sign-in', req.url))
-  }
-})
+export default clerkMiddleware(
+  async (auth, req) => {
+    if (isPublicRoute(req)) return
+    const { userId } = await auth()
+    if (!userId) {
+      if (req.nextUrl.pathname.startsWith('/api/')) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.redirect(new URL('/sign-in', req.url))
+    }
+  },
+  { frontendApiProxy: { enabled: true, path: '/__clerk' } },
+)
 
 export const config = {
   matcher: [

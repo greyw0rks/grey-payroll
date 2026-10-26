@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/register">
+    <ClerkProvider proxyUrl="/__clerk" signInUrl="/sign-in" signUpUrl="/sign-up" signInFallbackRedirectUrl="/" signUpFallbackRedirectUrl="/register">
       <html lang="en" className={`${sora.variable} ${inter.variable} ${jbMono.variable}`} suppressHydrationWarning>
         <body>
           <Providers>{children}</Providers>
