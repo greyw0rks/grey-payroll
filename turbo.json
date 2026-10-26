@@ -19,7 +19,7 @@
         "NEXT_PUBLIC_ARC_DEFAULT_CHAIN_ID",
         "NEXT_PUBLIC_ARC_PAYROLL_URL"
       ],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "generated/**"]
     },
     "dev": {
       "cache": false,
