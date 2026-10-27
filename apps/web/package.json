@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "node ../../scripts/bundle-arc.mjs && next build",
+    "build": "pnpm --filter @grey/db db:generate && node ../../scripts/bundle-arc.mjs && next build && node ../../scripts/check-prisma-bundle.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
@@ -25,6 +25,7 @@
     "wagmi": "^2.14.1"
   },
   "devDependencies": {
+    "@prisma/nextjs-monorepo-workaround-plugin": "6.19.3",
     "@types/node": "^22.10.7",
     "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
