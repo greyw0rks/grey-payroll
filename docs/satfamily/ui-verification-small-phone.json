@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-11-14T19:35:15.636Z",
+  "product": "GreyFinance",
+  "results": [
+    {
+      "name": "small-phone",
+      "width": 360,
+      "height": 800,
+      "overflow": {
+        "viewport": 360,
+        "body": 360,
+        "overflow": false
+      },
+      "roleSnapshot": {
+        "role": "employee",
+        "ownExpensesOnly": true,
+        "treasuryBalanceHidden": true,
+        "otherMemberLimitsHidden": true,
+        "incomingHidden": true
+      },
+      "tested": [
+        "overview",
+        "expense form",
+        "keyboard Escape",
+        "request search",
+        "team member form",
+        "wallet lab entry",
+        "employee role"
+      ]
+    }
+  ],
+  "errors": []
+}

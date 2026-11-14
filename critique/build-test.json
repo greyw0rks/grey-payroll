@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-14T22:20:57.024Z",
+  "build": "passing",
+  "tests": "passing",
+  "durationMs": null,
+  "timingNote": "Build and test commands ran concurrently through tool sessions; individual runtimes are in the log.",
+  "commandsRun": [
+    "pnpm test",
+    "pnpm typecheck",
+    "pnpm build -- greyfinance"
+  ],
+  "suites": {
+    "localAuthorizationAndWalletTests": 56,
+    "convexTests": 81,
+    "totalPassed": 137,
+    "totalFailed": 0
+  },
+  "failures": [],
+  "signals": {
+    "build.passing": true,
+    "tests.passing": true,
+    "critique.score": 5
+  },
+  "note": "The declared product typecheck ran through rtk proxy. The RTK typecheck shortcut checked the workspace default config, which includes other products still in development."
+}

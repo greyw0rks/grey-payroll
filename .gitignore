@@ -1,43 +1,15 @@
-# Dependencies
-node_modules/
-.pnpm-store/
-
-# Build outputs
-dist/
-.next/
-out/
-build/
-
-# Environment
+node_modules
+.data/
 .env
-.env.local
-.env.*.local
-
-# Foundry
-apps/contracts/out/
-apps/contracts/cache/
-apps/contracts/broadcast/
-
-# Prisma
-packages/db/generated/
-
-# Turbo
-.turbo/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
+.env.*
+!.env.example
+dist/
+**/dist/
+playwright-report/
+test-results/
+.tools/
 *.log
-npm-debug.log*
-
-# Editors
-.vscode/
-.idea/
-*.swp
-
-# Local PostgreSQL cluster and generated Arc bundle
-.local-db/
-.arc-dist/
-.vercel
+.atlas/
+.vercel/
+.railway/
+.env.local

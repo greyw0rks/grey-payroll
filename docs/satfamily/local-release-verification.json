@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-11-14T20:09:11.531797+00:00",
+  "product": "GreyFinance",
+  "backend": "local SQLite",
+  "securityLifecycleTests": {
+    "passed": 27,
+    "failed": 0
+  },
+  "frontendTypecheck": "passed",
+  "productionBuild": "passed",
+  "responsiveNavigationEvidence": "docs/satfamily/navigation-verification.json",
+  "temporaryIdentityEvidence": "docs/satfamily/temporary-identity-verification.json",
+  "historicalRegtestEvidence": "docs/evidence/satfamily-regtest.json",
+  "historicalEvidencePreserved": true,
+  "productionAcceptance": "Separate Convex and hosted acceptance owned by root",
+  "sourceSha256": {
+    "apps/satfamily/src/App.tsx": "bf90ca25df82258706a95cadbfa5246e817527d737dd5bc10f9aa98ec2b00d04",
+    "apps/satfamily/src/api.ts": "bab0718abf56595c4cfb74ba18f2f084d33711a2b33c03244262e47e9e455b45",
+    "apps/satfamily/src/components.tsx": "1d15ec1a7b5883db6f42ddd2eb3a3724a54e4c54e04e42b3874dfbb60fe1402a",
+    "apps/satfamily/src/styles.css": "bb0f370e48df8751f329a2d496935ebec4f69e6bec087c50469750943e32ccfb",
+    "server/satfamily.ts": "0166109e0b9913a3333f6087a5b74d9acdf2d0e61e236c7d0476749e3c9258bb",
+    "server/limits.ts": "c0b58cb023034448d6d808236ec5062ede8b29ca629242fa129272ca0b7786ac",
+    "packages/nwc-gate/src/nwc.ts": "dcaeae6b4ffd3f48168a579b5674ee69504c80bfbd88e554d8b166b8fde3ff6a",
+    "tests/satfamily.test.ts": "8bc03352b632300cc6883482aa09fb8330b10da35d47437f471ec83396cc7e47"
+  }
+}

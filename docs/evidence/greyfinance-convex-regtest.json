@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-11-14T20:09:24.791Z",
+  "origin": "https://greylabs-rho.vercel.app",
+  "backend": "convex",
+  "network": "regtest",
+  "monetaryValue": false,
+  "classification": "Builder-controlled hosted integration. Real protocol settlement; no independent adoption or mainnet payment claim.",
+  "workspaceId": "jx7c0mawhvexdrcj5d5xcrwrbh8j67em",
+  "expense": {
+    "id": "jh7b5y329v4kd1gzcfv11vz8ex8j62t8",
+    "amountSats": 150,
+    "paymentHash": "ad099aab3945d68e80f8519266dc52f5ac2d7ab3de1b96cc946f61794d5893b3",
+    "preimage": "cc89e4f34af75d26bc27904f834429a744d68db4723e84985d3b1cf9cce61da4",
+    "settledAt": 1794686953200,
+    "sourceConnectionFingerprint": "65047405c7ef551cead23e6470b7e983dbf932a227c5fe6bed3c5229d052986d",
+    "independentlyVerifiedByReceivingWallet": true
+  },
+  "incoming": {
+    "amountSats": 100,
+    "paymentHash": "1992b768d44214bac415e2820eb959548f06f5662e1f1e6ed2ca2f87a03791e5",
+    "preimage": "3915eddda9c86b368ba761cd9b37e22908670e4a931f9ef63c8cc3ddf5215fe0",
+    "settledAt": 1794686959000,
+    "independentlyVerifiedByReceivingWallet": true
+  },
+  "checks": [
+    "Hosted Convex health",
+    "Preview personas disabled",
+    "NIP-98 signed login and replay rejection",
+    "Secure HttpOnly sessions",
+    "Real restricted NWC connections",
+    "Single owned company",
+    "Cross-tenant rejection",
+    "Employee approval/payment denial",
+    "Generic expense bypass rejection",
+    "Exact action path",
+    "Independent approval",
+    "Real LND outgoing settlement",
+    "No duplicate payment",
+    "Independent payment proof verification",
+    "Real LND incoming settlement",
+    "Durable Convex receipts",
+    "Atomic company budget",
+    "Employee financial-data restriction",
+    "Audit records"
+  ],
+  "sourceHashes": {
+    "convex/schema.ts": "ef24a7bc8497f2eb405bf7fc6c1194c63a7db5f54a43238b143261a6030e77ca",
+    "convex/model.ts": "1bfb350f1c460bc831c7db2892ded93ef1217643614e6e695f5cb5218d1851cc",
+    "convex/nodeOps.ts": "0df60f0af1989e2849c011e3f292f942813760fa19262d14b778e3a39e9fd707",
+    "convex/http.ts": "4a13f1f0d10faa43acdb4967bb155b581d309ebc99c154702a0445b5c97c54d3",
+    "packages/nwc-gate/src/nwc.ts": "dcaeae6b4ffd3f48168a579b5674ee69504c80bfbd88e554d8b166b8fde3ff6a"
+  }
+}

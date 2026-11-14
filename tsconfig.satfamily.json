@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["apps/satfamily", "packages/nwc-gate/src", "server", "scripts", "tests/satfamily.test.ts", "tests/wallets.test.ts"]
+}

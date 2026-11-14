@@ -1,1 +1,0 @@
-export { arcPayrollReadAbi } from '../arc'

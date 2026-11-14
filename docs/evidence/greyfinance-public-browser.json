@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-14T20:08:15.594Z",
+  "origin": "https://greylabs-rho.vercel.app",
+  "builderTest": true,
+  "navigationPreservesIdentity": true,
+  "additionalOwnedCompanyControl": false,
+  "companySwitchingAvailable": true,
+  "result": {
+    "pubkey": "0af20668701c2b73d8d847114b0bd83495a5ec1db50a6b6616005cf2592bb413",
+    "demo": false,
+    "organizationId": "jx768aeevnshc7m8g3g1qr63x18j7hq5",
+    "organizationName": "GreyFinance browser check mwgu8fox",
+    "role": "owner",
+    "walletConnected": false,
+    "expenses": 0,
+    "localStorageKeys": [],
+    "sessionStorageKeys": []
+  },
+  "errors": []
+}

@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-14T19:43:09.896Z",
+  "origin": "http://127.0.0.1:4402/",
+  "product": "GreyFinance",
+  "verificationBackend": "local",
+  "results": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "views": [
+        "Overview",
+        "Requests",
+        "Transactions",
+        "Team",
+        "Budgets",
+        "Settings"
+      ],
+      "expectedMonth": "Nov 2026",
+      "allNavigationTargetsAtLeast44px": true,
+      "noHorizontalOverflow": true,
+      "noSidebar": true
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "views": [
+        "Overview",
+        "Requests",
+        "Transactions",
+        "Team",
+        "Budgets",
+        "Settings"
+      ],
+      "expectedMonth": "Nov 2026",
+      "allNavigationTargetsAtLeast44px": true,
+      "noHorizontalOverflow": true,
+      "noSidebar": true
+    },
+    {
+      "name": "small-phone",
+      "width": 360,
+      "height": 800,
+      "views": [
+        "Overview",
+        "Requests",
+        "Transactions",
+        "Team",
+        "Budgets",
+        "Settings"
+      ],
+      "expectedMonth": "Nov 2026",
+      "allNavigationTargetsAtLeast44px": true,
+      "noHorizontalOverflow": true,
+      "noSidebar": true
+    }
+  ],
+  "errors": []
+}

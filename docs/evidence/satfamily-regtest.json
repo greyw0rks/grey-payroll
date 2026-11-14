@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-11-14T19:03:21.136Z",
+  "classification": "Builder-controlled integration test; not independent users or real-world adoption",
+  "network": "regtest",
+  "monetaryValue": false,
+  "protocols": [
+    "NIP-98 signed authentication",
+    "NIP-47 Nostr Wallet Connect",
+    "BOLT11",
+    "real LND channel settlement"
+  ],
+  "workspaceId": "00a325b1-172b-4876-9620-bf6a18e92a37",
+  "actors": {
+    "owner": "4aa52ec8da3781fc54fcbf9c62ec644143ee9a6da0b93bca8f6bc25e5ee35a8e",
+    "finance": "9f97351693b66da3bafd302da4c424cf20b3b4df1b295492d2d054b68e615977",
+    "employee": "ac5c7deddc191d45077b5363f44f7667caa262041ecf629ad45240b6afb64e6b",
+    "supplier": "693d98d6cc8f0931830301874b97749f57f7340c8ec9c6dd2c9f634b2d253c70"
+  },
+  "expense": {
+    "id": "010e651e-3080-4ac2-ba91-3b79a351433b",
+    "amountSats": 150,
+    "paymentHash": "222a290640ecc17bbb374f0522c9b0036b15049ed10e189e6a332e78e4ab9a67",
+    "preimage": "eb6c0554d45a4d2277efa846bcdb4dbbe733d061edab85ebf611783535814bb9",
+    "settledAt": 1794682999179,
+    "sourceWalletPubkey": "ecab4e71d815cb5f7c3524ffad7ced714d8415f70dab6c0c78cc1bb5ef28e75e",
+    "verifiedByReceivingWallet": true
+  },
+  "received": {
+    "amountSats": 100,
+    "paymentHash": "d7cc4c457ecef14805603e6c0219bd4afed00d07e1f4e40dbd9e573cf79bdd3a",
+    "preimage": "e943868cab3a2cfea572e7c699804283a0a45efb70e8c049a1ed83a9f76327a9",
+    "settledAt": 1794683000000,
+    "verifiedByReceivingWallet": true
+  },
+  "checks": [
+    "Genuine signed Nostr identities",
+    "Employee approval and payment rejected",
+    "Independent finance approval",
+    "Company budget reservation and settled spend",
+    "Real LND outgoing settlement",
+    "Payment preimage independently hashed",
+    "Supplier wallet lookup settled",
+    "Duplicate execution rejected",
+    "Real company incoming settlement",
+    "Durable expense and incoming receipts",
+    "Audit events retained"
+  ],
+  "sourceHash": "37655785d562983107800c4d25ff54a3405d9de3dc7d93ca033441a0e1c56b92"
+}

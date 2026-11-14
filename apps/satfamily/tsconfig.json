@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": [
+    "src",
+    "vite.config.ts",
+    "../../server/satfamily.ts",
+    "../../server/context.ts",
+    "../../packages/nwc-gate/src/bolt11.ts",
+    "../../tests/satfamily.test.ts"
+  ]
+}

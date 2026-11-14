@@ -1,0 +1,113 @@
+{
+  "mode": "layout-only-zero-state-fixtures",
+  "checks": [
+    {
+      "viewport": 1440,
+      "page": "dashboard",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "page": "wallet",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "page": "achievements",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "page": "guide",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "page": "lesson",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 1440,
+      "page": "hausa-lesson",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "dashboard",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "wallet",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "achievements",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "guide",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "lesson",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 390,
+      "page": "hausa-lesson",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "dashboard",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "wallet",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "achievements",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "guide",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "lesson",
+      "overflow": false,
+      "errors": []
+    },
+    {
+      "viewport": 360,
+      "page": "hausa-lesson",
+      "overflow": false,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-11-14T19:33:45.433Z",
+  "product": "GreyFinance",
+  "results": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "overflow": {
+        "viewport": 1440,
+        "body": 1440,
+        "overflow": false
+      },
+      "roleSnapshot": {
+        "role": "employee",
+        "ownExpensesOnly": true,
+        "treasuryBalanceHidden": true,
+        "otherMemberLimitsHidden": true,
+        "incomingHidden": true
+      },
+      "tested": [
+        "overview",
+        "expense form",
+        "keyboard Escape",
+        "request search",
+        "team member form",
+        "wallet lab entry",
+        "employee role"
+      ]
+    }
+  ],
+  "errors": []
+}

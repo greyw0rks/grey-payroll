@@ -1,0 +1,62 @@
+{
+  "checkedAt": "2026-11-14T22:07:23.088Z",
+  "origin": "http://127.0.0.1:4402",
+  "classification": "Builder-controlled local UI verification; disposable companies, no wallet connections or payments. The 409 and obsolete initial-session responses are explicit browser fixtures.",
+  "obsoleteInitializationCannotRestorePreview": true,
+  "previewFinanceEmployeeDeletionHidden": true,
+  "results": [
+    {
+      "width": 1440,
+      "settingsNoOverflow": true,
+      "dialogNoOverflow": true,
+      "exactNameRequired": true,
+      "exportWorks": true,
+      "cancelSendsNoDeletion": true,
+      "synthetic409PreservesInputAndCompany": true,
+      "busyDismissBlocked": true,
+      "disposableLocalCompanyDeleted": true,
+      "identityPreserved": true,
+      "noBrowserKeyStorage": true,
+      "remainingMembershipSelected": false,
+      "viewerDeletionHidden": false,
+      "createCompanyState": true,
+      "attempts": 2
+    },
+    {
+      "width": 390,
+      "settingsNoOverflow": true,
+      "dialogNoOverflow": true,
+      "exactNameRequired": true,
+      "exportWorks": true,
+      "cancelSendsNoDeletion": true,
+      "synthetic409PreservesInputAndCompany": true,
+      "busyDismissBlocked": true,
+      "disposableLocalCompanyDeleted": true,
+      "identityPreserved": true,
+      "noBrowserKeyStorage": true,
+      "remainingMembershipSelected": true,
+      "viewerDeletionHidden": true,
+      "createCompanyState": false,
+      "attempts": 2
+    },
+    {
+      "width": 360,
+      "settingsNoOverflow": true,
+      "dialogNoOverflow": true,
+      "exactNameRequired": true,
+      "exportWorks": true,
+      "cancelSendsNoDeletion": true,
+      "synthetic409PreservesInputAndCompany": true,
+      "busyDismissBlocked": true,
+      "disposableLocalCompanyDeleted": true,
+      "identityPreserved": true,
+      "noBrowserKeyStorage": true,
+      "remainingMembershipSelected": true,
+      "viewerDeletionHidden": true,
+      "createCompanyState": false,
+      "attempts": 2
+    }
+  ],
+  "errors": [],
+  "paymentCalls": 0
+}

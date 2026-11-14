@@ -1,0 +1,12 @@
+.data/
+.tools/
+.atlas/
+.git/
+node_modules/
+.env
+.env.*
+!.env.example
+**/dist/
+playwright-report/
+test-results/
+*.log
