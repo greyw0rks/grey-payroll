@@ -1,0 +1,323 @@
+{
+  "startedAt": "2026-11-14T22:51:24.152Z",
+  "checkedAt": "2026-11-14T22:52:26.946Z",
+  "origin": "https://grey-finance.vercel.app",
+  "classification": "Builder-controlled hosted UI acceptance using genuine temporary Nostr identities and disposable companies. No independent adoption claim. No wallets connected, invoices created, expenses submitted or payments requested. No synthetic authentication, company or deletion responses.",
+  "releaseCommit": "7f3f2e190f068e26a7b171d25524cb070521b3dd",
+  "productionDeployment": "dpl_9p3VDLHiJFtrH3niXqARJjhMYyF4",
+  "releaseMetadataSource": "Optional runner-provided environment values; null means not supplied.",
+  "results": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "convexBackend": true,
+      "landingToWorkspace": true,
+      "genuineTemporaryNostrIdentity": true,
+      "disposableCompanyCreatedWithoutWallet": true,
+      "horizontalDesktopOrBottomPhoneNavigation": {
+        "position": "sticky",
+        "top": 87,
+        "bottom": 147,
+        "height": 60,
+        "viewportHeight": 1000,
+        "buttons": [
+          {
+            "label": "Overview",
+            "x": 92,
+            "y": 87,
+            "width": 106,
+            "height": 58
+          },
+          {
+            "label": "Requests",
+            "x": 207,
+            "y": 87,
+            "width": 106,
+            "height": 58
+          },
+          {
+            "label": "Transactions",
+            "x": 322,
+            "y": 87,
+            "width": 126,
+            "height": 58
+          },
+          {
+            "label": "Team",
+            "x": 457,
+            "y": 87,
+            "width": 82,
+            "height": 58
+          },
+          {
+            "label": "Budgets",
+            "x": 547,
+            "y": 87,
+            "width": 99,
+            "height": 58
+          },
+          {
+            "label": "Settings",
+            "x": 656,
+            "y": 87,
+            "width": 100,
+            "height": 58
+          }
+        ]
+      },
+      "noHorizontalOverflow": true,
+      "allSixNavigationViewsWork": true,
+      "settingsExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/settings-ledger-1440.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exportToastNavigation": null,
+      "dialogExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/dialog-ledger-1440.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exactNameConfirmationRequired": true,
+      "cancellationPreservesCompany": true,
+      "keyboardFocusContained": true,
+      "hostedDeletionConfirmed": true,
+      "retainedSameSignedInIdentity": true,
+      "retainedTemporaryIdentityAfterHomeAndBack": true,
+      "signOutClearsIdentityAndCookie": true,
+      "signedOutHomeReturn": true,
+      "browserStorage": {
+        "localStorageEmpty": true,
+        "sessionStorageEmpty": true,
+        "indexedDbEmpty": true,
+        "javascriptVisibleCookiesEmpty": true,
+        "secureHttpOnlySession": true
+      },
+      "screenshotsDirectory": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "convexBackend": true,
+      "landingToWorkspace": true,
+      "genuineTemporaryNostrIdentity": true,
+      "disposableCompanyCreatedWithoutWallet": true,
+      "horizontalDesktopOrBottomPhoneNavigation": {
+        "position": "fixed",
+        "top": 777,
+        "bottom": 844,
+        "height": 67,
+        "viewportHeight": 844,
+        "buttons": [
+          {
+            "label": "Overview",
+            "x": 9,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          },
+          {
+            "label": "Requests",
+            "x": 71,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          },
+          {
+            "label": "Transactions",
+            "x": 134,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          },
+          {
+            "label": "Team",
+            "x": 196,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          },
+          {
+            "label": "Budgets",
+            "x": 258,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          },
+          {
+            "label": "Settings",
+            "x": 321,
+            "y": 783,
+            "width": 60,
+            "height": 56
+          }
+        ]
+      },
+      "noHorizontalOverflow": true,
+      "allSixNavigationViewsWork": true,
+      "settingsExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/settings-ledger-390.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exportToastNavigation": {
+        "toastBottom": 761,
+        "navTop": 777,
+        "gap": 16,
+        "settingsTargetUnobscured": true,
+        "navigationWorksWhileToastVisible": true,
+        "screenshot": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/export-toast-390.png"
+      },
+      "dialogExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/dialog-ledger-390.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exactNameConfirmationRequired": true,
+      "cancellationPreservesCompany": true,
+      "keyboardFocusContained": true,
+      "hostedDeletionConfirmed": true,
+      "retainedSameSignedInIdentity": true,
+      "retainedTemporaryIdentityAfterHomeAndBack": true,
+      "signOutClearsIdentityAndCookie": true,
+      "signedOutHomeReturn": true,
+      "browserStorage": {
+        "localStorageEmpty": true,
+        "sessionStorageEmpty": true,
+        "indexedDbEmpty": true,
+        "javascriptVisibleCookiesEmpty": true,
+        "secureHttpOnlySession": true
+      },
+      "screenshotsDirectory": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z"
+    },
+    {
+      "width": 360,
+      "height": 844,
+      "convexBackend": true,
+      "landingToWorkspace": true,
+      "genuineTemporaryNostrIdentity": true,
+      "disposableCompanyCreatedWithoutWallet": true,
+      "horizontalDesktopOrBottomPhoneNavigation": {
+        "position": "fixed",
+        "top": 777,
+        "bottom": 844,
+        "height": 67,
+        "viewportHeight": 844,
+        "buttons": [
+          {
+            "label": "Overview",
+            "x": 9,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          },
+          {
+            "label": "Requests",
+            "x": 66,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          },
+          {
+            "label": "Transactions",
+            "x": 124,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          },
+          {
+            "label": "Team",
+            "x": 181,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          },
+          {
+            "label": "Budgets",
+            "x": 238,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          },
+          {
+            "label": "Settings",
+            "x": 296,
+            "y": 783,
+            "width": 55,
+            "height": 56
+          }
+        ]
+      },
+      "noHorizontalOverflow": true,
+      "allSixNavigationViewsWork": true,
+      "settingsExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/settings-ledger-360.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exportToastNavigation": {
+        "toastBottom": 761,
+        "navTop": 777,
+        "gap": 16,
+        "settingsTargetUnobscured": true,
+        "navigationWorksWhileToastVisible": true,
+        "screenshot": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/export-toast-360.png"
+      },
+      "dialogExport": {
+        "filename": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/dialog-ledger-360.csv",
+        "sha256": "f1478b57c21c7e39390a12226d8f9a9a1f93021c19fe5f85dcdaa576308c8c91",
+        "rows": 0
+      },
+      "exactNameConfirmationRequired": true,
+      "cancellationPreservesCompany": true,
+      "keyboardFocusContained": true,
+      "hostedDeletionConfirmed": true,
+      "retainedSameSignedInIdentity": true,
+      "retainedTemporaryIdentityAfterHomeAndBack": true,
+      "signOutClearsIdentityAndCookie": true,
+      "signedOutHomeReturn": true,
+      "browserStorage": {
+        "localStorageEmpty": true,
+        "sessionStorageEmpty": true,
+        "indexedDbEmpty": true,
+        "javascriptVisibleCookiesEmpty": true,
+        "secureHttpOnlySession": true
+      },
+      "screenshotsDirectory": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z"
+    }
+  ],
+  "authChecks": [
+    {
+      "width": 1440,
+      "signedNip98": true,
+      "signatureVerified": true,
+      "canonicalOriginBound": true,
+      "methodBound": true,
+      "payloadBound": true,
+      "recentEvent": true
+    },
+    {
+      "width": 390,
+      "signedNip98": true,
+      "signatureVerified": true,
+      "canonicalOriginBound": true,
+      "methodBound": true,
+      "payloadBound": true,
+      "recentEvent": true
+    },
+    {
+      "width": 360,
+      "signedNip98": true,
+      "signatureVerified": true,
+      "canonicalOriginBound": true,
+      "methodBound": true,
+      "payloadBound": true,
+      "recentEvent": true
+    }
+  ],
+  "pageErrors": [],
+  "forbiddenWalletOrPaymentRequests": [],
+  "paymentCalls": 0,
+  "cleanupErrors": [],
+  "passed": true
+}

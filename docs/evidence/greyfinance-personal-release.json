@@ -1,0 +1,124 @@
+{
+  "checkedAt": "2026-11-14T22:59:33.050Z",
+  "product": "GreyFinance",
+  "repository": "https://github.com/greyw0rks/grey-payroll",
+  "sourceRevision": "7f3f2e190f068e26a7b171d25524cb070521b3dd",
+  "domain": "https://grey-finance.vercel.app",
+  "deployment": {
+    "id": "dpl_9p3VDLHiJFtrH3niXqARJjhMYyF4",
+    "url": "https://grey-finance-95408z4uj-greyw0rks-projects.vercel.app",
+    "domain": "https://grey-finance.vercel.app",
+    "status": "Ready"
+  },
+  "backend": {
+    "provider": "Convex",
+    "deployment": "intent-curlew-185",
+    "site": "https://intent-curlew-185.convex.site"
+  },
+  "archive": {
+    "branch": "archive/grey-finance-arc-2026-11-14",
+    "revision": "0c847301dc02df89b3385eb9086f452cd55f0fc9",
+    "originalWorkspacePreserved": true,
+    "originalWorkspaceStatusSha256": "3f18d9b41ce6bf66812401114706f3173f47e4b2e19377db4d64d0ea04c76a8a"
+  },
+  "verification": {
+    "automatedTests": {
+      "passed": 137,
+      "failed": 0,
+      "local": 56,
+      "convex": 81,
+      "ci": "https://github.com/greyw0rks/grey-payroll/actions/runs/43649948145"
+    },
+    "declaredProductTypecheck": "passed",
+    "finalProductionBuild": "passed",
+    "independentAgentSecurityReview": "passed; this is not an external security audit",
+    "liveAssetVerification": {
+      "checkedAt": "2026-11-14T22:52:02.956Z",
+      "origin": "https://grey-finance.vercel.app",
+      "htmlStatus": 200,
+      "entry": "/assets/index-DYQHwfxT.js",
+      "entryMatchesLocalBuild": true,
+      "localEntry": "/assets/index-DYQHwfxT.js",
+      "contentSecurityPolicy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'",
+      "frameProtection": "DENY",
+      "nosniff": "nosniff",
+      "backend": "convex",
+      "previewPersonasEnabled": false
+    },
+    "hostedPayment": {
+      "evidence": "docs/evidence/greyfinance-personal-convex-regtest.json",
+      "testedSourceRevision": "66ddd3463184c5f693f18183bf4b996fb1d678f1",
+      "testedFrontendDeployment": "dpl_5CucmQUeQkVWhdRcrM2hxBMpMJc2",
+      "network": "regtest",
+      "monetaryValue": false,
+      "outgoingSats": 150,
+      "incomingSats": 100,
+      "checksPassed": 19,
+      "backendUnchangedInFinalCssRelease": true
+    },
+    "landing": {
+      "widths": [
+        1440,
+        1024,
+        390,
+        360
+      ],
+      "evidence": "docs/evidence/greyfinance-landing-personal.json",
+      "passed": true
+    },
+    "finalHostedCompanyUi": {
+      "widths": [
+        1440,
+        390,
+        360
+      ],
+      "evidence": "docs/satfamily/hosted-acceptance/grey-finance.vercel.app-2026-11-14T22-51-24-152Z/verification.json",
+      "passed": true,
+      "phoneToastClearancePx": 16,
+      "pageErrors": 0,
+      "paymentCalls": 0
+    },
+    "safeAreaEmulation": {
+      "bottomInsets": [
+        0,
+        34
+      ],
+      "evidence": "docs/satfamily/toast-navigation/2026-11-14T22-42-02-336Z/verification.json",
+      "passed": true,
+      "physicalDeviceClaim": false
+    }
+  },
+  "cleanup": {
+    "temporaryRegtestRelayPermissionRemoved": true,
+    "temporaryRegtestTunnelsStopped": true,
+    "relayOnlyProxyStopped": true,
+    "productionInspection": {
+      "checkedAt": "2026-11-14T22:52:51.564Z",
+      "backend": "convex",
+      "readOnly": true,
+      "completeResults": true,
+      "organizations": 5,
+      "ownersWithMultipleCompanies": 0,
+      "walletConnections": 0,
+      "regtestConnections": 0,
+      "companyPaymentsUnresolved": 0,
+      "genericPaymentsUnresolved": 0
+    }
+  },
+  "sourceSha256": {
+    "convex/schema.ts": "549142666a91becb578650349e39e7bd49238292b434dc2602f6dc0b0b622ef5",
+    "convex/model.ts": "54a3d3fd18da8c19633c1378c86498087ccf42c7b10a2554d5e80535edc49258",
+    "convex/nodeOps.ts": "793b0074fc05e00e26afafb74491884e1358d4bf19cee1921e73fe22223a7a4f",
+    "convex/http.ts": "4509a1a55a1d3c90e0f01f0950bd4b146e7367d58738742e98092b0f217f4e43",
+    "apps/satfamily/src/App.tsx": "86b300fc43c009d434ed810bb4c84432227ffa937c040c100ac352f4c8c7d146",
+    "apps/satfamily/src/styles.css": "a631972cee4add804df8ced0e475414888ee4a5f20b1699e968eb681e76ac592",
+    "packages/nwc-gate/src/nwc.ts": "dcaeae6b4ffd3f48168a579b5674ee69504c80bfbd88e554d8b166b8fde3ff6a"
+  },
+  "classification": "Builder-controlled functional, security regression and browser verification. Real Bitcoin/Lightning regtest operations. No independent adoption, mainnet payment or external security audit is claimed.",
+  "remainingProductSequence": [
+    "SatsAcademy",
+    "Bitcoin Sandbox",
+    "NostrChat",
+    "NWC Gate"
+  ]
+}
