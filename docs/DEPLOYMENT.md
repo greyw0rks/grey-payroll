@@ -26,4 +26,8 @@ The Vercel configuration includes same-origin API requests, a restrictive conten
 
 The supplied local lab uses actual Bitcoin Core and LND on a private regtest network. These coins have no monetary value. The retained [first hosted proof](evidence/greyfinance-convex-regtest.json) and [local proof](evidence/satfamily-regtest.json) are historical builder tests; their timestamps, original origins and source hashes are preserved.
 
-The new deployment ID, exact source revision, domain checks and updated acceptance evidence are recorded after release validation. Any temporary regtest relay permission is removed after hosted tests, and the disposable test wallet connections are disconnected. Independent adoption and mainnet settlement are not claimed.
+The existing public domain completed a fresh [hosted payment check](evidence/greyfinance-personal-convex-regtest.json): a 150-sat company expense and a 100-sat incoming payment through two private LND regtest wallets. The expense required independent approval; employee payment, generic-route bypass and duplicate payment attempts were rejected. Both receiving wallets verified the payment preimages. Convex retained receipts after the disposable wallet connections were removed.
+
+The public landing page passed at 1440, 1024, 390 and 360px. Separate browser acceptance verified actual NIP-98 sign-in, all six workspace views, ledger exports, exact-name company deletion, retained identity and sign-out at 1440, 390 and 360px. See [release evidence](evidence/greyfinance-personal-release.json) for the exact code revisions, deployment IDs and checks.
+
+Temporary `GREY_REGTEST_RELAY_HOST` permission has been removed. The two relay-only test tunnels and their proxy were stopped after acceptance. Production inspection found no connected test wallets, unresolved payment attempts or duplicate company owners. Independent adoption and mainnet settlement are not claimed.

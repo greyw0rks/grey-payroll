@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-11-14T22:33:52.915Z",
+  "origin": "https://grey-finance.vercel.app",
+  "backend": "convex",
+  "network": "regtest",
+  "monetaryValue": false,
+  "classification": "Builder-controlled hosted integration. Real protocol settlement; no independent adoption or mainnet payment claim.",
+  "workspaceId": "jx771nsp7c7dgvbptw09d8hhs98j7s7x",
+  "expense": {
+    "id": "jh7be8b5f6k8q03er6ptjby60n8j6f6f",
+    "amountSats": 150,
+    "paymentHash": "a0c5c72ae5311e5116c8db284797d66986f465a95ec340b88e2a80a37047df25",
+    "preimage": "c80db6b5e82313085a539e8bf5034c7e9a0a06d10cc18ea503023192d51e746c",
+    "settledAt": 1794695618941,
+    "sourceConnectionFingerprint": "65047405c7ef551cead23e6470b7e983dbf932a227c5fe6bed3c5229d052986d",
+    "independentlyVerifiedByReceivingWallet": true
+  },
+  "incoming": {
+    "amountSats": 100,
+    "paymentHash": "14e263d9df41689bbcce1b82527db33653a202526dcbfe192e3072ec70aaaf09",
+    "preimage": "37b34297d574980fca14851295d9d6060f389bc97affd0a8876e0e89785c17b0",
+    "settledAt": 1794695627000,
+    "independentlyVerifiedByReceivingWallet": true
+  },
+  "checks": [
+    "Hosted Convex health",
+    "Preview personas disabled",
+    "NIP-98 signed login and replay rejection",
+    "Secure HttpOnly sessions",
+    "Real restricted NWC connections",
+    "Single owned company",
+    "Cross-tenant rejection",
+    "Employee approval/payment denial",
+    "Generic expense bypass rejection",
+    "Exact action path",
+    "Independent approval",
+    "Real LND outgoing settlement",
+    "No duplicate payment",
+    "Independent payment proof verification",
+    "Real LND incoming settlement",
+    "Durable Convex receipts",
+    "Atomic company budget",
+    "Employee financial-data restriction",
+    "Audit records"
+  ],
+  "sourceHashes": {
+    "convex/schema.ts": "549142666a91becb578650349e39e7bd49238292b434dc2602f6dc0b0b622ef5",
+    "convex/model.ts": "54a3d3fd18da8c19633c1378c86498087ccf42c7b10a2554d5e80535edc49258",
+    "convex/nodeOps.ts": "793b0074fc05e00e26afafb74491884e1358d4bf19cee1921e73fe22223a7a4f",
+    "convex/http.ts": "4509a1a55a1d3c90e0f01f0950bd4b146e7367d58738742e98092b0f217f4e43",
+    "packages/nwc-gate/src/nwc.ts": "dcaeae6b4ffd3f48168a579b5674ee69504c80bfbd88e554d8b166b8fde3ff6a"
+  },
+  "sourceRevision": "66ddd3463184c5f693f18183bf4b996fb1d678f1",
+  "frontendDeploymentId": "dpl_5CucmQUeQkVWhdRcrM2hxBMpMJc2"
+}

@@ -40,11 +40,22 @@ pnpm exec convex deploy
 
 Deployment configuration and the final public URL are recorded in [deployment notes](docs/DEPLOYMENT.md).
 
+```mermaid
+flowchart LR
+    UI[Nostr-signed workspace] --> API[Convex HTTP API]
+    API --> Policy[Membership, approvals and budgets]
+    Policy --> DB[(Company records and receipts)]
+    Policy --> NWC[Trusted NWC actions]
+    NWC --> Wallet[Company Lightning wallet]
+    Wallet --> Proof[Verify payment preimage]
+    Proof --> DB
+```
+
 ## Validation and documentation
 
 The local integration has executed a **150-sat company expense** and a **100-sat incoming payment** through two real LND regtest wallets using NWC. The employee was denied approval and direct company payment; Finance independently approved and paid. Both receiving wallets verified settlement, the payment preimages matched their hashes, and the app retained receipts and audit events. These are builder-controlled tests, not independent adoption.
 
-See [payment evidence](docs/evidence/satfamily-regtest.json), [product guide](docs/satfamily/README.md), [security notes](docs/satfamily/SECURITY.md) and [three-minute demo](docs/satfamily/DEMO.md).
+The existing public domain has also completed the same two-wallet flow through Convex. See the [hosted payment evidence](docs/evidence/greyfinance-personal-convex-regtest.json), [local payment evidence](docs/evidence/satfamily-regtest.json), [product guide](docs/satfamily/README.md), [security notes](docs/satfamily/SECURITY.md) and [three-minute demo](docs/satfamily/DEMO.md).
 
 App approvals are application controls. They are not cryptographic multisignature. Limit the delegated connection's capabilities and spending at the wallet provider.
 

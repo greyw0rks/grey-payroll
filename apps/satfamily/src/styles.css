@@ -52,3 +52,6 @@
 .company-delete-form-actions .button{white-space:normal}
 @media(max-width:1000px){.company-delete-panel{align-items:flex-start;flex-direction:column}.company-delete-actions{width:100%;justify-content:flex-end}}
 @media(max-width:540px){.company-delete-panel{padding:20px;gap:20px}.company-delete-copy{gap:12px}.company-delete-copy h2{font-size:16px}.company-delete-actions{flex-wrap:wrap;justify-content:stretch}.company-delete-actions .button{flex:1;min-width:120px}.company-delete-summary{padding:17px}.company-delete-summary h3{font-size:17px}.company-delete-export{align-items:flex-start;flex-direction:column;gap:10px}.company-delete-form-actions{flex-direction:column-reverse;align-items:stretch}.company-delete-form-actions .button{width:100%}}
+
+/* Keep status messages clear of the persistent phone navigation. */
+@media(max-width:760px){.toast{bottom:calc(83px + env(safe-area-inset-bottom,0px))}}

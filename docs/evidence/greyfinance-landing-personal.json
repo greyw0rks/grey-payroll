@@ -1,0 +1,75 @@
+{
+  "checkedAt": "2026-11-14T22:33:35.506Z",
+  "origin": "https://grey-finance.vercel.app",
+  "classification": "Builder-controlled UI verification",
+  "results": [
+    {
+      "width": 1440,
+      "sizes": {
+        "page": 1440,
+        "viewport": 1440,
+        "heading": 609.703125
+      },
+      "stepSelection": true,
+      "keyboardStepSelection": true,
+      "faq": true,
+      "mobileMenu": false,
+      "privacyRoute": true,
+      "workspaceRoute": true,
+      "homeAndBack": true,
+      "unexpectedPaymentRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "sizes": {
+        "page": 1024,
+        "viewport": 1024,
+        "heading": 460.1875
+      },
+      "stepSelection": true,
+      "keyboardStepSelection": true,
+      "faq": true,
+      "mobileMenu": true,
+      "privacyRoute": true,
+      "workspaceRoute": true,
+      "homeAndBack": true,
+      "unexpectedPaymentRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "sizes": {
+        "page": 390,
+        "viewport": 390,
+        "heading": 350
+      },
+      "stepSelection": true,
+      "keyboardStepSelection": true,
+      "faq": true,
+      "mobileMenu": true,
+      "privacyRoute": true,
+      "workspaceRoute": true,
+      "homeAndBack": true,
+      "unexpectedPaymentRequests": 0,
+      "errors": []
+    },
+    {
+      "width": 360,
+      "sizes": {
+        "page": 360,
+        "viewport": 360,
+        "heading": 320
+      },
+      "stepSelection": true,
+      "keyboardStepSelection": true,
+      "faq": true,
+      "mobileMenu": true,
+      "privacyRoute": true,
+      "workspaceRoute": true,
+      "homeAndBack": true,
+      "unexpectedPaymentRequests": 0,
+      "errors": []
+    }
+  ]
+}

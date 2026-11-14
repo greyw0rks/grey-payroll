@@ -23,21 +23,14 @@ The initial user is a 3–10 person African studio, startup, or distributed team
 - Responsive dashboard, searchable request inbox, team permissions, budgets, settings, and accessible forms.
 - Owner-only company deletion with exact-name confirmation, blocked until all company and owner-wallet payment attempts have a clear result.
 
-The internal app folder and `/api/satfamily` routes retain the initial working name. The visible product is GreyFinance. The local regtest laboratory uses SQLite; the chosen production backend is Convex, preserving the same application API and receipt fields. Deployment details are recorded in the repository’s main README.
+The internal app folder and `/api/satfamily` routes retain the initial working name. The visible product is GreyFinance. The local regtest laboratory uses SQLite; the deployed production backend is Convex, preserving the same application API and receipt fields. Deployment details and exact release evidence are recorded in [deployment notes](../DEPLOYMENT.md).
 
 ## Run locally
 
-Use Node 22 and pnpm. From the repository root:
+Use Linux x64, Node 22 and pnpm. From the repository root, this installs the dependencies, starts the private Bitcoin and Lightning wallets, and opens the product servers:
 
 ```sh
-pnpm install
-pnpm dev:api
-```
-
-In a second terminal:
-
-```sh
-pnpm exec vite --config apps/satfamily/vite.config.ts apps/satfamily --host 127.0.0.1 --port 4402 --strictPort
+./start.sh
 ```
 
 Open `http://127.0.0.1:4402/app`. The local preview is explicitly labeled. Its sample company is Baobab Studio, with Owner, Finance, and Employee personas available from the profile menu. The public product landing page is at `/`.
@@ -51,23 +44,23 @@ Judges without a signer can choose **Try with a temporary Nostr identity**. This
 ## Verify
 
 ```sh
-pnpm exec tsc --noEmit -p apps/satfamily/tsconfig.json
-pnpm exec tsx --test tests/satfamily.test.ts
-pnpm exec vite build --config apps/satfamily/vite.config.ts apps/satfamily
+pnpm test
+pnpm typecheck
+pnpm build -- greyfinance
 ```
 
 The local SQLite suite covers tenant and role isolation, invoice validation, independent approval, budgets, concurrent payments, verified preimages, uncertain-result reconciliation, preview non-spending, member removal, month boundaries, safe expiry release, and durable receipts. Release regressions cover company deletion and rollback, one-company ownership, concurrent creation, operator caps before wallet calls, legacy duplicate-owner guards after wallet awaits, account changes on the same NWC service, late payment responses, and signed temporary login events without browser key storage. `pnpm test` also runs the shared wallet HTTP and Convex production-backend suites.
 
-The earlier `docs/evidence/satfamily-regtest.json` remains historical SQLite test-network transaction evidence with a service-key reference. It does not establish current composite-fingerprint behavior or production Convex acceptance; those receive separate checks and evidence.
+The earlier `docs/evidence/satfamily-regtest.json` remains historical SQLite test-network transaction evidence with a service-key reference. The new [public-domain payment evidence](../evidence/greyfinance-personal-convex-regtest.json) verifies current Convex settlement and connection fingerprints. Both records identify their network, timestamps and source hashes; neither establishes independent adoption.
 
-Visual and interaction checks can be reproduced with a running local API and web app:
+Local deletion and current public-domain browser checks can be reproduced with:
 
 ```sh
-pnpm exec tsx docs/satfamily/verify-ui.ts
-pnpm exec tsx docs/satfamily/verify-temporary-identity.ts
+pnpm exec tsx docs/satfamily/verify-deletion-ui.ts
+pnpm exec tsx docs/satfamily/verify-hosted-company-ui.ts
 ```
 
-That script uses an existing Playwright Chromium installation, or `SATS_CHROMIUM_PATH`, and records desktop and 390px/360px phone views. It does not spend live funds.
+These scripts use an existing Playwright Chromium installation, or `SATS_CHROMIUM_PATH`, and record desktop and 390px/360px phone views. The local deletion check needs the local servers. The hosted check creates and deletes disposable companies through real signed login without connecting wallets or requesting payments. Optional `GREY_RELEASE_COMMIT` and `GREY_PRODUCTION_DEPLOYMENT` label a known tested release; omit them when the exact revision is unknown. The earlier local captures remain as historical records.
 
 ## Architecture
 
