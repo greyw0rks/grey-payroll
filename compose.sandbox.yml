@@ -1,0 +1,27 @@
+services:
+  sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile.sandbox
+    platform: linux/amd64
+    ports:
+      - "127.0.0.1:4404:4415"
+    volumes:
+      - sandbox-data:/app/.data
+      - sandbox-tools:/app/.tools
+    environment:
+      SATS_APP_ORIGIN: http://127.0.0.1:4404
+      SATS_DEMO: "0"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4415/api/sandbox/status').then(r=>r.json()).then(r=>process.exit(r.ready?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 90s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  sandbox-data:
+  sandbox-tools:

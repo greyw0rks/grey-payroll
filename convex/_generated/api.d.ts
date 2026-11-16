@@ -19,6 +19,9 @@ import type * as http from "../http.js";
 import type * as lib from "../lib.js";
 import type * as model from "../model.js";
 import type * as nodeOps from "../nodeOps.js";
+import type * as sandboxHttp from "../sandboxHttp.js";
+import type * as sandboxModel from "../sandboxModel.js";
+import type * as sandboxSchema from "../sandboxSchema.js";
 
 import type {
   ApiFromModules,
@@ -38,6 +41,9 @@ declare const fullApi: ApiFromModules<{
   lib: typeof lib;
   model: typeof model;
   nodeOps: typeof nodeOps;
+  sandboxHttp: typeof sandboxHttp;
+  sandboxModel: typeof sandboxModel;
+  sandboxSchema: typeof sandboxSchema;
 }>;
 
 /**

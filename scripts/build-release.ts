@@ -5,7 +5,8 @@ import { resolve } from 'node:path';
 // Only products that have completed their own acceptance checks enter a release.
 const products = [
   { name: 'greyfinance', source: 'satfamily', base: '/', destination: '' },
-  { name: 'academy', source: 'satsacademy', base: '/academy/', destination: 'academy' }
+  { name: 'academy', source: 'satsacademy', base: '/academy/', destination: 'academy' },
+  { name: 'bitcoin-sandbox', source: 'sandbox', base: '/sandbox/', destination: 'sandbox' }
 ];
 const output = resolve('dist');
 rmSync(output, { recursive: true, force: true });
@@ -21,4 +22,4 @@ for (const product of products) {
   if (status !== 0) process.exit(status || 1);
   cpSync(resolve('apps', product.source, 'dist'), resolve(output, product.destination), { recursive: true });
 }
-console.log('GreyFinance and SatsAcademy are ready in dist/.');
+console.log('GreyFinance, SatsAcademy and Bitcoin Sandbox are ready in dist/.');

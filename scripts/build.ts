@@ -16,5 +16,6 @@ for (const name of apps) {
   }
   const root = resolve('apps', name);
   console.log(`Building ${name === 'satfamily' ? 'GreyFinance' : name}…`);
-  await build({ root, configFile: resolve(root, 'vite.config.ts'), base: process.env.SATS_BUILD_BASE || (apps.length === 1 ? '/' : name === 'launcher' ? '/' : `/${name}/`) });
+  await build({ root, configFile: resolve(root, 'vite.config.ts'), logLevel: 'warn', base: process.env.SATS_BUILD_BASE || (apps.length === 1 ? '/' : name === 'launcher' ? '/' : `/${name}/`) });
+  console.log(`${name} build complete.`);
 }

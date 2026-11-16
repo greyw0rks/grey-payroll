@@ -12,6 +12,7 @@ const bitcoinDir = resolve(dataDir, 'bitcoin');
 mkdirSync(toolsDir, { recursive: true, mode: 0o700 });
 mkdirSync(bitcoinDir, { recursive: true, mode: 0o700 });
 const binary = resolve(toolsDir, `bitcoin-${version}`, 'bin', 'bitcoind');
+if (process.platform !== 'linux' || process.arch !== 'x64') throw new Error('This pinned setup supports Linux x64. Use the supplied linux/amd64 Docker configuration on another platform.');
 if (!existsSync(binary)) {
   console.log('Downloading Bitcoin Core 29.2 for an isolated regtest network…');
   const archive = resolve(toolsDir, `bitcoin-${version}.tar.gz`);
@@ -23,9 +24,13 @@ if (!existsSync(binary)) {
   chmodSync(binary, 0o700);
 }
 const credentialsPath = resolve(bitcoinDir, 'rpc.json');
-if (!existsSync(credentialsPath)) writeFileSync(credentialsPath, JSON.stringify({ user: 'sats-lab', password: randomBytes(32).toString('hex'), port: 18443 }), { mode: 0o600 });
+const rpcPort = Number(process.env.BITCOIN_RPC_PORT || 18443);
+if (!Number.isSafeInteger(rpcPort) || rpcPort < 1024 || rpcPort > 65535) throw new Error('Choose a valid private Bitcoin RPC port.');
+if (!existsSync(credentialsPath)) writeFileSync(credentialsPath, JSON.stringify({ user: 'sats-lab', password: randomBytes(32).toString('hex'), port: rpcPort }), { mode: 0o600 });
 const credentials = JSON.parse(readFileSync(credentialsPath, 'utf8')) as { user: string; password: string; port: number };
-const config = `regtest=1\nserver=1\nlisten=0\ndnsseed=0\nfixedseeds=0\ntxindex=1\nblockfilterindex=1\nfallbackfee=0.00001000\n[regtest]\nrpcbind=127.0.0.1\nrpcallowip=127.0.0.1\nrpcport=${credentials.port}\nrpcuser=${credentials.user}\nrpcpassword=${credentials.password}\nzmqpubrawblock=tcp://127.0.0.1:28332\nzmqpubrawtx=tcp://127.0.0.1:28333\n`;
+if (credentials.port !== rpcPort) throw new Error('The requested RPC port differs from this lab. Choose a separate data directory.');
+const zmq = process.env.BITCOIN_ZMQ === '0' ? '' : 'zmqpubrawblock=tcp://127.0.0.1:28332\nzmqpubrawtx=tcp://127.0.0.1:28333\n';
+const config = `regtest=1\nserver=1\nlisten=0\ndnsseed=0\nfixedseeds=0\ntxindex=1\nblockfilterindex=1\nfallbackfee=0.00001000\n[regtest]\nrpcbind=127.0.0.1\nrpcallowip=127.0.0.1\nrpcport=${credentials.port}\nrpcuser=${credentials.user}\nrpcpassword=${credentials.password}\n${zmq}`;
 writeFileSync(resolve(bitcoinDir, 'bitcoin.conf'), config, { mode: 0o600 });
 if (!await bitcoinReady()) {
   const log = openSync(resolve(bitcoinDir, 'process.log'), 'a', 0o600);
@@ -34,11 +39,19 @@ if (!await bitcoinReady()) {
 }
 const info = await bitcoinReady();
 if (!info) throw new Error('Bitcoin Core regtest did not become ready.');
+if (info.chain !== 'regtest') throw new Error('This setup only supports regtest. No wallet or mining operation was performed on the connected network.');
 const wallets = await bitcoinRpc<string[]>('listwallets');
 if (!wallets.includes('lab-miner')) {
   try { await bitcoinRpc('loadwallet', ['lab-miner']); } catch { await bitcoinRpc('createwallet', ['lab-miner']); }
 }
 const miningAddress = await bitcoinRpc<string>('getnewaddress', ['Sats lab mining'], 'lab-miner');
-if (info.blocks < 110) await bitcoinRpc('generatetoaddress', [110 - info.blocks, miningAddress]);
+// Chunk initial mining so slower laptops can make progress without a single long RPC.
+let currentHeight = info.blocks;
+while (currentHeight < 110) {
+  await bitcoinRpc('generatetoaddress', [Math.min(10, 110 - currentHeight), miningAddress], undefined, 60000);
+  const current = await bitcoinReady();
+  if (!current) throw new Error('The regtest node disconnected during setup. Run setup again to continue from its existing blocks.');
+  currentHeight = current.blocks;
+}
 writeFileSync(resolve(bitcoinDir, 'mining-address'), miningAddress, { mode: 0o600 });
 console.log(`Bitcoin Core regtest ready at block ${(await bitcoinReady())!.blocks}. Coins in this lab have no monetary value.`);

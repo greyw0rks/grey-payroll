@@ -1,0 +1,79 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { finalizeEvent, generateSecretKey } from 'nostr-tools';
+
+const origin = process.env.SANDBOX_VERIFY_ORIGIN || 'http://127.0.0.1:4404';
+const base = process.env.SANDBOX_VERIFY_API || 'http://127.0.0.1:4415';
+if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) throw new Error('This local verifier only contacts a loopback Sandbox API.');
+const report: Record<string, unknown> = { startedAt: new Date().toISOString(), classification: 'Builder-controlled real Bitcoin Core regtest; coins have no monetary value. These are not independent learner outcomes.', origin, api: base, checks: [] };
+const checks = report.checks as { name: string; passed: boolean }[];
+const pass = (name: string, value: unknown = true) => { assert.ok(value, name); checks.push({ name, passed: true }); };
+let cookie = '';
+async function request<T = Record<string, unknown>>(path: string, method = 'GET', body?: unknown, expected = 200, suppliedCookie = cookie, authorization?: string): Promise<T> {
+  const response = await fetch(`${base}${path}`, { method, headers: { Origin: origin, 'Content-Type': 'application/json', ...(suppliedCookie ? { Cookie: suppliedCookie } : {}), ...(authorization ? { Authorization: authorization } : {}) }, ...(method !== 'GET' ? { body: JSON.stringify(body ?? {}) } : {}), signal: AbortSignal.timeout(30000) });
+  const result = await response.json(); assert.equal(response.status, expected, `${method} ${path}: ${result.message || 'unexpected status'}`);
+  const next = response.headers.get('set-cookie'); if (next && !authorization) cookie = next.split(';')[0];
+  return result as T;
+}
+async function login(key: Uint8Array) {
+  const body = '{}';
+  const event = finalizeEvent({ kind: 27235, content: '', created_at: Math.floor(Date.now() / 1000), tags: [['u', `${origin}/api/auth/nostr`], ['method', 'POST'], ['payload', createHash('sha256').update(body).digest('hex')]] }, key);
+  const authorization = `Nostr ${Buffer.from(JSON.stringify(event)).toString('base64')}`;
+  const response = await fetch(`${base}/api/auth/nostr`, { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', Authorization: authorization }, body });
+  assert.equal(response.status, 200); const userCookie = response.headers.get('set-cookie')!.split(';')[0];
+  return { cookie: userCookie, authorization };
+}
+type Snapshot = { network: string; ready: boolean; runId: string; blockHeight: number; createdAt: number; wallets: { id: string; balanceSats: number; pendingSats: number; utxos: { txid: string; vout: number; amountSats: number }[] }[]; progress: { experiments: { id: string; completed: boolean; txid?: string }[]; stats: { runs: number; broadcasts: number; minedBlocks: number } } };
+type Preview = { id: string; runId: string; amountSats: number; feeSats: number; inputs: { txid: string; vout: number; amountSats: number }[]; outputs: { index: number; type: string; amountSats: number; address: string }[] };
+const learnerKey = generateSecretKey(); const otherKey = generateSecretKey();
+try {
+  const status = await request<{ ready: boolean; network: string }>('/api/sandbox/status'); pass('Actual Core is available on regtest', status.ready && status.network === 'regtest');
+  await request('/api/sandbox/start', 'POST', {}, 401, ''); pass('Anonymous lab creation rejected');
+  const auth = await login(learnerKey); cookie = auth.cookie;
+  await request('/api/auth/nostr', 'POST', {}, 401, '', auth.authorization); pass('Used Nostr authentication cannot be replayed');
+  const lab = await request<Snapshot>('/api/sandbox/start', 'POST');
+  pass('Two distinct Core wallets are funded', lab.wallets.length === 2 && lab.wallets.every(wallet => wallet.balanceSats === 1000000));
+  pass('Every initial UTXO has a real transaction id', lab.wallets.every(wallet => wallet.utxos.length > 0 && wallet.utxos.every(output => /^[a-f0-9]{64}$/.test(output.txid))));
+  const duplicateStart = await request<Snapshot>('/api/sandbox/start', 'POST'); pass('Continuing a lab reuses its original run', duplicateStart.runId === lab.runId);
+  const preview = await request<Preview>('/api/sandbox/preview', 'POST', { from: 'alpha', to: 'beta', amountSats: 25000, feeRate: 2 }, 201);
+  pass('Preview binds to the current run', preview.runId === lab.runId);
+  pass('Input value equals payment plus change plus fee', preview.inputs.reduce((sum, input) => sum + input.amountSats, 0) === preview.outputs.reduce((sum, output) => sum + output.amountSats, 0) + preview.feeSats);
+  const change = preview.outputs.find(output => output.type === 'change'); pass('Core produces an inspectable change output', change && change.amountSats > 0);
+  await request('/api/sandbox/broadcast', 'POST', { previewId: preview.id }, 422); pass('Broadcast requires literal confirmation');
+  const other = await login(otherKey);
+  await request('/api/sandbox/start', 'POST', {}, 200, other.cookie);
+  await request(`/api/sandbox/previews/${preview.id}`, 'GET', undefined, 404, other.cookie); pass('Another identity cannot inspect the transaction preview');
+  const sent = await request<{ txid: string; snapshot: Snapshot; state: string }>('/api/sandbox/broadcast', 'POST', { previewId: preview.id, confirmed: true });
+  pass('Signed transaction is broadcast to Core', sent.state === 'broadcast' && /^[a-f0-9]{64}$/.test(sent.txid));
+  const pending = await request<{ txid: string; confirmations: number; vout: { value: number }[] }>(`/api/sandbox/transactions/${sent.txid}`);
+  pass('Core reports the unconfirmed transaction', pending.txid === sent.txid && pending.confirmations === 0);
+  pass('Raw transaction outputs match the reviewed amounts', Math.round(pending.vout.reduce((sum, output) => sum + output.value, 0) * 100000000) === preview.outputs.reduce((sum, output) => sum + output.amountSats, 0));
+  await request(`/api/sandbox/transactions/${sent.txid}`, 'GET', undefined, 404, other.cookie); pass('Another identity cannot inspect a private lab receipt');
+  await request('/api/sandbox/experiments/first-transaction/complete', 'POST', { txid: sent.txid }); pass('First transaction experiment is verified from its receipt');
+  await request('/api/sandbox/experiments/utxos/complete', 'POST', { txid: sent.txid, changeOutputIndex: preview.outputs.find(output => output.type === 'payment')!.index }, 422); pass('Wrong change output is rejected');
+  const anatomy = await request<{ verified: boolean; facts: { inputSats: number; outputSats: number; feeSats: number } }>('/api/sandbox/experiments/utxos/complete', 'POST', { txid: sent.txid, changeOutputIndex: change!.index });
+  pass('UTXO experiment checks real conservation and change', anatomy.verified && anatomy.facts.inputSats === anatomy.facts.outputSats + anatomy.facts.feeSats);
+  await request('/api/sandbox/experiments/confirmations/complete', 'POST', { txid: sent.txid }, 409); pass('Unconfirmed transaction cannot earn confirmation achievement');
+  const mined = await request<{ blockHash: string; snapshot: Snapshot }>('/api/sandbox/mine', 'POST');
+  pass('Core mines a real regtest block', /^[a-f0-9]{64}$/.test(mined.blockHash) && mined.snapshot.blockHeight === sent.snapshot.blockHeight + 1);
+  const confirmed = await request<{ confirmations: number }>(`/api/sandbox/transactions/${sent.txid}`); pass('Receipt becomes confirmed after mining', confirmed.confirmations >= 1);
+  await request('/api/sandbox/experiments/confirmations/complete', 'POST', { txid: sent.txid }); pass('Confirmed receipt earns the last achievement');
+  const progress = await request<Snapshot['progress']>('/api/sandbox/progress'); pass('All three experiments persist', progress.experiments.length === 3 && progress.experiments.every(item => item.completed && item.txid === sent.txid));
+  const duplicate = await request<{ txid: string; duplicate: boolean }>('/api/sandbox/broadcast', 'POST', { previewId: preview.id, confirmed: true }); pass('Duplicate broadcast returns the same transaction', duplicate.txid === sent.txid && duplicate.duplicate);
+  await request('/api/sandbox/preferences', 'PATCH', { displayName: 'Sandbox builder check', unit: 'btc', autoRefresh: false, defaultFeeRate: 3, reduceMotion: true });
+  const preferences = await request<{ unit: string; reduceMotion: boolean }>('/api/sandbox/preferences'); pass('Display preferences persist on the server', preferences.unit === 'btc' && preferences.reduceMotion);
+  await new Promise(done => setTimeout(done, Math.max(0, lab.createdAt + 10050 - Date.now())));
+  const reset = await request<Snapshot>('/api/sandbox/reset', 'POST', { confirmed: true }); pass('Reset creates a newly funded run', reset.runId !== lab.runId && reset.wallets.every(wallet => wallet.balanceSats === 1000000));
+  const retained = await request<Snapshot['progress']>('/api/sandbox/progress'); pass('Reset preserves earned achievements and transaction evidence', retained.experiments.every(item => item.completed && item.txid === sent.txid));
+  const exported = await request<{ receipts: Array<Preview & { txid: string }>; progress: Snapshot['progress'] }>('/api/sandbox/export');
+  pass('Export contains the original verified receipt after reset', exported.receipts.some(row => row.txid === sent.txid && row.runId === lab.runId));
+  pass('Exports contain no keys, PSBTs, raw signed transactions or credentials', !/"(?:psbt|signed_hex|signedHex|privateKey|secret|rpcPassword|password)"\s*:/.test(JSON.stringify(exported)));
+  const historical = await request<{ txid: string }>(`/api/sandbox/transactions/${sent.txid}`); pass('Explorer retains older owned receipts', historical.txid === sent.txid);
+  const sourceHashes = Object.fromEntries(['server/sandbox.ts', 'server/bitcoin.ts', 'server/sandbox-local.ts', 'scripts/setup-bitcoin.ts', 'scripts/setup-sandbox.ts', 'scripts/verify-sandbox.ts'].map(path => [path, createHash('sha256').update(readFileSync(path)).digest('hex')]));
+  Object.assign(report, { status: 'passed', finishedAt: new Date().toISOString(), transaction: { txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, inputs: preview.inputs, outputs: preview.outputs, confirmations: confirmed.confirmations }, block: { hash: mined.blockHash, height: mined.snapshot.blockHeight }, progress, retainedAcrossReset: true, sourceHashes });
+  await request('/api/session/logout', 'POST'); await request('/api/sandbox/state', 'GET', undefined, 401); pass('Sign-out revokes lab access');
+  mkdirSync(resolve('docs/evidence'), { recursive: true }); writeFileSync(resolve('docs/evidence/sandbox-regtest.json'), JSON.stringify(report, null, 2) + '\n');
+  console.log(JSON.stringify({ status: report.status, passed: checks.length, report: 'docs/evidence/sandbox-regtest.json', txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, network: 'regtest', monetaryValue: 'none' }));
+} finally { learnerKey.fill(0); otherKey.fill(0); }

@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["apps/sandbox/src", "server/sandbox.ts", "server/sandbox-local.ts", "server/sandbox-runner.ts", "scripts/dev-sandbox.ts", "scripts/setup-sandbox.ts", "scripts/verify-sandbox.ts", "scripts/verify-sandbox-hosted.ts", "packages/sandbox/src"]
+}

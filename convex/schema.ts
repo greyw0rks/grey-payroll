@@ -2,6 +2,7 @@ import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 import { academyTables } from './academySchema';
 import { academyWalletTables } from './academyWalletSchema';
+import { sandboxTables } from './sandboxSchema';
 
 export const role = v.union(v.literal('owner'), v.literal('finance'), v.literal('employee'), v.literal('viewer'));
 export const expenseState = v.union(v.literal('pending'), v.literal('approved'), v.literal('paying'), v.literal('unknown'), v.literal('settled'), v.literal('rejected'), v.literal('expired'));
@@ -10,6 +11,7 @@ export const invoiceState = v.union(v.literal('pending'), v.literal('settled'), 
 export default defineSchema({
   ...academyTables,
   ...academyWalletTables,
+  ...sandboxTables,
   users: defineTable({ pubkey: v.string(), createdAt: v.number() }).index('by_pubkey', ['pubkey']),
   sessions: defineTable({ tokenHash: v.string(), pubkey: v.string(), expiresAt: v.number(), createdAt: v.number() }).index('by_token', ['tokenHash']).index('by_pubkey', ['pubkey']).index('by_expiry', ['expiresAt']),
   authReplay: defineTable({ eventId: v.string(), expiresAt: v.number() }).index('by_event', ['eventId']).index('by_expiry', ['expiresAt']),

@@ -105,6 +105,9 @@ const handler = httpAction(async (ctx, request): Promise<Response> => {
       await ctx.runMutation(internal.model.logout, { tokenHash });
       return json({ status: 200, body: { ok: true } }, origin, 'sats_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
     }
+    if (path === '/api/sandbox/status' && request.method === 'GET') {
+      return json(await ctx.runAction(internal.sandboxHttp.dispatch, { tokenHash, method: request.method, path, body }), origin);
+    }
     if (path === '/api/auth/nostr' && request.method === 'POST') {
       const event = verifyHttpSignature(request.headers.get('authorization'), `${origin || canonicalOrigin()}${url.pathname}${url.search}`, request.method, rawBytes, now);
       const nextToken = randomToken();
@@ -124,7 +127,9 @@ const handler = httpAction(async (ctx, request): Promise<Response> => {
       // The delegated secret never enters an internal function argument or an unencrypted stored document.
       body = { sealedUri: await sealConnection(body.connectionUri, user.pubkey, connectingAcademy ? 'academy' : 'finance') };
     }
-    const result = path.startsWith('/api/academy/')
+    const result = path.startsWith('/api/sandbox/')
+      ? await ctx.runAction(internal.sandboxHttp.dispatch, { tokenHash, method: request.method, path, body })
+      : path.startsWith('/api/academy/')
       ? await ctx.runAction(internal.academyHttp.dispatch, { tokenHash, method: request.method, path, body, query: Object.fromEntries(url.searchParams) })
       : await ctx.runAction(internal.nodeOps.dispatch, { tokenHash, method: request.method, path, body });
     return json(result, origin);

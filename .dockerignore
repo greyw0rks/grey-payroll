@@ -1,0 +1,16 @@
+node_modules
+.git
+.env
+.env.*
+.data
+.tools
+.vercel
+.railway
+.atlas
+**/dist
+dist
+playwright-report
+test-results
+docs/submission
+devpost-kits
+*.log

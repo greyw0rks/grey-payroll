@@ -12,7 +12,9 @@
     { "source": "/api/:path*", "destination": "https://intent-curlew-185.convex.site/api/:path*" },
     { "source": "/academy", "destination": "/academy/index.html" },
     { "source": "/academy/((?!assets/|brand/|favicon.svg).*)", "destination": "/academy/index.html" },
-    { "source": "/((?!api/|academy/|assets/|favicon.svg).*)", "destination": "/index.html" }
+    { "source": "/sandbox", "destination": "/sandbox/index.html" },
+    { "source": "/sandbox/((?!assets/|sandbox-mark.svg).*)", "destination": "/sandbox/index.html" },
+    { "source": "/((?!api/|academy/|sandbox/|assets/|favicon.svg).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -31,6 +33,10 @@
     },
     {
       "source": "/academy/assets/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/sandbox/assets/:path*",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ]

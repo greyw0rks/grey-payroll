@@ -1,6 +1,6 @@
 # Devpost submission requirements
 
-Saved from the user's form instructions on November 15, 2026. Applies independently to **Connect** and **GreyFinance**.
+Saved from the user's form instructions on November 15, 2026. Prepare these fields independently for **Connect**, **GreyFinance**, and each remaining hackathon project.
 
 | Field | Requirement |
 | --- | --- |
@@ -16,3 +16,5 @@ Saved from the user's form instructions on November 15, 2026. Applies independen
 | Upload a file | Required; maximum 35 MB. Put multiple files into a single ZIP. |
 
 Prepare a separate complete kit for each project. Use actual screenshots and accurate verified claims. Keep the wallet requirement and real regtest/payment evidence clear. A prepared kit does not establish a submitted Devpost entry; retain the published demo video URL and submission confirmation when available.
+
+The user handles video rendering, export, upload, and entering the final URLs during submission. Keep GreyFinance and Connect video preview ports 4417–4420 stopped.
