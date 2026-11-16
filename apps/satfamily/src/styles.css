@@ -55,3 +55,43 @@
 
 /* Keep status messages clear of the persistent phone navigation. */
 @media(max-width:760px){.toast{bottom:calc(83px + env(safe-area-inset-bottom,0px))}}
+
+/* Identity sign-in and per-site Connect setup. */
+.sign-in-panel{width:100%;max-width:620px;min-width:0;margin:26px auto 0;padding:24px;border:1px solid #d5e1cc;border-radius:14px;background:#f7f9f0;text-align:left}
+.sign-in-status{display:flex;align-items:flex-start;gap:12px}
+.sign-in-status-icon{display:grid;place-items:center;flex-shrink:0;width:40px;height:40px;border:1px solid #d2dfbd;border-radius:11px;background:#edf3e0;color:#58743e}
+.signer-ready .sign-in-status-icon{background:#dceec0;border-color:#c5dca6;color:#42652e}
+.sign-in-status>div{min-width:0}
+.sign-in-status strong{display:block;font-size:14px;line-height:1.6;color:var(--forest)}
+.sign-in-status p{font-size:12px;line-height:1.85;color:#607451;margin-top:4px}
+.sign-in-origin{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;margin-top:18px;padding:12px 14px;border:1px solid #dce6d0;border-radius:8px;background:#fffef9}
+.sign-in-origin>span{font-size:10px;font-weight:700;line-height:1.7;color:#627650}
+.sign-in-origin code{min-width:0;font-size:11px;line-height:1.85;color:#35572e;overflow-wrap:anywhere}
+.sign-in-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.sign-in-actions>.button{min-height:48px;font-size:12px;white-space:normal;line-height:1.6}
+.sign-in-actions>.button>svg{flex-shrink:0}
+.sign-in-scope{font-size:11px;line-height:1.85;color:#607451;margin-top:16px}
+.sign-in-error{display:flex;align-items:flex-start;gap:9px;font-size:12px;line-height:1.85;color:#843f31;background:#fceddf;border:1px solid #e5cbb5;border-radius:8px;padding:12px;margin-top:14px}
+.sign-in-error>svg{flex-shrink:0;margin-top:2px}
+.sign-in-guide{margin-top:20px;border-top:1px solid #d9e3ce;padding-top:7px}
+.sign-in-guide>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:8px 0;list-style:none;font-size:12px;line-height:1.75;font-weight:700;color:#405f32;cursor:pointer}
+.sign-in-guide>summary::-webkit-details-marker{display:none}
+.sign-in-guide>summary>span{display:flex;align-items:center;gap:8px;min-width:0}
+.sign-in-guide>summary>svg{flex-shrink:0;transition:transform .15s}
+.sign-in-guide[open]>summary>svg{transform:rotate(180deg)}
+.sign-in-guide>summary:focus-visible,.temporary-sign-in-trial>summary:focus-visible{outline:3px solid #648240;outline-offset:4px;border-radius:4px}
+.sign-in-guide>ol{list-style:none;margin:8px 0 0;padding:0}
+.sign-in-guide li{display:grid;grid-template-columns:25px minmax(0,1fr);gap:12px;padding:11px 0}
+.sign-in-guide li>span{width:25px;height:25px;display:grid;place-items:center;border:1px solid #cadbb8;border-radius:7px;background:#edf4e0;color:#5c7b3e;font-size:11px;font-weight:700}
+.sign-in-guide li strong{font-size:12px;line-height:1.8;color:#35572e}
+.sign-in-guide li p{font-size:12px;line-height:1.85;color:#607451;margin-top:4px}
+.sign-in-guide li b{font-weight:750;color:#426332}
+.sign-in-guide li code{font-size:11px;overflow-wrap:anywhere;color:#35572e}
+.sign-in-guide-actions{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;margin-top:13px}
+.sign-in-guide-actions>.button{min-height:44px;font-size:11px}
+.sign-in-guide-actions>a{display:inline-flex;align-items:center;gap:7px;min-height:44px;color:#426332;font-size:11px;line-height:1.8;text-decoration:underline;text-underline-offset:4px}
+.temporary-sign-in-trial{max-width:620px;margin:22px auto 0;border-top:1px solid var(--line);padding-top:5px;text-align:left}
+.temporary-sign-in-trial>summary{font-size:11px;line-height:1.8;color:#607451;min-height:44px;padding:12px 0;cursor:pointer}
+.temporary-sign-in-trial>p{font-size:11px;line-height:1.85;color:#607451;margin:5px 0 13px;max-width:490px}
+.temporary-sign-in-trial>.button{font-size:11px;white-space:normal;line-height:1.7}
+@media(max-width:540px){.sign-in-panel{padding:18px;margin-top:22px}.sign-in-status{gap:10px}.sign-in-status-icon{width:34px;height:34px;border-radius:9px}.sign-in-status strong{font-size:13px}.sign-in-status p{font-size:12px}.sign-in-origin{align-items:flex-start;flex-direction:column;gap:3px;padding:10px 12px}.sign-in-actions{flex-direction:column;gap:9px}.sign-in-actions>.button{width:100%;justify-content:space-between;padding:13px 14px}.sign-in-guide li{gap:10px}.sign-in-guide-actions{align-items:flex-start;flex-direction:column;gap:8px}.sign-in-guide-actions>a{font-size:11px}.temporary-sign-in-trial>.button{width:100%;justify-content:space-between}}

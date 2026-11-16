@@ -1,4 +1,4 @@
-name: GreyFinance checks
+name: GreyFinance and Academy checks
 
 on:
   push:
@@ -22,4 +22,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
       - run: pnpm typecheck
-      - run: pnpm build -- greyfinance
+      - run: pnpm typecheck:academy
+      - run: pnpm typecheck:convex
+      - run: pnpm build:release

@@ -16,6 +16,7 @@ mkdirSync(lndRoot, { recursive: true, mode: 0o700 });
 const binaryDir = resolve(toolsDir, `lnd-linux-amd64-v${version}`);
 const lnd = resolve(binaryDir, 'lnd');
 const lncli = resolve(binaryDir, 'lncli');
+const relayUrl = `ws://127.0.0.1:${Number(process.env.SATS_API_PORT || 4400)}/relay`;
 if (!existsSync(lnd)) {
   console.log('Preparing the verified LND release for two isolated regtest wallets…');
   const cached = '/tmp/sats-lnd-0.19.3.tar.gz';
@@ -44,7 +45,7 @@ else {
     const clientPubkey = getPublicKey(clientSecretBytes);
     const walletSecret = Buffer.from(walletSecretBytes).toString('hex');
     const clientSecret = Buffer.from(clientSecretBytes).toString('hex');
-    return { name, alias: `Sats Lab ${name === 'alice' ? 'Alice' : 'Bob'}`, restPort: 18085 + i, p2pPort: 19735 + i, rpcPort: 11009 + i, dir: resolve(lndRoot, name), walletPubkey, walletSecret, clientPubkey, clientSecret, connectionUri: `nostr+walletconnect://${walletPubkey}?relay=${encodeURIComponent('ws://127.0.0.1:4400/relay')}&secret=${clientSecret}` };
+    return { name, alias: `Sats Lab ${name === 'alice' ? 'Alice' : 'Bob'}`, restPort: 18085 + i, p2pPort: 19735 + i, rpcPort: 11009 + i, dir: resolve(lndRoot, name), walletPubkey, walletSecret, clientPubkey, clientSecret, connectionUri: `nostr+walletconnect://${walletPubkey}?relay=${encodeURIComponent(relayUrl)}&secret=${clientSecret}` };
   });
   lab = { network: 'regtest', wallets, createdAt: Date.now() };
   writeFileSync(labPath, JSON.stringify(lab), { mode: 0o600 });

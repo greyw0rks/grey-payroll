@@ -34,7 +34,7 @@ Open **http://127.0.0.1:4402**, then choose **Open workspace**. Use the owner’
 The deployed interface uses **Convex** for durable company data, permissions, atomic payment states and receipts. NWC operations run in trusted server actions against the company's own wallet. Public production disables predictable local preview personas.
 
 ```bash
-pnpm build -- greyfinance
+pnpm build:release
 pnpm exec convex deploy
 ```
 
@@ -59,6 +59,14 @@ The existing public domain has also completed the same two-wallet flow through C
 
 App approvals are application controls. They are not cryptographic multisignature. Limit the delegated connection's capabilities and spending at the wallet provider.
 
-MIT licensed. This repository also holds the separate Bitcoin tools being developed in sequence; GreyFinance is the current release focus.
+## SatsAcademy
+
+[Open SatsAcademy](https://grey-finance.vercel.app/academy) to learn Bitcoin through three English and Hausa quests, wallet-safety exercises, and a 10-sat Lightning receiving lab. Its wallet connection is separate from the company treasury. Knowledge badges come from checked answers; the practical badge requires receiving-wallet settlement and a matching cryptographic proof.
+
+Run the complete local learning lab with `./start.sh academy`, or `pnpm dev -- academy` after setup. Open http://127.0.0.1:4403. Progress, preferences and verified receipts persist; lesson resets retain payment evidence, and exports include the complete receipt history.
+
+See the [academy guide](docs/satsacademy/README.md), [security notes](docs/satsacademy/SECURITY.md) and [demo](docs/satsacademy/DEMO.md). Independent learner validation and native Hausa review are still pending.
+
+MIT licensed. The remaining Bitcoin tools are developed and verified in sequence.
 
 The preceding Arc application remains in [the archive branch](https://github.com/greyw0rks/grey-payroll/tree/archive/grey-finance-arc-2026-11-14) and Git history.

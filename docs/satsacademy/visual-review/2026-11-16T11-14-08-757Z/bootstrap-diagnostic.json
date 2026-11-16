@@ -1,0 +1,141 @@
+{
+  "mode": "actual-builder-bootstrap-diagnostic",
+  "createdAt": "2026-11-16T11:20:52.394Z",
+  "requests": [
+    {
+      "id": 1,
+      "url": "http://127.0.0.1:4403/api/session",
+      "method": "GET",
+      "startedMs": 5821,
+      "status": 200,
+      "finishedMs": 5929,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "id": 2,
+      "url": "http://127.0.0.1:4403/api/config",
+      "method": "GET",
+      "startedMs": 5823,
+      "status": 200,
+      "finishedMs": 5930,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "id": 3,
+      "url": "http://127.0.0.1:4403/api/session",
+      "method": "GET",
+      "startedMs": 5824,
+      "status": 200,
+      "finishedMs": 5931,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "id": 4,
+      "url": "http://127.0.0.1:4403/api/config",
+      "method": "GET",
+      "startedMs": 5824,
+      "status": 200,
+      "finishedMs": 5931,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "id": 5,
+      "url": "http://127.0.0.1:4403/api/session",
+      "method": "GET",
+      "startedMs": 29730,
+      "status": 200,
+      "finishedMs": 29784,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    },
+    {
+      "id": 6,
+      "url": "http://127.0.0.1:4403/api/config",
+      "method": "GET",
+      "startedMs": 29785,
+      "status": 200,
+      "finishedMs": 29831,
+      "failure": null,
+      "contentType": "application/json; charset=utf-8"
+    }
+  ],
+  "consoleMessages": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "pageErrors": [],
+  "navigations": [
+    {
+      "url": "http://127.0.0.1:4403/app/lessons/bitcoin",
+      "atMs": 45
+    }
+  ],
+  "samples": [
+    {
+      "url": "http://127.0.0.1:4403/app/lessons/bitcoin",
+      "readyState": "complete",
+      "visibility": "visible",
+      "status": "Explore freely · sign in to save progress0/3 quests complete",
+      "errors": [],
+      "now": 1794828035593,
+      "performanceNow": 13602.09999999404
+    },
+    {
+      "url": "http://127.0.0.1:4403/app/lessons/bitcoin",
+      "readyState": "complete",
+      "visibility": "visible",
+      "status": "Explore freely · sign in to save progress0/3 quests complete",
+      "errors": [],
+      "now": 1794828043629,
+      "performanceNow": 21637.69999998808
+    },
+    {
+      "url": "http://127.0.0.1:4403/app/lessons/bitcoin",
+      "readyState": "complete",
+      "visibility": "visible",
+      "status": "Explore freely · sign in to save progress0/3 quests complete",
+      "errors": [],
+      "now": 1794828051679,
+      "performanceNow": 29688
+    }
+  ],
+  "manualFetch": [
+    {
+      "path": "/api/session",
+      "status": 200,
+      "body": {
+        "user": null,
+        "demoEnabled": true
+      }
+    },
+    {
+      "path": "/api/config",
+      "status": 200,
+      "body": {
+        "demoEnabled": true,
+        "relayUrl": "ws://127.0.0.1:4407/relay",
+        "bitcoinReady": false,
+        "walletConfigured": false,
+        "lightningLabReady": false
+      }
+    }
+  ],
+  "notes": [
+    "Anonymous local browser; no wallet, credentials or payments.",
+    "Diagnostic only; not a passing regression."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "mode": "actual-builder-test",
+  "createdAt": "2026-11-16T10:51:55.875Z",
+  "origin": "http://127.0.0.1:4403",
+  "notes": [
+    "Fresh temporary Nostr identity and real local API; builder-controlled QA, not independent adoption.",
+    "Two explicitly labeled API failure injections test recovery.",
+    "No wallet connection or payment, no mainnet evidence, and no public-relay publishing."
+  ],
+  "passed": false,
+  "checks": [],
+  "captures": [],
+  "pageErrors": [],
+  "fatalError": "expect(locator).not.toContainText(expected) failed\n\nLocator: locator('.workspace-status')\nExpected substring: not \"Opening your learning space\"\nError: Target page, context or browser has been closed\n\nCall log:\n  - Expect \"not toContainText\" locator('.workspace-status') with timeout 25000ms\n  - waiting for locator('.workspace-status')\n  - Target page, context or browser has been closed\n"
+}

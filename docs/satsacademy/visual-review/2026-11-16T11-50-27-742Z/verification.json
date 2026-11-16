@@ -1,0 +1,449 @@
+{
+  "mode": "actual-builder-test",
+  "createdAt": "2026-11-16T11:56:18.677Z",
+  "origin": "http://127.0.0.1:4403",
+  "notes": [
+    "Fresh temporary Nostr identity and real local API; builder-controlled QA, not independent adoption.",
+    "Two explicitly labeled API failure injections test recovery.",
+    "No wallet connection or payment, no mainnet evidence, and no public-relay publishing."
+  ],
+  "passed": true,
+  "checks": [
+    {
+      "name": "lesson-next-step-scroll-and-focus",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "heading": {
+        "top": 200.15625,
+        "text": "Check the payment, not the screenshot.",
+        "viewport": 844
+      }
+    },
+    {
+      "name": "lesson-back-restores-section-focus",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "connect-install-and-website-access-guidance",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "modal-keyboard-containment",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "backgroundInert": true
+    },
+    {
+      "name": "escape-restores-trigger-focus",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "account-to-onboarding-focus",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "focusedId": "onboarding-name"
+    },
+    {
+      "name": "real-signed-identity-quiz-completion",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "progress-and-temporary-disclosure-survive-reload",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "completedLessons": 1,
+      "metadata": "public key only",
+      "lostSigningKeyWarning": true
+    },
+    {
+      "name": "knowledge-check-never-awards-wallet-badge",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "knowledgeBadges": 1,
+      "practicalBadge": false
+    },
+    {
+      "name": "browser-history-restores-lesson",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "valid-60-character-name-wraps-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360
+    },
+    {
+      "name": "valid-60-character-name-wraps-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "name": "valid-60-character-name-wraps-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024
+    },
+    {
+      "name": "valid-60-character-name-wraps-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440
+    },
+    {
+      "name": "responsive-landing-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-discover-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-lesson-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-wallet-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-achievements-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-guide-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-profile-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360,
+      "sidebar": false
+    },
+    {
+      "name": "local-fonts-loaded-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "families": [
+        "Manrope Variable",
+        "Space Grotesk Variable"
+      ],
+      "body": "\"Manrope Variable\", sans-serif",
+      "heading": "\"Space Grotesk Variable\", sans-serif",
+      "resources": 2
+    },
+    {
+      "name": "responsive-landing-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-discover-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-lesson-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-wallet-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-achievements-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-guide-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-profile-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390,
+      "sidebar": false
+    },
+    {
+      "name": "local-fonts-loaded-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "families": [
+        "Manrope Variable",
+        "Space Grotesk Variable"
+      ],
+      "body": "\"Manrope Variable\", sans-serif",
+      "heading": "\"Space Grotesk Variable\", sans-serif",
+      "resources": 2
+    },
+    {
+      "name": "responsive-landing-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-discover-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-lesson-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-wallet-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-achievements-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-guide-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-profile-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024,
+      "sidebar": false
+    },
+    {
+      "name": "local-fonts-loaded-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "families": [
+        "Manrope Variable",
+        "Space Grotesk Variable"
+      ],
+      "body": "\"Manrope Variable\", sans-serif",
+      "heading": "\"Space Grotesk Variable\", sans-serif",
+      "resources": 2
+    },
+    {
+      "name": "responsive-landing-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-discover-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-lesson-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-wallet-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-achievements-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-guide-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "responsive-profile-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440,
+      "sidebar": false
+    },
+    {
+      "name": "local-fonts-loaded-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "families": [
+        "Manrope Variable",
+        "Space Grotesk Variable"
+      ],
+      "body": "\"Manrope Variable\", sans-serif",
+      "heading": "\"Space Grotesk Variable\", sans-serif",
+      "resources": 2
+    },
+    {
+      "name": "academy-prefix-keeps-navigation-and-api-origin",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "hausa-lesson-fits-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "translation": "initial draft; native-speaker review pending"
+    },
+    {
+      "name": "real-course-guide-is-honestly-labeled",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "synthetic-credential-blocked-before-request",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "additionalRequests": 0
+    },
+    {
+      "name": "guide-network-error-recovers-composer",
+      "mode": "simulated-network-failure",
+      "passed": true
+    },
+    {
+      "name": "guide-retry-reaches-real-service",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "failed-session-keeps-lessons-readable",
+      "mode": "simulated-network-failure",
+      "passed": true
+    },
+    {
+      "name": "service-retry-restores-saved-learning",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "same-origin-api-and-working-font-requests",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "apiOrigins": [
+        "http://127.0.0.1:4403"
+      ],
+      "failedFontRequests": 0
+    },
+    {
+      "name": "no-unhandled-browser-errors",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "pageErrors": []
+    },
+    {
+      "name": "sign-out-clears-temporary-metadata",
+      "mode": "actual-builder-test",
+      "passed": true
+    }
+  ],
+  "captures": [
+    "discover-360.png",
+    "lesson-360.png",
+    "wallet-360.png",
+    "achievements-390.png",
+    "profile-390.png",
+    "landing-1440.png",
+    "discover-1440.png",
+    "hausa-lesson-390.png"
+  ],
+  "pageErrors": [],
+  "fatalError": null
+}

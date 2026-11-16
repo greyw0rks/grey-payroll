@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } fro
 import { ArrowDownLeft, ArrowRight, ArrowUpRight, Bell, Buildings, CaretDown, ChartPieSlice, Check, CheckCircle, Clock, Copy, CreditCard, CurrencyBtc, DotsThree, DownloadSimple, GearSix, HandCoins, Info, Lightning, List, MagnifyingGlass, Plus, Receipt, ShieldCheck, SignOut, SlidersHorizontal, Sparkle, SquaresFour, UsersThree, Wallet, WarningCircle, X } from '@phosphor-icons/react';
 import QRCode from 'qrcode';
 import '@fontsource-variable/manrope';
-import { api, clearTemporaryIdentity, hasTemporaryIdentity, nostrSignIn, patch, post, temporaryNostrSignIn } from './api';
+import { api, clearTemporaryIdentity, CONNECT_INSTALL_URL, hasTemporaryIdentity, nostrProviderStatus, NostrProviderUnavailableError, nostrSignIn, patch, post, temporaryNostrSignIn, watchNostrProviders, type NostrProviderChoice, type NostrSignInPhase } from './api';
 import { Avatar, dateLabel, Dialog, Empty, FlowIcon, fullDate, Progress, ProofReceipt, roleLabel, sats, Status } from './components';
 import type { Audit, Expense, Incoming, Invoice, Member, Organization, Snapshot, User, View } from './types';
 import { GreyMark } from './Brand';
@@ -134,7 +134,21 @@ export default function App({ onHome }: { onHome?: () => void } = {}) {
     <div className="main-shell">
     <main className="page-content" id="main-content" tabIndex={-1}><div className="page-heading"><div><div className="eyebrow"><span className="eyebrow-line" />{data?.role === 'employee' ? 'YOUR COMPANY ACCOUNT' : 'COMPANY WORKSPACE'}</div><h1>{titles[view][0]}</h1><p>{titles[view][1]}</p></div>{data && canRequest && <button className="button primary" onClick={() => setModal({ type: 'request' })}><Plus size={18} weight="bold" />New request</button>}</div>
       {error && <div className="alert error-alert" role="alert"><WarningCircle size={20} /><span>{error}</span><button className="icon-button" onClick={() => setError('')} aria-label="Dismiss error"><X size={17} /></button></div>}
-      {temporaryIdentity && <div className="alert temporary-identity-notice"><ShieldCheck size={20} /><span><strong>Temporary Nostr identity</strong>Your signing key exists only in this tab’s memory. Use an existing Nostr signer for ongoing company access. No wallet is connected automatically.</span></div>}{loading ? <div className="loading-grid" aria-label="Loading workspace"><div /><div /><div /><div /></div> : !data ? <div className="onboarding"><div className="onboarding-art"><Buildings size={60} weight="duotone" /><span><Lightning size={22} weight="fill" /></span></div><h2>A company account with a human side.</h2><p>Create a shared workspace for your team, connect your Lightning wallet, and give every expense a clear approval trail.</p><div className="onboarding-actions">{session ? canCreateCompany && <button className="button primary" onClick={() => setModal({ type: 'workspace' })}><Plus size={17} />Create your workspace</button> : <button className="button primary" disabled={busy} onClick={() => void run(async () => { await nostrSignIn(); workspaceVersion.current++; setTemporaryIdentity(false); const info = await api<{ user: User }>('/api/session'); setSession(info.user); await load(''); }, 'Signed in with Nostr')}>{busy ? 'Signing in…' : 'Sign in with Nostr'} <ArrowRight size={17} /></button>}{!session && <button className="button secondary temporary-sign-in" disabled={busy} onClick={() => void run(async () => { await temporaryNostrSignIn(); workspaceVersion.current++; setTemporaryIdentity(true); const info = await api<{ user: User }>('/api/session'); setSession(info.user); await load(''); }, 'Signed in with a temporary Nostr identity')}>{busy ? 'Signing in…' : 'Try with a temporary Nostr identity'} <ArrowRight size={17} /></button>}{demoEnabled && <button className="button secondary" onClick={() => void switchPersona('owner')}>Open preview workspace</button>}</div>{!session && <p className="temporary-sign-in-copy">A real signed identity for trying the product. Its key stays only in this tab’s memory. Use an existing Nostr signer for ongoing company access.</p>}<div className="onboarding-facts"><span><ShieldCheck size={18} />Company-controlled wallet</span><span><UsersThree size={18} />Clear team permissions</span><span><Receipt size={18} />Verified payment records</span></div></div> : <>
+      {temporaryIdentity && <div className="alert temporary-identity-notice"><ShieldCheck size={20} /><span><strong>Temporary Nostr identity</strong>Your signing key exists only in this tab’s memory. Use Connect or your existing Nostr signer for ongoing company access. No wallet is connected automatically.</span></div>}
+      {loading ? <div className="loading-grid" aria-label="Loading workspace"><div /><div /><div /><div /></div> : !data ? <div className="onboarding">
+        <div className="onboarding-art"><Buildings size={60} weight="duotone" /><span><Lightning size={22} weight="fill" /></span></div>
+        <h2>A company account with a human side.</h2><p>Create a shared workspace for your team, connect your Lightning wallet, and give every expense a clear approval trail.</p>
+        {session ? <div className="onboarding-actions">{canCreateCompany && <button className="button primary" onClick={() => setModal({ type: 'workspace' })}><Plus size={17} />Create your workspace</button>}</div> : <>
+          <NostrSignInPanel busy={busy} onBusyChange={setBusy} onAuthenticated={async () => {
+            workspaceVersion.current++; setTemporaryIdentity(false); setError('');
+            try { const info = await api<{ user: User | null }>('/api/session'); if (!info.user) throw new Error('The server could not confirm your sign-in. Please retry with a fresh signature.'); setSession(info.user); await load(''); setToast('Signed in with Nostr'); }
+            catch (failure) { setError(failure instanceof Error ? failure.message : 'Could not load your signed-in workspace.'); throw failure; }
+          }} />
+          <details className="temporary-sign-in-trial"><summary>Trying the product with a temporary identity?</summary><p>This trial key stays only in this tab’s memory. Closing the tab loses its signing key. Use Connect or your existing signer for an ongoing company account.</p><button className="button secondary temporary-sign-in" disabled={busy} onClick={() => void run(async () => { await temporaryNostrSignIn(); workspaceVersion.current++; setTemporaryIdentity(true); const info = await api<{ user: User }>('/api/session'); setSession(info.user); await load(''); }, 'Signed in with a temporary Nostr identity')}>Try with a temporary Nostr identity <ArrowRight size={17} /></button></details>
+        </>}
+        {demoEnabled && <div className="onboarding-actions"><button className="button secondary" disabled={busy} onClick={() => void switchPersona('owner')}>Open preview workspace</button></div>}
+        <div className="onboarding-facts"><span><ShieldCheck size={18} />Company-controlled wallet</span><span><UsersThree size={18} />Clear team permissions</span><span><Receipt size={18} />Verified payment records</span></div>
+      </div> : <>
         {data.preview && <div className="preview-notice"><Sparkle size={16} /><span>{isTestNetwork(data.wallet.network) ? 'Test workspace · wallet payments run on a private Bitcoin test network. Sample requests never move funds. Test sats have no live Bitcoin value.' : 'This workspace includes sample data. Sample requests never move funds. Connect a wallet and use a real invoice to test payment.'}</span><button onClick={() => setModal({ type: 'wallet' })}>Wallet settings <ArrowRight size={14} /></button></div>}
         {data.wallet.error && <div className="alert wallet-unavailable" role="status"><WarningCircle size={20} /><span>{data.wallet.error} Your saved records are still available.</span><button className="text-button" disabled={busy} onClick={() => void run(() => load())}>Retry wallet status <ArrowRight size={15} /></button></div>}{view === 'Overview' && <Overview data={data} canReview={Boolean(canReview)} onReceive={() => setModal({ type: 'receive' })} onWallet={() => setModal({ type: 'wallet' })} onRequest={() => setModal({ type: 'request' })} onMember={() => setModal({ type: 'member' })} onExpense={item => setModal({ type: 'expense', item })} onView={navigate} />}
         {view === 'Requests' && <Requests data={data} search={search} onSearch={setSearch} filter={requestFilter} onFilter={setRequestFilter} onExpense={item => setModal({ type: 'expense', item })} onRequest={() => setModal({ type: 'request' })} />}
@@ -157,6 +171,77 @@ export default function App({ onHome }: { onHome?: () => void } = {}) {
     {modal?.type === 'workspace' && canCreateCompany && <WorkspaceDialog busy={busy} onClose={close} onSubmit={input => run(async () => { const result = await post<{ id: string }>('/api/satfamily/organizations', input); await load(result.id); close(); }, 'Your workspace is ready')} />}
     {modal?.type === 'help' && <Dialog title="A clearer way to spend together." description="Three steps from request to verified payment." onClose={close}><div className="help-steps"><div><span>01</span><section><h3>Connect your company wallet</h3><p>The owner links a Lightning wallet using delegated NWC permissions. Never paste a seed phrase or a wallet master key.</p></section></div><div><span>02</span><section><h3>Request, then review</h3><p>A member submits an invoice. A different owner or finance member reviews it. Monthly limits are checked before the budget is reserved.</p></section></div><div><span>03</span><section><h3>Pay once. Verify it.</h3><p>Finance confirms the payment. GreyFinance checks wallet proof and keeps a receipt. If the result is unclear, it holds the budget and checks status before another action.</p></section></div></div><div className="alert"><ShieldCheck size={21} /><span>These approvals are enforced by GreyFinance. Also cap spending and permissions at your wallet provider; this MVP does not provide on-chain multisignature.</span></div>{data?.preview && <p className="helper">Use the profile menu to try Owner, Finance, and Employee views. Sample payments are clearly marked and never sent to a wallet.</p>}</Dialog>}
   </div>;
+}
+
+function signInFailure(failure: unknown, provider: 'connect' | 'nip07') {
+  const message = failure instanceof Error ? failure.message : typeof failure === 'string' ? failure : 'Sign-in could not finish. Please try again.';
+  let code: unknown;
+  try { code = typeof failure === 'object' && failure !== null ? (failure as { code?: unknown }).code : undefined; } catch { /* Keep the safe fallback message. */ }
+  if (code === 4001 || (typeof code === 'string' && ['USER_REJECTED', 'REQUEST_DECLINED', 'REQUEST_REJECTED', 'ACTION_REJECTED'].includes(code))) return 'Sign-in was declined. Retry when you are ready to approve a fresh signature request.';
+  if (provider === 'connect') {
+    if (code === 'WALLET_LOCKED') return 'Connect is locked. Open it from your browser toolbar, unlock your wallet, then retry sign-in.';
+    if (code === 'REQUEST_EXPIRED') return 'The Connect sign-in request expired. Return here and retry to review a fresh signature request.';
+    if (code === 'SITE_DISCONNECTED' || code === 'SITE_PERMISSION') return 'Connect no longer has access to this website. In Connect, open Connections, enable the current website and choose Allow in Chrome. Then retry sign-in.';
+    if (code === 'TOO_MANY_REQUESTS') return 'Finish or decline the open request in Connect before retrying sign-in.';
+    if (code === 'WALLET_UNAVAILABLE') return 'Connect could not respond. Open it from your browser toolbar, unlock your wallet and check that this website is enabled, then retry.';
+  }
+  return message;
+}
+
+function NostrSignInPanel({ busy, onBusyChange, onAuthenticated }: { busy: boolean; onBusyChange(value: boolean): void; onAuthenticated(): Promise<void> }) {
+  const [providers, setProviders] = useState(nostrProviderStatus);
+  const [guideOpen, setGuideOpen] = useState(() => !nostrProviderStatus().connect);
+  const [checked, setChecked] = useState(false);
+  const [phase, setPhase] = useState<NostrSignInPhase | null>(null);
+  const [activeProvider, setActiveProvider] = useState<'connect' | 'nip07' | null>(null);
+  const [feedback, setFeedback] = useState<{ message: string; provider: 'connect' | 'nip07'; unavailable: boolean } | null>(null);
+  const attempt = useRef<AbortController | null>(null);
+  const origin = typeof window === 'undefined' ? 'this website' : window.location.origin;
+  const refresh = useCallback(() => {
+    const next = nostrProviderStatus();
+    setProviders(previous => previous.connect === next.connect && previous.nip07 === next.nip07 ? previous : next);
+    setFeedback(previous => previous?.unavailable && next[previous.provider] ? null : previous);
+  }, []);
+  useEffect(() => { const stop = watchNostrProviders(refresh); refresh(); return stop; }, [refresh]);
+  useEffect(() => () => attempt.current?.abort(), []);
+
+  async function signIn(provider: Exclude<NostrProviderChoice, 'auto'>) {
+    if (attempt.current || busy) return;
+    const controller = new AbortController(); attempt.current = controller;
+    setFeedback(null); setActiveProvider(provider); setPhase('checking'); onBusyChange(true);
+    try {
+      await nostrSignIn(provider, { signal: controller.signal, onPhase: value => { if (!controller.signal.aborted) setPhase(value); } });
+      if (!controller.signal.aborted) await onAuthenticated();
+    } catch (failure) {
+      if (!controller.signal.aborted) {
+        setFeedback({ message: signInFailure(failure, provider), provider, unavailable: failure instanceof NostrProviderUnavailableError });
+        if (provider === 'connect') setGuideOpen(true);
+        refresh();
+      }
+    } finally {
+      if (attempt.current === controller) { attempt.current = null; setPhase(null); setActiveProvider(null); onBusyChange(false); }
+    }
+  }
+
+  const phaseLabel = phase === 'checking' ? 'Checking your signer…' : phase === 'approval' ? 'Waiting for your approval…' : 'Confirming your sign-in…';
+  return <section className="sign-in-panel" aria-label="Nostr sign-in">
+    <div className={'sign-in-status ' + (providers.connect || providers.nip07 ? 'signer-ready' : '')} role="status" aria-live="polite" aria-atomic="true">
+      <span className="sign-in-status-icon">{phase ? <Clock size={21} /> : providers.connect || providers.nip07 ? <CheckCircle size={21} /> : <ShieldCheck size={21} />}</span>
+      <div><strong>{phase ? phaseLabel : providers.connect ? 'Connect is available for this website' : providers.nip07 ? 'Your Nostr signer is available' : checked ? 'Connect is still unavailable here' : 'Enable Connect for this website'}</strong><p>{phase === 'approval' ? `Open ${activeProvider === 'connect' ? 'Connect' : 'your signer'} and review this website’s signature request.` : phase === 'verifying' ? 'GreyFinance is verifying the signed request with the server.' : phase === 'checking' ? 'Checking for a signer enabled on the current website.' : providers.connect ? 'Sign in with the Nostr identity you already keep in Connect.' : providers.nip07 ? 'Use your existing signer below, or enable Connect with the steps here.' : 'Connect appears here after you enable the current website.'}</p></div>
+    </div>
+    <div className="sign-in-origin"><span>Current website</span><code>{origin}</code></div>
+    <div className="sign-in-actions">
+      <button className="button primary" disabled={busy || Boolean(phase)} onClick={() => void signIn('connect')}>{phase && activeProvider === 'connect' ? phaseLabel : feedback?.provider === 'connect' ? 'Retry Connect sign-in' : 'Sign in with Connect'}<ArrowRight size={17} /></button>
+      {providers.nip07 && <button className="button secondary" disabled={busy || Boolean(phase)} onClick={() => void signIn('nip07')}>{phase && activeProvider === 'nip07' ? phaseLabel : 'Use another Nostr signer'}<ArrowUpRight size={17} /></button>}
+    </div>
+    {feedback && <div className="sign-in-error" role="alert"><WarningCircle size={18} /><span>{feedback.message}</span></div>}
+    <p className="sign-in-scope">Sign-in uses your Nostr identity. The company Lightning wallet connects separately through NWC in Wallet settings.</p>
+    <details className="sign-in-guide" open={guideOpen} onToggle={event => setGuideOpen(event.currentTarget.open)}>
+      <summary><span><Info size={17} />Enable Connect on this website</span><CaretDown size={16} /></summary>
+      <ol><li><span>1</span><div><strong>Open and unlock Connect.</strong><p>Use the Connect icon in your desktop browser toolbar and unlock your wallet.</p></div></li><li><span>2</span><div><strong>Enable the current website.</strong><p>In Connect, open <b>Connections</b> and choose <b>Enable for current website</b>. Check that it shows <code>{origin}</code>.</p></div></li><li><span>3</span><div><strong>Allow access, then retry.</strong><p>Choose <b>Allow</b> in Chrome’s website-permission prompt. Return to this tab and retry sign-in.</p></div></li></ol>
+      <div className="sign-in-guide-actions"><button className="button secondary" disabled={busy || Boolean(phase)} onClick={() => { refresh(); setChecked(true); }}>Check again<ArrowRight size={16} /></button><a href={CONNECT_INSTALL_URL} target="_blank" rel="noopener noreferrer">Need Connect? Installation guide<ArrowUpRight size={15} /></a></div>
+    </details>
+  </section>;
 }
 
 function Overview({ data, canReview, onReceive, onWallet, onRequest, onMember, onExpense, onView }: { data: Snapshot; canReview: boolean; onReceive(): void; onWallet(): void; onRequest(): void; onMember(): void; onExpense(item: Expense): void; onView(view: View): void }) {

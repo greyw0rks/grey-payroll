@@ -20,7 +20,7 @@ test('Quiz grading requires every correct answer and rejects malformed answers',
   assert.throws(() => gradeQuiz('missing', [1, 0, 2]), /Unknown lesson/);
 });
 
-test('A transaction achievement requires matching hash, amount, settlement and valid provided preimage', () => {
+test('A transaction achievement requires matching hash, amount, settlement and a cryptographic preimage', () => {
   assert.equal(validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, invoice), true);
   assert.equal(validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, { ...invoice, state: 'pending' }), false);
   assert.equal(validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, { ...invoice, state: 'expired' }), false);
@@ -28,6 +28,7 @@ test('A transaction achievement requires matching hash, amount, settlement and v
   assert.throws(() => validateExerciseSettlement({ payment_hash: 'aa'.repeat(32), amount_sats: 10 }, invoice), /different payment/);
   assert.throws(() => validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, { ...invoice, preimage: '22'.repeat(32) }), /does not match/);
   assert.throws(() => validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, { ...invoice, preimage: 'invalid' }), /invalid payment proof/);
+  assert.throws(() => validateExerciseSettlement({ payment_hash: hash, amount_sats: 10 }, { ...invoice, preimage: undefined }), /verifiable payment proof/);
 });
 
 test('Local guide answers in the selected language and declines topics beyond its course', () => {
@@ -45,11 +46,12 @@ let trainingAvailable = false;
 let paid = false;
 let corrupted: 'hash' | 'amount' | 'preimage' | null = null;
 let counter = 0;
+let fingerprint = 'aa'.repeat(32);
 const providerInvoices = new Map<string, WalletInvoice>();
 
 const fixtureWallet: WalletAdapter = {
   kind: 'nwc',
-  async getInfo() { return { network: 'regtest', methods: ['make_invoice', 'lookup_invoice', 'get_balance'] }; },
+  async getInfo() { return { network: 'regtest', methods: ['make_invoice', 'lookup_invoice', 'get_balance'], connectionFingerprint: fingerprint }; },
   async getBalance() { return 1000; },
   async makeInvoice({ amountSats, description }) {
     const proof = Buffer.alloc(32, ++counter).toString('hex');
@@ -78,8 +80,8 @@ before(async () => {
 });
 after(async () => { server?.closeAllConnections(); await new Promise<void>(resolve => server?.close(() => resolve())); db?.close(); });
 
-async function request(path: string, input?: unknown, user = 'learner-a') {
-  const response = await fetch(base + path, { method: input === undefined ? 'GET' : 'POST', headers: { 'Content-Type': 'application/json', ...(user ? { 'x-test-user': user } : {}) }, ...(input === undefined ? {} : { body: JSON.stringify(input) }) });
+async function request(path: string, input?: unknown, user = 'learner-a', method?: string) {
+  const response = await fetch(base + path, { method: method || (input === undefined ? 'GET' : 'POST'), headers: { 'Content-Type': 'application/json', ...(user ? { 'x-test-user': user } : {}) }, ...(input === undefined ? {} : { body: JSON.stringify(input) }) });
   return { status: response.status, body: await response.json() as Record<string, any> };
 }
 
@@ -126,6 +128,22 @@ test('A learner cannot verify another account’s invoice', async () => {
   assert.deepEqual((await request('/progress', undefined, 'learner-b')).body.badges, []);
 });
 
+test('Changing the receiving connection cannot claim a badge for an earlier wallet', async () => {
+  const created = await request('/exercises', { mode: 'receive' }, 'learner-wallet-pin');
+  assert.equal(created.status, 201);
+  paid = true;
+  fingerprint = 'bb'.repeat(32);
+  assert.equal((await request(`/exercises/${created.body.id}/verify`, {}, 'learner-wallet-pin')).status, 502);
+  assert.deepEqual((await request('/progress', undefined, 'learner-wallet-pin')).body.badges, []);
+  fingerprint = 'aa'.repeat(32);
+  const verified = await request(`/exercises/${created.body.id}/verify`, {}, 'learner-wallet-pin');
+  assert.equal(verified.body.verified, true);
+  walletAvailable = false;
+  assert.equal((await request(`/exercises/${created.body.id}/verify`, {}, 'learner-wallet-pin')).body.verified, true);
+  walletAvailable = true;
+  paid = false;
+});
+
 test('Provider mismatches fail closed and leave the invoice unverified', async () => {
   const created = await request('/exercises/receive', {}, 'learner-corrupt');
   paid = true;
@@ -159,6 +177,28 @@ test('Verified settlement awards one badge atomically and reset preserves paymen
 test('The course guide rejects delegated wallet credentials instead of sending them to a tutor', async () => {
   assert.equal((await request('/guide', { question: 'Here is nostr+walletconnect://secret', language: 'en' }, '')).status, 400);
   assert.equal((await request('/guide', { question: 'nsec1exampleprivatekey', language: 'en' }, '')).status, 400);
+  assert.equal((await request('/guide', { question: 'nostrwalletconnect://somewalletconnection', language: 'en' }, '')).status, 400);
   const answer = await request('/guide', { question: 'What are sats?', language: 'en' }, '');
   assert.equal(answer.status, 200); assert.match(answer.body.answer, /100,000,000/);
+});
+
+test('Learning profiles, exports and reset are authenticated and isolate learners', async () => {
+  assert.equal((await request('/profile', undefined, '')).status, 401);
+  assert.equal((await request('/export', undefined, '')).status, 401);
+  assert.equal((await request('/profile', { displayName: '', language: 'fr' }, 'learner-profile', 'PATCH')).status, 422);
+  assert.equal((await request('/profile', { displayName: '  Amina  ', language: 'ha', onboardingComplete: true }, 'learner-profile', 'PATCH')).status, 200);
+  const profile = (await request('/profile', undefined, 'learner-profile')).body;
+  assert.deepEqual(profile, { displayName: 'Amina', language: 'ha', onboardingComplete: true });
+  assert.equal((await request('/profile', undefined, 'learner-other')).body.displayName, 'Learner');
+  assert.equal((await request('/profile', { displayName: 'Amina', connectionUri: 'private' }, 'learner-profile', 'PATCH')).status, 422);
+  await request('/lessons/bitcoin/quiz', { answers: [2, 0, 1] }, 'learner-profile');
+  const exported = (await request('/export', undefined, 'learner-profile')).body;
+  assert.equal(exported.profile.displayName, 'Amina');
+  assert.equal(exported.progress.completedCount, 1);
+  assert.equal(exported.attempts.length, 1);
+  assert.doesNotMatch(JSON.stringify(exported), /preimage|sealedUri|connectionUri|tokenHash/);
+  assert.equal((await request('/progress', { confirmation: 'reset' }, 'learner-profile', 'DELETE')).status, 400);
+  assert.equal((await request('/progress', { confirmation: 'RESET' }, 'learner-profile', 'DELETE')).status, 200);
+  assert.equal((await request('/progress', undefined, 'learner-profile')).body.completedCount, 0);
+  assert.deepEqual((await request('/profile', undefined, 'learner-profile')).body, profile);
 });

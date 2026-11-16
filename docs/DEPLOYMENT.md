@@ -6,7 +6,7 @@ The previous application remains in Git history and the archive branch recorded 
 
 ## Hosting
 
-The Vite/React interface runs on the existing `grey-finance` Vercel project in `greyw0rks-projects`. Its build starts at the repository root, uses `pnpm build -- greyfinance`, and publishes `apps/satfamily/dist`. `/api/*` requests are rewritten to `https://intent-curlew-185.convex.site/api/*`; other product routes serve the frontend.
+The Vite/React interfaces run on the existing `grey-finance` Vercel project in `greyw0rks-projects`. The repository-root build uses `pnpm build:release` and publishes `dist`: GreyFinance at `/` and SatsAcademy at `/academy/`. `/api/*` requests are rewritten to `https://intent-curlew-185.convex.site/api/*`. Each product's direct navigation routes serve its own frontend; `/satsacademy/*` redirects to `/academy/*`.
 
 Convex production is `intent-curlew-185`. The separate development deployment is `elegant-caribou-763` in Europe/Ireland. Convex stores memberships, spending reservations, hashed sessions, encrypted delegated wallet connections and verified receipts. Node actions use the NWC SDK against the company's wallet.
 
@@ -16,7 +16,9 @@ Set `GREY_APP_ORIGIN=https://grey-finance.vercel.app` in Convex production. Set 
 pnpm install --frozen-lockfile
 pnpm test
 pnpm typecheck
-pnpm build -- greyfinance
+pnpm typecheck:academy
+pnpm typecheck:convex
+pnpm build:release
 pnpm exec convex deploy
 ```
 

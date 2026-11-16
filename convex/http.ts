@@ -3,6 +3,8 @@ import { httpAction } from './_generated/server';
 import { internal } from './_generated/api';
 import { verifyEvent, type Event } from 'nostr-tools';
 import { cleanError, digestHex, fail, type HttpResult } from './lib';
+import { z } from 'zod';
+import { containsGuideSecret, courseGuide } from '../packages/academy/src/guide';
 
 const router = httpRouter();
 const canonicalOrigin = () => process.env.GREY_APP_ORIGIN || process.env.SATS_APP_ORIGIN || 'https://grey-finance.vercel.app';
@@ -37,17 +39,18 @@ function json(result: HttpResult, origin?: string, cookie?: string) {
   if (cookie) resultHeaders.set('Set-Cookie', cookie);
   return new Response(JSON.stringify(result.body), { status: result.status, headers: resultHeaders });
 }
-async function sealConnection(uri: string, pubkey: string) {
+async function sealConnection(uri: string, pubkey: string, scope: 'finance' | 'academy' = 'finance') {
   const secret = process.env.GREY_WALLET_ENCRYPTION_KEY || '';
   if (!/^[a-f0-9]{64}$/i.test(secret)) fail(503, 'SERVER_CONFIGURATION', 'Wallet connections are not configured on this server.');
   const rawKey = Uint8Array.from(secret.match(/.{2}/g)!, pair => parseInt(pair, 16));
   const key = await crypto.subtle.importKey('raw', rawKey, { name: 'AES-GCM' }, false, ['encrypt']);
   rawKey.fill(0);
   const iv = new Uint8Array(12); crypto.getRandomValues(iv);
-  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(`GreyFinance NWC v1:${pubkey}`) }, key, new TextEncoder().encode(uri));
+  const product = scope === 'academy' ? 'SatsAcademy' : 'GreyFinance';
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(`${product} NWC v1:${pubkey}`) }, key, new TextEncoder().encode(uri));
   return `v1.${base64(iv)}.${base64(new Uint8Array(encrypted))}`;
 }
-export function verifyHttpSignature(authorization: string | null, url: string, method: string, rawBody: string, now: number): Event {
+export function verifyHttpSignature(authorization: string | null, url: string, method: string, rawBody: string | Uint8Array, now: number): Event {
   if (!authorization?.startsWith('Nostr ') || authorization.length > 12000) fail(401, 'AUTH_REQUIRED', 'Sign in with your Nostr identity.');
   let event: Event;
   try {
@@ -80,11 +83,15 @@ const handler = httpAction(async (ctx, request): Promise<Response> => {
     if (path === '/api/config' && request.method === 'GET') return json({ status: 200, body: { demoEnabled: false, relayUrl: null, bitcoinReady: false, walletConfigured: false, lightningLabReady: false, backend: 'convex' } }, origin);
     if (path.startsWith('/api/demo/')) fail(403, 'DEMO_DISABLED', 'Local practice accounts are disabled on this deployment. Sign in with your Nostr identity.');
     if (Number(request.headers.get('content-length') || 0) > 32768) fail(413, 'BODY_LIMIT', 'The request is too large.');
-    const rawBody = ['GET', 'HEAD'].includes(request.method) ? '' : await request.text();
-    if (new TextEncoder().encode(rawBody).byteLength > 32768) fail(413, 'BODY_LIMIT', 'The request is too large.');
+    const rawBytes = ['GET', 'HEAD'].includes(request.method) ? new Uint8Array() : new Uint8Array(await request.arrayBuffer());
+    if (rawBytes.byteLength > 32768) fail(413, 'BODY_LIMIT', 'The request is too large.');
+    let rawBody: string;
+    try { rawBody = new TextDecoder('utf-8', { fatal: true }).decode(rawBytes); }
+    catch { fail(422, 'INVALID_ENCODING', 'Send valid UTF-8 JSON for this request.'); }
     let body: unknown = {};
     if (rawBody) { try { body = JSON.parse(rawBody); } catch { fail(422, 'INVALID_INPUT', 'Send a valid JSON request.'); } }
-    const connecting = path === '/api/wallet/connect' && request.method === 'POST';
+    const connectingAcademy = path === '/api/academy/wallet/connect' && request.method === 'POST';
+    const connecting = path === '/api/wallet/connect' && request.method === 'POST' || connectingAcademy;
     if (!connecting && containsWalletCredential(body)) fail(422, 'CREDENTIAL_ROUTE', 'Use the wallet connection form to provide a delegated wallet connection.');
     const token = sessionToken(request);
     const tokenHash = token ? digestHex(token) : '';
@@ -99,18 +106,27 @@ const handler = httpAction(async (ctx, request): Promise<Response> => {
       return json({ status: 200, body: { ok: true } }, origin, 'sats_session=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0');
     }
     if (path === '/api/auth/nostr' && request.method === 'POST') {
-      const event = verifyHttpSignature(request.headers.get('authorization'), `${origin || canonicalOrigin()}${url.pathname}${url.search}`, request.method, rawBody, now);
+      const event = verifyHttpSignature(request.headers.get('authorization'), `${origin || canonicalOrigin()}${url.pathname}${url.search}`, request.method, rawBytes, now);
       const nextToken = randomToken();
       const user = await ctx.runMutation(internal.model.authenticate, { eventId: event.id, pubkey: event.pubkey, tokenHash: digestHex(nextToken), expiresAt: now + 12 * 3600000, now });
       return json({ status: 200, body: { user } }, origin, `sats_session=${nextToken}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200`);
+    }
+    if (path === '/api/academy/guide' && request.method === 'POST') {
+      const input = z.object({ question: z.string().trim().min(3).max(700), language: z.enum(['en', 'ha']).default('en') }).strict().safeParse(body);
+      if (!input.success) fail(422, 'INVALID_INPUT', 'Ask a short question about Bitcoin, wallet safety or Lightning.');
+      // Recognizable credentials never become stored records or internal action arguments.
+      if (containsGuideSecret(input.data.question)) fail(422, 'GUIDE_SECRET', 'Keep private keys and wallet connections out of the guide. Revoke any secret that you shared.');
+      return json({ status: 200, body: courseGuide(input.data.question, input.data.language) }, origin);
     }
     if (!user) fail(401, 'AUTH_REQUIRED', 'Sign in with your Nostr identity.');
     if (connecting) {
       if (!body || typeof body !== 'object' || Object.keys(body).length !== 1 || !('connectionUri' in body) || typeof body.connectionUri !== 'string' || body.connectionUri.length > 4096 || body.connectionUri.length < 60) fail(422, 'INVALID_CONNECTION', 'Enter a valid Nostr Wallet Connect connection.');
       // The delegated secret never enters an internal function argument or an unencrypted stored document.
-      body = { sealedUri: await sealConnection(body.connectionUri, user.pubkey) };
+      body = { sealedUri: await sealConnection(body.connectionUri, user.pubkey, connectingAcademy ? 'academy' : 'finance') };
     }
-    const result = await ctx.runAction(internal.nodeOps.dispatch, { tokenHash, method: request.method, path, body });
+    const result = path.startsWith('/api/academy/')
+      ? await ctx.runAction(internal.academyHttp.dispatch, { tokenHash, method: request.method, path, body, query: Object.fromEntries(url.searchParams) })
+      : await ctx.runAction(internal.nodeOps.dispatch, { tokenHash, method: request.method, path, body });
     return json(result, origin);
   } catch (error) { return json(cleanError(error), origin); }
 });

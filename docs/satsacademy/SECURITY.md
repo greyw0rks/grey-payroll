@@ -1,15 +1,48 @@
 # Security and constraints
 
-The browser does not claim that a payment was successful. Exercise creation records a unique server-created invoice associated with one learner. Verification queries the appropriate receiving wallet and checks invoice hash, amount and settled state. If the wallet returns a preimage, its SHA-256 digest must match the invoice hash. An unavailable wallet, pending invoice, mismatched provider response or forged paid flag awards no practical badge.
+## Identity and sessions
 
-Quiz completion and practical achievements use separate database records. Quizzes are graded on the server; repeated passing attempts cannot duplicate a badge. Payment verification updates exercise state and awards the practical badge in one SQLite transaction. A learner cannot read or verify another learner’s exercise. Resetting quiz progress preserves payment receipts and the verified achievement.
+The server verifies signed NIP-98 authentication events against the exact request URL, method, raw-body digest, and freshness window. Every browser sign-in adds a random nonce so two attempts from the same identity in one second remain distinct. Used events cannot be replayed. Sessions use secure server-controlled cookies; private keys are not placed in browser storage.
 
-Shared authentication, NIP-98 freshness/replay checks, CSRF/origin enforcement and encrypted NWC credential storage are implemented by the root platform. SatsAcademy never asks for seed phrases. Its connection form holds the delegated URI in memory only and clears it after connection attempts. Removing an app connection is distinct from revoking the underlying wallet permission; the UI explains both actions.
+An optional temporary Nostr identity keeps its signing key only in module/tab memory. The key is zeroed on failed authentication, replacement with a signer identity, and sign-out. A session cookie can survive reload, but the app does not claim the lost signing key can be recovered. An existing Nostr signer is recommended for ongoing access.
 
-The course guide rejects recognizable NWC URIs, Nostr private-key encodings and API-key strings. It does not send wallet credentials, transaction history or profile information to an AI provider. If `ACADEMY_AI_API_KEY` is configured, an OpenAI Responses API tutor receives only a learner’s question and public lesson content, with a short timeout and output limit. Failed provider calls fall back to clearly labeled local explanations. Questions must remain free of secrets; this is not a guaranteed sensitive-data detector.
+Asynchronous UI responses are scoped to the current account/read generation. Changing identities, resetting lessons, or ending a session prevents old responses from restoring another state. Quiz results are also scoped to the lesson route that initiated them.
 
-The local preview identity is intentionally convenient for a single-machine hackathon demonstration. Production must disable demo sessions. Local regtest sats have no monetary value and must not be described as mainnet payment evidence. External wallet compatibility still depends on provider methods, signer support and network availability.
+Browser requests retain a 20-second deadline when sign-in supplies its own cancellation signal. Closing sign-in aborts a pending browser request; it does not claim to undo work the server has already accepted.
 
-Hausa content is implemented but has not yet received independent native-speaker review. The course is education, not financial advice. Estimated reading times are estimates. Independent local impact is not yet measured. Automated tests use injected provider fixtures to exercise security transitions; genuine regtest integration evidence is recorded centrally by the root agent.
+## Learning wallet boundaries
 
-The MVP supports three complete lessons and a narrow wallet lab. It does not provide recovery custody, automatic payments, exchange services, cash rewards, investment advice or generalized financial credentials.
+Academy wallet connections and exercises are separate from GreyFinance company treasury credentials. The academy exposes receiving operations only and requires `make_invoice` and `lookup_invoice`. Balance access is optional. It has no public sending or training-payment route.
+
+A connection form accepts a bounded delegated NWC URI, displays a password input, and clears the value before sending it to the server. The server encrypts delegated credentials at rest, binds them to the owner, and validates wallet providers and relay access. No recovery phrase or unrestricted wallet master key is requested.
+
+Disconnecting the app removes its saved academy connection. Revocation at the wallet provider is a separate action and is explicitly explained. An app-held delegated connection remains sensitive even when the app exposes a narrow interface; provider-level permissions remain necessary.
+
+## Payment evidence
+
+Invoice creation records a fresh receiving request, its owner, network, amount, expiry, and wallet fingerprint. A pending request earns no practical achievement.
+
+Verification queries the original receiving wallet and requires all of the following:
+
+- A matching exercise owner and wallet source.
+- The same payment hash, amount, and network as the created invoice.
+- A settled invoice status.
+- A 32-byte payment preimage whose SHA-256 digest equals the invoice hash.
+
+A missing, invalid, or mismatched preimage awards no verified badge. An unavailable wallet, wrong network, pending or expired request, screenshot, forged paid flag, or another learner's exercise cannot substitute for proof. Settled receipts are durable and repeated verification is idempotent.
+
+Knowledge-check achievements and payment-based achievements are stored separately. Resetting lessons retains payment receipts and the verified wallet achievement. Exports include all paginated receipt metadata but exclude wallet credentials, signed-session secrets, BOLT11 requests, and preimages.
+
+## Course guide and privacy
+
+The course guide rejects recognizable NWC URIs, Nostr nsec keys, WIF and extended-private-key encodings, and API-key strings. This is a bounded precaution, not a guaranteed detector of every secret, recovery phrase, or personal detail. Learners are told to keep secrets out of questions.
+
+The default guide uses public course explanations and identifies them as course guidance. If an AI tutor is configured, it receives only the question and public course context, not the learner's wallet credentials, transaction history, or profile. It does not control funds. Provider failures fall back to clearly identified course content. Responses are displayed as text, rather than rendered HTML.
+
+## Honest limits
+
+Production disables predictable local preview personas and lab shortcuts. A local shortcut is available only when the local demo and actual regtest Lightning lab are ready. Lab coins have no monetary value. Builder-controlled regtest checks establish working integration, not independent adoption or mainnet usage.
+
+Hausa is implemented but has not yet received independent native-speaker review. Reading times are estimates. The product teaches payment skills and gives no investment advice, exchange guarantees, cash rewards, recovery custody, or automatic payments.
+
+Critical security tests and genuine two-wallet acceptance are maintained by the root platform. Layout-only fixtures, when used, are labeled separately from actual payment evidence.

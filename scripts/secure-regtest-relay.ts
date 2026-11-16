@@ -1,11 +1,17 @@
 import { createServer } from 'node:http';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { WebSocket, WebSocketServer } from 'ws';
 import { verifyEvent } from 'nostr-tools';
-import { readLabConfig } from '../server/lnd.ts';
+import type { LabConfig } from '../server/lnd.ts';
 
 // Only NIP-47 traffic reaches the private lab. No API or practice session is proxied.
-const lab = readLabConfig();
+const lab = JSON.parse(readFileSync(resolve(process.env.SATS_VERIFY_LAB_DIR || '.data', 'wallet-lab.json'), 'utf8')) as LabConfig;
 if (!lab || lab.network !== 'regtest') throw new Error('Start the isolated regtest Lightning lab first.');
+const proxyPort = Number(process.env.SATS_RELAY_PROXY_PORT || 4408);
+if (!Number.isSafeInteger(proxyPort) || proxyPort < 1024 || proxyPort > 65535) throw new Error('Choose an unused local relay proxy port.');
+const upstreamUrl = new URL(process.env.SATS_RELAY_UPSTREAM || 'ws://127.0.0.1:4400/relay');
+if (upstreamUrl.protocol !== 'ws:' || !['127.0.0.1', 'localhost'].includes(upstreamUrl.hostname) || upstreamUrl.username || upstreamUrl.password || upstreamUrl.pathname !== '/relay') throw new Error('The relay-only proxy must use the private local regtest relay.');
 const participants = new Set(lab.wallets.flatMap(wallet => [wallet.walletPubkey, wallet.clientPubkey]));
 const kinds = new Set([13194, 23194, 23195]);
 const server = createServer((_request, response) => {
@@ -44,7 +50,7 @@ function permittedMessage(raw: string) {
 }
 
 wss.on('connection', client => {
-  const upstream = new WebSocket('ws://127.0.0.1:4400/relay', { maxPayload: 64 * 1024 });
+  const upstream = new WebSocket(upstreamUrl, { maxPayload: 64 * 1024 });
   const queue: string[] = [];
   let minute = Date.now();
   let count = 0;
@@ -63,7 +69,7 @@ wss.on('connection', client => {
   client.on('close', () => { if (upstream.readyState === WebSocket.CONNECTING) upstream.terminate(); else upstream.close(); });
   client.on('error', () => upstream.close());
 });
-server.listen(4407, '127.0.0.1', () => console.log('Relay-only regtest proxy ready on 127.0.0.1:4407. HTTP APIs are inaccessible.'));
+server.listen(proxyPort, '127.0.0.1', () => console.log(`Relay-only regtest proxy ready on 127.0.0.1:${proxyPort}. HTTP APIs are inaccessible.`));
 const stop = () => { for (const client of wss.clients) client.close(); wss.close(); server.close(() => process.exit(0)); };
 process.on('SIGINT', stop);
 process.on('SIGTERM', stop);

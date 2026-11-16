@@ -1,23 +1,46 @@
 # SatsAcademy design system
 
-SatsAcademy is a learning studio for first-time Bitcoin users in Nigeria and West Africa. Its core job is to turn an unfamiliar payment concept into a small action that a learner can check themselves.
+SatsAcademy helps first-time Bitcoin users in Nigeria and West Africa build practical payment skills. QuestN inspires the discovery and achievement experience. The artwork, typography, components, and product copy are original.
 
 ## Color
 
-Warm paper `#f8f7f2` and near-white `#fffefa` keep long lessons comfortable. Cobalt `#3150d6` marks navigation, primary actions and verified steps. Apricot `#ffc17d` gives Bitcoin illustrations warmth without using orange as every surface. Sage `#4d775b` signals completed checks. Ink `#222a35` is used for reading; muted copy uses `#677487` or darker. Red and amber are reserved for real errors and invoice expiry.
+- Warm paper: `#faf8f1`, for the application background.
+- Near-white: `#fffdf7`, for lesson reading and working surfaces.
+- Ink: `#222a39`, for primary text and strong actions.
+- Cobalt: `#3153d4`, for navigation, primary actions, and the wallet learning block.
+- Apricot: `#ffc082`, for the Bitcoin coin, welcome accents, and tangible progress.
+- Sage: `#e4edcf` with `#42683e`, for verified and completed states.
+- Muted text: `#626d7b`, for readable supporting copy. Status color is always accompanied by a label.
+- Red and amber are used for actual error and invoice expiry states.
+
+The palette uses solid color blocks. There are no decorative dashboard charts, token balances, invented learner counts, or reward promises.
 
 ## Typography
 
-Local Manrope Variable is the reading and UI face. Local Space Grotesk Variable gives headings and numeric units a distinct character. Both support the Latin characters used in English and Hausa; no remote font requests are needed.
+Local Manrope Variable is the reading and interface face. Local Space Grotesk Variable provides expressive headings and Bitcoin units. English and Hausa are supported through local Latin and Latin Extended font files. The landing page uses a confident editorial headline; lessons use a narrower reading column and generous line height.
 
 ## Layout
 
-A quiet fixed sidebar anchors the learning workspace. The dashboard combines a small illustrated introduction, an actual progress ring, three lesson cards, and a prominent wallet lab. Lesson pages concentrate content in a readable main column with contextual help. At 650px the sidebar becomes a keyboard-accessible menu and cards become compact horizontal rows. At 360px all pages remain within the viewport.
+Desktop uses a horizontal header and four learning tabs. Phones use a fixed, accessible five-item bottom navigation with safe-area padding. There is no application navigation sidebar.
+
+The landing page introduces the purpose, three real learning quests, the wallet exercise, and practical questions. The signed-in learning workspace uses a cobalt-tinted introduction, true completion progress, searchable quest cards, and working wallet and course-guide entry points.
+
+Lesson pages separate reading from knowledge checks. A contextual achievement panel describes what completion means; it is content, not navigation. The wallet lab shows a clear three-step flow and then the actual invoice, payment hash, network, expiry, and verified receipt.
 
 ## Components
 
-Buttons use a six-pixel radius and a 44px main touch target. Cards have restrained borders and gentle elevation on hover. Every modal traps keyboard focus and supports Escape. A single toast reports completed actions; errors explain the next useful step. Diagrams are original SVG/CSS and distinguish educational illustrations from actual wallet invoices. Verified achievements, knowledge badges and preview state are visually and semantically separate.
+Quest cards have original dimensional coin, key, and Lightning artwork. They behave as buttons and lead to actual lessons. Knowledge badges and a verified wallet badge have distinct labels and evidence requirements.
 
-## Motion and accessibility
+Controls have explicit labels and keyboard focus. Dialogs trap focus, support Escape, make the background inert, and restore the previous focus. Wallet connection fields are password inputs; delegated secrets are cleared before the connection request is sent. Error messages explain the next useful action.
 
-Transitions use opacity and transforms. Reduced-motion users receive immediate state changes. Radio quizzes use native inputs, inputs have explicit labels, and tab lists carry tab semantics. Pending payments show a text label alongside an activity indicator, so color alone never conveys payment status.
+The bottom navigation remains usable while an action notification is visible. Toast dismissal has a 44-pixel target. All payment states use readable text, rather than relying on icon or color alone.
+
+## Responsive and motion rules
+
+At 360 pixels, pages remain within the viewport and controls wrap rather than overlap. Lesson body copy remains readable, and touch text fields use 16-pixel type to prevent unexpected mobile zoom. Headings scale with the viewport; the artwork is vector and fonts are local.
+
+Small hover and feedback transitions communicate interactivity. Reduced-motion settings disable animated movement and smooth scrolling. No motion is required to understand a state or complete a task.
+
+## Honest product content
+
+All course content is available in English and Hausa. Hausa is identified as an initial translation awaiting native-speaker review. Lesson durations are estimates. A regtest wallet is explicitly described as having no monetary value. Payment verification, adoption, and mainnet claims require separate recorded evidence.

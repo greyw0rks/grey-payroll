@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "apps/satsacademy",
+    "packages/academy/src",
+    "packages/nwc-gate/src",
+    "server/academy.ts",
+    "server/context.ts",
+    "tests/academy.test.ts",
+    "tests/academy-signer.test.ts"
+  ]
+}

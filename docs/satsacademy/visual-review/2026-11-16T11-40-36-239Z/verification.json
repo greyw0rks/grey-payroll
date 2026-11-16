@@ -1,0 +1,106 @@
+{
+  "mode": "actual-builder-test",
+  "createdAt": "2026-11-16T11:41:25.941Z",
+  "origin": "http://127.0.0.1:4403",
+  "notes": [
+    "Fresh temporary Nostr identity and real local API; builder-controlled QA, not independent adoption.",
+    "Two explicitly labeled API failure injections test recovery.",
+    "No wallet connection or payment, no mainnet evidence, and no public-relay publishing."
+  ],
+  "passed": false,
+  "checks": [
+    {
+      "name": "lesson-next-step-scroll-and-focus",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "heading": {
+        "top": 200.15625,
+        "text": "Check the payment, not the screenshot.",
+        "viewport": 844
+      }
+    },
+    {
+      "name": "lesson-back-restores-section-focus",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "connect-install-and-website-access-guidance",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "modal-keyboard-containment",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "backgroundInert": true
+    },
+    {
+      "name": "escape-restores-trigger-focus",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "account-to-onboarding-focus",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "focusedId": "onboarding-name"
+    },
+    {
+      "name": "real-signed-identity-quiz-completion",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "progress-and-temporary-disclosure-survive-reload",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "completedLessons": 1,
+      "metadata": "public key only",
+      "lostSigningKeyWarning": true
+    },
+    {
+      "name": "knowledge-check-never-awards-wallet-badge",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "knowledgeBadges": 1,
+      "practicalBadge": false
+    },
+    {
+      "name": "browser-history-restores-lesson",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "valid-60-character-name-wraps-360",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 360,
+      "scrollWidth": 360
+    },
+    {
+      "name": "valid-60-character-name-wraps-390",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "name": "valid-60-character-name-wraps-1024",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1024,
+      "scrollWidth": 1024
+    },
+    {
+      "name": "valid-60-character-name-wraps-1440",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "viewport": 1440,
+      "scrollWidth": 1440
+    }
+  ],
+  "captures": [],
+  "pageErrors": [],
+  "fatalError": "expect(locator).toHaveValue(expected) failed\n\nLocator: locator('#profile-name')\nExpected: \"WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW\"\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"toHaveValue\" locator('#profile-name') with timeout 5000ms\n  - waiting for locator('#profile-name')\n"
+}

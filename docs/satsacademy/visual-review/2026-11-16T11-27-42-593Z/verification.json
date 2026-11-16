@@ -1,0 +1,42 @@
+{
+  "mode": "actual-builder-test",
+  "createdAt": "2026-11-16T11:27:56.967Z",
+  "origin": "http://127.0.0.1:4403",
+  "notes": [
+    "Fresh temporary Nostr identity and real local API; builder-controlled QA, not independent adoption.",
+    "Two explicitly labeled API failure injections test recovery.",
+    "No wallet connection or payment, no mainnet evidence, and no public-relay publishing."
+  ],
+  "passed": false,
+  "checks": [
+    {
+      "name": "lesson-next-step-scroll-and-focus",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "heading": {
+        "top": 200.15625,
+        "text": "Check the payment, not the screenshot.",
+        "viewport": 844
+      }
+    },
+    {
+      "name": "lesson-back-restores-section-focus",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "connect-install-and-website-access-guidance",
+      "mode": "actual-builder-test",
+      "passed": true
+    },
+    {
+      "name": "modal-keyboard-containment",
+      "mode": "actual-builder-test",
+      "passed": true,
+      "backgroundInert": true
+    }
+  ],
+  "captures": [],
+  "pageErrors": [],
+  "fatalError": "expect(locator).toBeFocused() failed\n\nLocator:  getByRole('button', { name: 'Sign in & check answers', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n  - Expect \"toBeFocused\" getByRole('button', { name: 'Sign in & check answers', exact: true }) with timeout 5000ms\n  - waiting for getByRole('button', { name: 'Sign in & check answers', exact: true })\n    13 × locator resolved to <button type=\"submit\" class=\"button primary\">…</button>\n       - unexpected value \"inactive\"\n"
+}

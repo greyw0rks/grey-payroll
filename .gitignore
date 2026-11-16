@@ -8,6 +8,7 @@ dist/
 playwright-report/
 test-results/
 .tools/
+.tools
 *.log
 .atlas/
 .vercel/

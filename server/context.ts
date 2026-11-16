@@ -30,6 +30,8 @@ export interface AppContext {
   walletForUser(userId: string): Promise<WalletAdapter | null>;
   /** Removes the persisted connection in the caller's SQLite transaction and closes its cache entry. */
   disconnectWalletForUser?(userId: string): void;
+  /** Records an Academy receiving invoice inside the caller's SQLite transaction. */
+  recordReceivingInvoice?(userId: string, invoice: WalletInvoice, fingerprint: string, network: string): void;
   now(): number;
   demoEnabled: boolean;
 }

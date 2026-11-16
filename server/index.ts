@@ -5,10 +5,11 @@ import { createServer } from 'node:http';
 import { resolve } from 'node:path';
 import { z, ZodError } from 'zod';
 import { db } from './store.ts';
-import { createAuth, validateOrigin, isLocalHost } from './auth.ts';
+import { createAuth, validateOrigin, isLocalHost, rememberJsonBody } from './auth.ts';
 import { createWalletRegistry, createWalletRouter } from './wallets.ts';
 import { createSatFamilyRouter } from './satfamily.ts';
 import { createAcademyRouter } from './academy.ts';
+import { createAcademyWalletRegistry, createAcademyWalletRouter } from './academy-wallets.ts';
 import { createGateRouter } from './gate.ts';
 import { createSandboxRouter } from './sandbox.ts';
 import { attachRelay } from './relay.ts';
@@ -24,7 +25,7 @@ const host = process.env.SATS_HOST || '127.0.0.1';
 if (demoEnabled && host !== '127.0.0.1' && host !== 'localhost') throw new Error('Local practice sessions require a loopback-only server.');
 const app = express();
 app.disable('x-powered-by');
-app.use(express.json({ limit: '32kb' }));
+app.use(express.json({ limit: '32kb', verify(req, _res, buffer) { rememberJsonBody(req as express.Request, buffer); } }));
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'no-referrer');
@@ -46,7 +47,10 @@ app.use(auth.load);
 const registry = createWalletRegistry(db, demoEnabled);
 const ctx: AppContext = { db, requireUser: auth.requireUser, user: auth.user, wallet: registry.wallet, walletForUser: registry.walletForUser, disconnectWalletForUser: registry.disconnect, now: Date.now, demoEnabled };
 const walletApi = createWalletRouter(ctx, registry);
-app.get('/api/health', (_req, res) => { res.json({ ok: true, version: '0.1.0', products: ['SatFamily', 'SatsAcademy', 'Bitcoin Sandbox', 'NostrChat', 'NWC Gate'] }); });
+const academyRegistry = createAcademyWalletRegistry(db, demoEnabled);
+const academyCtx: AppContext = { ...ctx, wallet: () => null, walletForUser: academyRegistry.walletForUser, disconnectWalletForUser: academyRegistry.disconnect, recordReceivingInvoice: academyRegistry.recordInvoice };
+const academyWalletApi = createAcademyWalletRouter(academyCtx, academyRegistry);
+app.get('/api/health', (_req, res) => { res.json({ ok: true, version: '0.1.0', products: ['SatFamily', 'SatsAcademy', 'Bitcoin Sandbox', 'NostrChat', 'NWC Gate'], academyWalletIsolated: true }); });
 app.get('/api/config', async (_req, res) => { res.json({ demoEnabled, relayUrl: `ws://127.0.0.1:${port}/relay`, bitcoinReady: Boolean(await bitcoinReady()), walletConfigured: Boolean(ctx.wallet()), lightningLabReady: Boolean(readLabConfig()) }); });
 app.get('/api/session', (req, res) => { let user: User | null = null; try { user = auth.user(req); } catch {} res.json({ user, demoEnabled }); });
 app.post('/api/auth/nostr', (req, res) => { res.json({ user: auth.authenticate(req, res) }); });
@@ -65,7 +69,9 @@ app.post('/api/demo/wallet', ctx.requireUser, async (req, res) => {
 });
 app.use('/api/wallet', walletApi.router);
 app.use('/api/satfamily', createSatFamilyRouter(ctx));
-app.use('/api/academy', createAcademyRouter(ctx));
+app.post('/api/academy/demo/wallet', ctx.requireUser, async (req, res) => res.json(await academyWalletApi.connectPractice(req)));
+app.use('/api/academy/wallet', academyWalletApi.router);
+app.use('/api/academy', createAcademyRouter(academyCtx));
 app.use('/api/gate', createGateRouter(ctx));
 app.use('/api/sandbox', createSandboxRouter(ctx));
 for (const name of ['satfamily', 'satsacademy', 'sandbox', 'nostrchat', 'nwc-gate', 'launcher']) {
@@ -95,6 +101,6 @@ if (demoEnabled && readLabConfig()) {
   catch { console.warn('Local Lightning nodes are offline. Run pnpm setup:lightning, then restart the API.'); }
 }
 console.log(`Sats API ready at http://${host}:${port} · ${demoEnabled ? 'local practice' : 'live wallet connections'}`);
-const stop = () => { services?.close(); registry.close(); relay.close(); server.close(() => { db.close(); process.exit(0); }); };
+const stop = () => { services?.close(); registry.close(); academyRegistry.close(); relay.close(); server.close(() => { db.close(); process.exit(0); }); };
 process.on('SIGTERM', stop);
 process.on('SIGINT', stop);

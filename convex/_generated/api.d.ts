@@ -8,6 +8,12 @@
  * @module
  */
 
+import type * as academy from "../academy.js";
+import type * as academyHttp from "../academyHttp.js";
+import type * as academySchema from "../academySchema.js";
+import type * as academyWalletModel from "../academyWalletModel.js";
+import type * as academyWalletSchema from "../academyWalletSchema.js";
+import type * as academyWallets from "../academyWallets.js";
 import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as lib from "../lib.js";
@@ -21,6 +27,12 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  academy: typeof academy;
+  academyHttp: typeof academyHttp;
+  academySchema: typeof academySchema;
+  academyWalletModel: typeof academyWalletModel;
+  academyWalletSchema: typeof academyWalletSchema;
+  academyWallets: typeof academyWallets;
   crons: typeof crons;
   http: typeof http;
   lib: typeof lib;

@@ -1,12 +1,16 @@
+import { courseGuide, containsGuideSecret } from "../packages/academy/src/guide.ts";
+export { courseGuide } from "../packages/academy/src/guide.ts";
 import { Router, type Request } from 'express';
 import { createHash, randomUUID } from 'node:crypto';
 import { z } from 'zod';
 import type { AppContext, WalletInvoice } from './context.ts';
+import { GateError } from '../packages/nwc-gate/src/types.ts';
 import { lessons, getLesson, type Language } from '../apps/satsacademy/src/content.ts';
 
 type Exercise = {
   id: string; user_id: string; scope: 'user' | 'training'; payment_hash: string; bolt11: string;
   amount_sats: number; state: 'pending' | 'settled' | 'expired'; expires_at: number; created_at: number; settled_at: number | null;
+  wallet_fingerprint: string | null; network: string | null; preimage: string | null;
 };
 
 export function gradeQuiz(lessonId: string, answers: number[]) {
@@ -21,27 +25,13 @@ export function gradeQuiz(lessonId: string, answers: number[]) {
 export function validateExerciseSettlement(exercise: Pick<Exercise, 'payment_hash' | 'amount_sats'>, invoice: WalletInvoice) {
   if (invoice.paymentHash !== exercise.payment_hash || invoice.amountSats !== exercise.amount_sats) throw new Error('The wallet returned a different payment. No achievement was awarded.');
   if (invoice.state !== 'settled') return false;
-  if (invoice.preimage) {
+  if (!invoice.preimage) throw new Error('The wallet has not supplied verifiable payment proof.');
+  {
     if (!/^[0-9a-f]{64}$/i.test(invoice.preimage)) throw new Error('The wallet returned invalid payment proof.');
     const actualHash = createHash('sha256').update(Buffer.from(invoice.preimage, 'hex')).digest('hex');
     if (actualHash !== exercise.payment_hash.toLowerCase()) throw new Error('The wallet payment proof does not match this exercise.');
   }
   return true;
-}
-
-const guideEntries = [
-  { topic: 'safety', match: /secret|seed|phrase|recover|private|safe|scam|tsaro|sirri|kiyaye/i, title: { en: 'Keep wallet control private', ha: 'Kiyaye ikon walat a sirrance' }, answer: { en: 'Share receiving invoices, never recovery words or private keys. An NWC connection contains a delegated secret: use only the permissions you need, set a small provider-enforced budget before sending, and revoke the connection when you are finished.', ha: 'Raba invoice na karɓa, kada ka raba kalmomin dawo da walat ko maballin sirri. Haɗin NWC yana da sirrin izini: ba da izinin da kake buƙata kawai, sa ƙaramin iyakar kashe kuɗi kafin aika, kuma cire haɗin idan ka gama.' }, lessonId: 'security' },
-  { topic: 'fees', match: /fee|cost|charge|caji|kuɗin|tsada/i, title: { en: 'Two payment networks, different fees', ha: 'Hanyoyin biya biyu, caji daban-daban' }, answer: { en: 'On-chain fees depend on transaction size and block-space demand. Lightning wallets may charge routing or provider fees. Check the fee shown by your wallet before confirming. This course does not promise free payments or a fixed exchange rate.', ha: 'Cajin on-chain ya danganta da girman ciniki da buƙatar sararin block. Walat na Lightning na iya ƙara cajin hanya ko na mai ba da walat. Duba caji kafin amincewa. Darasin ba ya alkawarin biya kyauta ko tsayayyen farashi.' }, lessonId: 'bitcoin' },
-  { topic: 'verification', match: /pending|settle|paid|verify|proof|screenshot|confirm|tabbatar|biya/i, title: { en: 'Pending is not paid', ha: 'Jiran biya ba yana nufin an biya ba' }, answer: { en: 'Verify the invoice in the receiving wallet. The payment hash and amount must match the request, and its status must be settled. A screenshot, message, or button click does not prove that funds arrived. The wallet lab checks this before awarding a verified badge.', ha: 'Tabbatar da invoice a walat na karɓa. Hash da adadin kuɗi dole su dace da neman biya, kuma matsayin ya zama an biya. Hoton allo, saƙo ko danna maɓalli ba hujjar karɓar kuɗi ba ne. Wurin gwaji yana duba wannan kafin bayar da lamba.' }, lessonId: 'lightning' },
-  { topic: 'nwc', match: /nwc|connect|permission|haɗa|izini/i, title: { en: 'Connect with a small permission set', ha: 'Haɗa walat da ƙaramin izini' }, answer: { en: 'Nostr Wallet Connect lets this app request operations from your Lightning wallet. For receiving, enable make_invoice and lookup_invoice. Balance access is optional. Sending also needs pay_invoice and your explicit confirmation. Your provider’s limits remain important because NWC can delegate spending.', ha: 'Nostr Wallet Connect yana ba manhajar damar neman ayyuka daga walat na Lightning. Domin karɓa, ba da make_invoice da lookup_invoice. Duba ma’auni zaɓi ne. Aika yana buƙatar pay_invoice da amincewarka. Iyakar walat tana da muhimmanci domin NWC na iya ba da izinin kashe kuɗi.' }, lessonId: 'security' },
-  { topic: 'invoice', match: /invoice|qr|expire|request|karɓa|ƙare/i, title: { en: 'An invoice asks for a payment', ha: 'Invoice yana neman biya' }, answer: { en: 'A BOLT11 invoice is a payment request containing a payment hash, an amount and an expiry. A QR code carries that same invoice. Use a fresh invoice for each exercise and a second wallet on the same network. An expired invoice needs replacing; it is not a successful payment.', ha: 'Invoice na BOLT11 neman biya ne mai hash, adadi da lokacin ƙarewa. Lambar QR tana ɗauke da invoice ɗin. Yi amfani da sabon invoice ga kowane gwaji da walat na biyu a hanya ɗaya. Idan invoice ya ƙare, ƙirƙiri sabo; ƙarewa ba nasarar biya ba ce.' }, lessonId: 'lightning' },
-  { topic: 'sats', match: /sat|unit|million|btc|kaso/i, title: { en: 'You can start with sats', ha: 'Za ka iya farawa da sats' }, answer: { en: 'One bitcoin equals 100,000,000 satoshis. You do not need a whole bitcoin to make a payment. Our receiving exercise requests just 10 sats. Bitcoin prices can change: this is a payment-skills course, not investment advice.', ha: 'Bitcoin ɗaya yana da satoshi 100,000,000. Ba sai kana da Bitcoin ɗaya ba kafin biya. Gwajin karɓarmu yana neman sats 10 kawai. Farashin Bitcoin yana canzawa: wannan darasin amfani da biya ne, ba shawarar zuba jari ba.' }, lessonId: 'bitcoin' }
-];
-
-export function courseGuide(question: string, language: Language = 'en') {
-  const entry = guideEntries.find(item => item.match.test(question));
-  if (!entry) return { title: language === 'ha' ? 'Zaɓi abu ɗaya mu fahimta' : 'Let’s make one idea clear', answer: language === 'ha' ? 'Zan iya bayyana sats, tsaron walat, izinin NWC, invoice, caji da tabbatar da biya daga darussanmu. Gwada tambaya kamar “Me ya sa invoice yake pending?” Kada ka saka sirrin walat ko kalmomin dawo da shi.' : 'I can explain sats, wallet safety, NWC permissions, invoices, fees and payment verification from these lessons. Try “Why is my invoice still pending?” Never paste wallet secrets or recovery words.', lessonId: null, mode: 'course-guide' as const };
-  return { title: entry.title[language], answer: entry.answer[language], lessonId: entry.lessonId, mode: 'course-guide' as const };
 }
 
 export function createAcademyRouter(ctx: AppContext) {
@@ -50,18 +40,58 @@ export function createAcademyRouter(ctx: AppContext) {
     CREATE TABLE IF NOT EXISTS academy_progress (user_id TEXT NOT NULL, lesson_id TEXT NOT NULL, best_score INTEGER NOT NULL DEFAULT 0, passed INTEGER NOT NULL DEFAULT 0, completed_at INTEGER, PRIMARY KEY(user_id, lesson_id));
     CREATE TABLE IF NOT EXISTS academy_attempts (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, lesson_id TEXT NOT NULL, score INTEGER NOT NULL, created_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS academy_badges (user_id TEXT NOT NULL, badge_id TEXT NOT NULL, reason_type TEXT NOT NULL, reason_id TEXT NOT NULL, earned_at INTEGER NOT NULL, PRIMARY KEY(user_id, badge_id));
-    CREATE TABLE IF NOT EXISTS academy_exercises (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, scope TEXT NOT NULL, payment_hash TEXT NOT NULL UNIQUE, bolt11 TEXT NOT NULL, amount_sats INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'pending', expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, settled_at INTEGER);
+    CREATE TABLE IF NOT EXISTS academy_exercises (id TEXT PRIMARY KEY, user_id TEXT NOT NULL, scope TEXT NOT NULL, payment_hash TEXT NOT NULL UNIQUE, bolt11 TEXT NOT NULL, amount_sats INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'pending', expires_at INTEGER NOT NULL, created_at INTEGER NOT NULL, settled_at INTEGER, wallet_fingerprint TEXT, network TEXT, preimage TEXT);
     CREATE INDEX IF NOT EXISTS academy_exercises_user ON academy_exercises(user_id,created_at);
+    CREATE TABLE IF NOT EXISTS academy_profiles (user_id TEXT PRIMARY KEY, display_name TEXT NOT NULL DEFAULT 'Learner', language TEXT NOT NULL DEFAULT 'en', onboarding_complete INTEGER NOT NULL DEFAULT 0, updated_at INTEGER NOT NULL);
+    CREATE TABLE IF NOT EXISTS academy_creations (user_id TEXT PRIMARY KEY, attempt_id TEXT NOT NULL, expires_at INTEGER NOT NULL);
   `);
+  const exerciseColumns = ctx.db.prepare('PRAGMA table_info(academy_exercises)').all() as { name: string }[];
+  for (const column of ['wallet_fingerprint', 'network', 'preimage']) {
+    if (!exerciseColumns.some(item => item.name === column)) ctx.db.exec(`ALTER TABLE academy_exercises ADD COLUMN ${column} TEXT`);
+  }
 
   const snapshot = (userId: string) => ({
     lessons: ctx.db.prepare('SELECT lesson_id AS lessonId, best_score AS bestScore, passed, completed_at AS completedAt FROM academy_progress WHERE user_id = ?').all(userId),
     badges: ctx.db.prepare('SELECT badge_id AS badgeId, reason_type AS reasonType, earned_at AS earnedAt FROM academy_badges WHERE user_id = ? ORDER BY earned_at').all(userId),
-    exercises: ctx.db.prepare('SELECT id, scope, payment_hash AS paymentHash, bolt11, amount_sats AS amountSats, state, expires_at AS expiresAt, created_at AS createdAt, settled_at AS settledAt FROM academy_exercises WHERE user_id = ? ORDER BY created_at DESC LIMIT 10').all(userId),
+    exercises: ctx.db.prepare('SELECT id, scope, payment_hash AS paymentHash, bolt11, amount_sats AS amountSats, state, expires_at AS expiresAt, created_at AS createdAt, settled_at AS settledAt, network FROM academy_exercises WHERE user_id = ? ORDER BY created_at DESC LIMIT 20').all(userId),
     completedCount: (ctx.db.prepare('SELECT COUNT(*) AS count FROM academy_progress WHERE user_id = ? AND passed = 1').get(userId) as { count: number }).count
   });
 
   const recordBadge = (userId: string, badgeId: string, reasonType: string, reasonId: string) => ctx.db.prepare('INSERT OR IGNORE INTO academy_badges(user_id,badge_id,reason_type,reason_id,earned_at) VALUES(?,?,?,?,?)').run(userId, badgeId, reasonType, reasonId, ctx.now());
+  const profile = (userId: string) => {
+    const row = ctx.db.prepare('SELECT display_name AS displayName, language, onboarding_complete AS onboardingComplete FROM academy_profiles WHERE user_id = ?').get(userId) as { displayName: string; language: Language; onboardingComplete: number } | undefined;
+    return row ? { ...row, onboardingComplete: Boolean(row.onboardingComplete) } : { displayName: 'Learner', language: 'en' as Language, onboardingComplete: false };
+  };
+
+  router.get('/profile', ctx.requireUser, (req, res) => res.json(profile(ctx.user(req).id)));
+  router.patch('/profile', ctx.requireUser, (req, res) => {
+    const parsed = z.object({ displayName: z.string().trim().min(1).max(60).regex(/^[^\x00-\x1f\x7f]*$/).optional(), language: z.enum(['en', 'ha']).optional(), onboardingComplete: z.boolean().optional() }).strict().safeParse(req.body);
+    if (!parsed.success || Object.keys(parsed.data).length === 0) return res.status(422).json({ error: 'Enter a name of 1–60 characters and choose English or Hausa.' });
+    const userId = ctx.user(req).id;
+    const next = { ...profile(userId), ...parsed.data };
+    ctx.db.prepare('INSERT INTO academy_profiles(user_id,display_name,language,onboarding_complete,updated_at) VALUES(?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET display_name=excluded.display_name,language=excluded.language,onboarding_complete=excluded.onboarding_complete,updated_at=excluded.updated_at').run(userId, next.displayName, next.language, next.onboardingComplete ? 1 : 0, ctx.now());
+    return res.json(profile(userId));
+  });
+  router.get('/export', ctx.requireUser, (req, res) => {
+    const userId = ctx.user(req).id;
+    const progress = snapshot(userId);
+    let before: { createdAt: number; id: string } | undefined;
+    if (req.query.cursor !== undefined) {
+      try {
+        if (typeof req.query.cursor !== 'string' || req.query.cursor.length > 512) throw new Error();
+        const value = JSON.parse(Buffer.from(req.query.cursor, 'base64url').toString('utf8'));
+        before = z.object({ createdAt: z.number().int().positive(), id: z.string().uuid() }).strict().parse(value);
+      } catch { return res.status(422).json({ error: 'This export cursor is invalid. Start a fresh export.' }); }
+    }
+    const columns = 'id,scope,payment_hash AS paymentHash,amount_sats AS amountSats,state,expires_at AS expiresAt,created_at AS createdAt,settled_at AS settledAt,network';
+    const page = (before
+      ? ctx.db.prepare(`SELECT ${columns} FROM academy_exercises WHERE user_id=? AND (created_at<? OR created_at=? AND id<?) ORDER BY created_at DESC,id DESC LIMIT 101`).all(userId, before.createdAt, before.createdAt, before.id)
+      : ctx.db.prepare(`SELECT ${columns} FROM academy_exercises WHERE user_id=? ORDER BY created_at DESC,id DESC LIMIT 101`).all(userId)) as Array<{ id: string; createdAt: number }>;
+    const exercises = page.slice(0, 100);
+    const last = exercises.at(-1);
+    const cursor = page.length > 100 && last ? Buffer.from(JSON.stringify({ createdAt: last.createdAt, id: last.id })).toString('base64url') : null;
+    return res.json({ format: 'satsacademy-export-v1', exportedAt: ctx.now(), profile: profile(userId), progress: { ...progress, exercises }, attemptsRetention: 'latest100', pagination: { cursor, isDone: cursor === null }, attempts: ctx.db.prepare('SELECT lesson_id AS lessonId,score,created_at AS createdAt FROM academy_attempts WHERE user_id=? ORDER BY created_at DESC LIMIT 100').all(userId) });
+  });
 
   router.get('/progress', ctx.requireUser, (req, res) => res.json(snapshot(ctx.user(req).id)));
 
@@ -76,6 +106,7 @@ export function createAcademyRouter(ctx: AppContext) {
     ctx.db.exec('BEGIN IMMEDIATE');
     try {
       ctx.db.prepare('INSERT INTO academy_attempts(id,user_id,lesson_id,score,created_at) VALUES(?,?,?,?,?)').run(randomUUID(), userId, lesson.id, result.score, now);
+      ctx.db.prepare('DELETE FROM academy_attempts WHERE user_id=? AND id NOT IN (SELECT id FROM academy_attempts WHERE user_id=? ORDER BY created_at DESC,id DESC LIMIT 100)').run(userId, userId);
       ctx.db.prepare(`INSERT INTO academy_progress(user_id,lesson_id,best_score,passed,completed_at) VALUES(?,?,?,?,?) ON CONFLICT(user_id,lesson_id) DO UPDATE SET best_score = MAX(best_score, excluded.best_score), passed = MAX(passed, excluded.passed), completed_at = COALESCE(completed_at,excluded.completed_at)`).run(userId, lesson.id, result.score, result.passed ? 1 : 0, result.passed ? now : null);
       if (result.passed) recordBadge(userId, lesson.badgeId, 'quiz', lesson.id);
       ctx.db.exec('COMMIT');
@@ -83,9 +114,11 @@ export function createAcademyRouter(ctx: AppContext) {
     return res.json({ ...result, progress: snapshot(userId) });
   });
 
-  router.post('/progress/reset', ctx.requireUser, (req, res) => {
-    if (req.body?.confirm !== true) return res.status(400).json({ error: 'Confirm that you want to reset your lesson progress.' });
+  const resetLessons = (req: Request, res: import('express').Response) => {
+    if (req.method === 'DELETE' ? req.body?.confirmation !== 'RESET' || Object.keys(req.body || {}).length !== 1 : req.body?.confirm !== true) return res.status(400).json({ error: 'Type RESET to confirm resetting your lessons. Verified wallet receipts will be retained.' });
     const userId = ctx.user(req).id;
+    const creating = ctx.db.prepare('SELECT attempt_id FROM academy_creations WHERE user_id=? AND expires_at>?').get(userId, ctx.now());
+    if (creating) return res.status(409).json({ error: 'Wait for the current wallet exercise to finish before resetting lessons.' });
     ctx.db.exec('BEGIN IMMEDIATE');
     try {
       ctx.db.prepare('DELETE FROM academy_progress WHERE user_id = ?').run(userId);
@@ -94,28 +127,56 @@ export function createAcademyRouter(ctx: AppContext) {
       ctx.db.exec('COMMIT');
     } catch (error) { ctx.db.exec('ROLLBACK'); throw error; }
     // Verified payment evidence is retained; resetting learning cannot erase a payment receipt.
-    return res.json(snapshot(userId));
-  });
+    return res.json(req.method === 'DELETE' ? { ok: true, progress: snapshot(userId) } : snapshot(userId));
+  };
+  router.post('/progress/reset', ctx.requireUser, resetLessons);
+  router.delete('/progress', ctx.requireUser, resetLessons);
 
   async function createExercise(req: Request, scope: 'user' | 'training') {
     const userId = ctx.user(req).id;
     const wallet = scope === 'user' ? await ctx.walletForUser(userId) : ctx.wallet();
     if (!wallet) return null;
     const info = await wallet.getInfo();
+    if (ctx.user(req).id !== userId) throw new GateError('AUTH_REQUIRED', 'Sign in again before creating an exercise.', 401);
     if (!info.methods.includes('make_invoice') || !info.methods.includes('lookup_invoice')) throw new Error('This wallet connection needs invoice creation and lookup permissions.');
+    const fingerprint = info.connectionFingerprint ?? info.walletPubkey;
+    if (!fingerprint) throw new Error('The receiving wallet cannot be identified.');
     const id = randomUUID();
-    const invoice = await wallet.makeInvoice({ amountSats: 10, description: `SatsAcademy ${scope === 'user' ? 'receive' : 'send'} exercise ${id.slice(0, 8)}`, expirySeconds: 600 });
-    if (!/^[a-f0-9]{64}$/i.test(invoice.paymentHash) || invoice.amountSats !== 10 || invoice.state !== 'pending' || !invoice.bolt11) throw new Error('The wallet could not create a valid training invoice.');
-    ctx.db.prepare('INSERT INTO academy_exercises(id,user_id,scope,payment_hash,bolt11,amount_sats,state,expires_at,created_at) VALUES(?,?,?,?,?,?,?,?,?)').run(id, userId, scope, invoice.paymentHash, invoice.bolt11, invoice.amountSats, 'pending', invoice.expiresAt, ctx.now());
-    return { id, scope, ...invoice, network: info.network };
+    ctx.db.prepare('DELETE FROM academy_creations WHERE user_id=? AND expires_at<=?').run(userId, ctx.now());
+    const active = ctx.db.prepare("SELECT COUNT(*) AS count FROM academy_exercises WHERE user_id=? AND state='pending' AND expires_at>?").get(userId, ctx.now()) as { count: number };
+    if (active.count >= 2 || ctx.db.prepare('SELECT attempt_id FROM academy_creations WHERE user_id=?').get(userId)) throw new Error('Finish a pending exercise before creating another.');
+    ctx.db.prepare('INSERT INTO academy_creations(user_id,attempt_id,expires_at) VALUES(?,?,?)').run(userId, id, ctx.now() + 120000);
+    try {
+      const invoice = await wallet.makeInvoice({ amountSats: 10, description: `SatsAcademy ${scope === 'user' ? 'receive' : 'send'} exercise ${id}`, expirySeconds: 600 });
+      const currentWallet = scope === 'user' ? await ctx.walletForUser(userId) : ctx.wallet();
+      if (currentWallet !== wallet) throw new Error('The receiving wallet changed during invoice creation.');
+      if (ctx.user(req).id !== userId) throw new Error('Sign in again before creating an exercise.');
+      if (!/^[a-f0-9]{64}$/i.test(invoice.paymentHash) || invoice.amountSats !== 10 || invoice.state !== 'pending' || !invoice.bolt11 || !Number.isSafeInteger(invoice.expiresAt) || invoice.expiresAt <= ctx.now()) throw new Error('The wallet could not create a valid training invoice.');
+      const claim = ctx.db.prepare('SELECT attempt_id FROM academy_creations WHERE user_id=? AND expires_at>?').get(userId, ctx.now()) as { attempt_id: string } | undefined;
+      if (claim?.attempt_id !== id) throw new Error('The exercise request expired. Try again.');
+      ctx.db.exec('BEGIN IMMEDIATE');
+      try {
+        ctx.recordReceivingInvoice?.(userId, invoice, fingerprint, info.network);
+        ctx.db.prepare('INSERT INTO academy_exercises(id,user_id,scope,payment_hash,bolt11,amount_sats,state,expires_at,created_at,wallet_fingerprint,network) VALUES(?,?,?,?,?,?,?,?,?,?,?)').run(id, userId, scope, invoice.paymentHash.toLowerCase(), invoice.bolt11, invoice.amountSats, 'pending', invoice.expiresAt, ctx.now(), fingerprint, info.network);
+        ctx.db.exec('COMMIT');
+      } catch (error) { ctx.db.exec('ROLLBACK'); throw error; }
+      const { preimage: _proof, ...request } = invoice;
+      return { id, scope, ...request, network: info.network };
+    } finally { ctx.db.prepare('DELETE FROM academy_creations WHERE user_id=? AND attempt_id=?').run(userId, id); }
   }
+
+  router.post('/exercises', ctx.requireUser, async (req, res) => {
+    if (!z.object({ mode: z.literal('receive') }).strict().safeParse(req.body).success) return res.status(422).json({ error: 'Choose the receive exercise.' });
+    try { const exercise = await createExercise(req, 'user'); if (!exercise) return res.status(409).json({ error: 'Connect a Lightning wallet with invoice creation and lookup permissions first.' }); return res.status(201).json(exercise); }
+    catch (error) { if (error instanceof GateError && error.status === 401) throw error; return res.status(502).json({ error: 'The wallet could not create this exercise. Check its connection, network and pending exercises.' }); }
+  });
 
   router.post('/exercises/receive', ctx.requireUser, async (req, res) => {
     try {
       const exercise = await createExercise(req, 'user');
       if (!exercise) return res.status(409).json({ error: 'Connect a Lightning wallet with invoice creation and lookup permissions first.' });
       return res.status(201).json(exercise);
-    } catch { return res.status(502).json({ error: 'The wallet could not create this exercise. Check its connection, network and invoice permissions.' }); }
+    } catch (error) { if (error instanceof GateError && error.status === 401) throw error; return res.status(502).json({ error: 'The wallet could not create this exercise. Check its connection, network and invoice permissions.' }); }
   });
 
   router.post('/exercises/pay', ctx.requireUser, async (req, res) => {
@@ -123,18 +184,36 @@ export function createAcademyRouter(ctx: AppContext) {
       const exercise = await createExercise(req, 'training');
       if (!exercise) return res.status(503).json({ error: 'A training receiving wallet has not been configured. You can complete the receive exercise with two wallets instead.' });
       return res.status(201).json(exercise);
-    } catch { return res.status(502).json({ error: 'The training receiver is unavailable. Try the receive exercise or retry later.' }); }
+    } catch (error) { if (error instanceof GateError && error.status === 401) throw error; return res.status(502).json({ error: 'The training receiver is unavailable. Try the receive exercise or retry later.' }); }
   });
 
   router.post('/exercises/:id/verify', ctx.requireUser, async (req, res) => {
     const userId = ctx.user(req).id;
     const exercise = ctx.db.prepare('SELECT * FROM academy_exercises WHERE id = ? AND user_id = ?').get(String(req.params.id), userId) as Exercise | undefined;
     if (!exercise) return res.status(404).json({ error: 'This exercise was not found in your account.' });
-    if (exercise.state === 'settled') return res.json({ verified: true, state: 'settled', paymentHash: exercise.payment_hash, amountSats: exercise.amount_sats, settledAt: exercise.settled_at, progress: snapshot(userId) });
+    const storedReceipt = () => {
+      ctx.user(req);
+      const current = ctx.db.prepare('SELECT * FROM academy_exercises WHERE id=? AND user_id=?').get(exercise.id, userId) as Exercise | undefined;
+      if (current?.state !== 'settled') return null;
+      validateExerciseSettlement(current, { paymentHash: current.payment_hash, amountSats: current.amount_sats, bolt11: current.bolt11, expiresAt: current.expires_at, description: '', state: 'settled', preimage: current.preimage ?? undefined });
+      return { verified: true, state: 'settled', paymentHash: current.payment_hash, amountSats: current.amount_sats, settledAt: current.settled_at, progress: snapshot(userId) };
+    };
+    const previousReceipt = storedReceipt();
+    if (previousReceipt) return res.json(previousReceipt);
     const wallet = exercise.scope === 'user' ? await ctx.walletForUser(userId) : ctx.wallet();
     if (!wallet) return res.status(409).json({ error: 'Reconnect the receiving wallet used to create this exercise.' });
     try {
+      const info = await wallet.getInfo();
+      if (!exercise.wallet_fingerprint || exercise.wallet_fingerprint !== (info.connectionFingerprint ?? info.walletPubkey) || exercise.network !== info.network) throw new Error('Reconnect the wallet that created this exercise.');
       const invoice = await wallet.lookupInvoice(exercise.payment_hash);
+      const reconciled = storedReceipt();
+      if (reconciled) return res.json(reconciled);
+      if (invoice.bolt11 !== exercise.bolt11) throw new Error('The wallet returned a different invoice.');
+      const currentWallet = exercise.scope === 'user' ? await ctx.walletForUser(userId) : ctx.wallet();
+      if (currentWallet !== wallet) throw new Error('The wallet changed during verification.');
+      if (ctx.user(req).id !== userId) throw new Error('Sign in again before verifying the exercise.');
+      const currentReceipt = storedReceipt();
+      if (currentReceipt) return res.json(currentReceipt);
       const verified = validateExerciseSettlement(exercise, invoice);
       if (!verified) {
         const state = invoice.state === 'expired' || ctx.now() >= exercise.expires_at ? 'expired' : 'pending';
@@ -143,20 +222,25 @@ export function createAcademyRouter(ctx: AppContext) {
       }
       ctx.db.exec('BEGIN IMMEDIATE');
       try {
-        const settledAt = invoice.settledAt ?? ctx.now();
-        ctx.db.prepare("UPDATE academy_exercises SET state = 'settled', settled_at = ? WHERE id = ? AND user_id = ? AND state != 'settled'").run(settledAt, exercise.id, userId);
+        const settledAt = invoice.settledAt && Number.isSafeInteger(invoice.settledAt) && invoice.settledAt > 0 ? Math.min(invoice.settledAt, ctx.now()) : ctx.now();
+        ctx.db.prepare("UPDATE academy_exercises SET state = 'settled', settled_at = ?, preimage=? WHERE id = ? AND user_id = ? AND state != 'settled'").run(settledAt, invoice.preimage!, exercise.id, userId);
         recordBadge(userId, 'lightning-explorer', 'verified-payment', exercise.id);
         ctx.db.exec('COMMIT');
         return res.json({ verified: true, state: 'settled', paymentHash: exercise.payment_hash, amountSats: exercise.amount_sats, settledAt, verifiedBy: wallet.kind, progress: snapshot(userId) });
       } catch (error) { ctx.db.exec('ROLLBACK'); throw error; }
-    } catch { return res.status(502).json({ error: 'We could not verify this payment against the receiving wallet. No achievement was awarded. Check the wallet connection and try again.' }); }
+    } catch (error) {
+      if (error instanceof GateError && error.status === 401) throw error;
+      const receipt = storedReceipt();
+      if (receipt) return res.json(receipt);
+      return res.status(502).json({ error: 'We could not verify this payment against the receiving wallet. No achievement was awarded. Check the wallet connection and try again.' });
+    }
   });
 
   router.post('/guide', async (req, res) => {
     const parsed = z.object({ question: z.string().trim().min(3).max(700), language: z.enum(['en', 'ha']).default('en') }).safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ error: 'Ask a short question about Bitcoin, wallet safety or Lightning.' });
     const { question, language } = parsed.data;
-    if (/nostr\+walletconnect:|nsec1[0-9a-z]+|sk-[0-9a-z]{12,}/i.test(question)) return res.status(400).json({ error: 'Keep wallet connections and private keys out of the guide. Revoke any secret that you shared.' });
+    if (containsGuideSecret(question)) return res.status(400).json({ error: 'Keep wallet connections and private keys out of the guide. Revoke any secret that you shared.' });
     const fallback = courseGuide(question, language);
     const key = process.env.ACADEMY_AI_API_KEY;
     if (!key) return res.json(fallback);
