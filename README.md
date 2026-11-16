@@ -67,6 +67,8 @@ Run the complete local learning lab with `./start.sh academy`, or `pnpm dev -- a
 
 See the [academy guide](docs/satsacademy/README.md), [security notes](docs/satsacademy/SECURITY.md) and [demo](docs/satsacademy/DEMO.md). Independent learner validation and native Hausa review are still pending.
 
+The public academy completed a [10-sat receiving exercise](docs/evidence/academy-convex-regtest.json) through two real LND wallets on private regtest, earning the practical badge only after verified settlement. Regtest coins have no monetary value. Its [hosted browser check](docs/satsacademy/hosted-acceptance/2026-11-16/verification.json) confirms direct routes, local fonts, security headers and the exact released build.
+
 MIT licensed. The remaining Bitcoin tools are developed and verified in sequence.
 
 The preceding Arc application remains in [the archive branch](https://github.com/greyw0rks/grey-payroll/tree/archive/grey-finance-arc-2026-11-14) and Git history.

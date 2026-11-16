@@ -1,0 +1,70 @@
+{
+  "checkedAt": "2026-11-16T13:55:35.406Z",
+  "origin": "https://grey-finance.vercel.app",
+  "classification": "Read-only hosted builder browser check; no wallet connection or payment.",
+  "checks": [
+    {
+      "path": "/academy/",
+      "status": 200,
+      "title": "Learn Bitcoin by doing · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app",
+      "status": 200,
+      "title": "Your learning path · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app/lessons/bitcoin",
+      "status": 200,
+      "title": "Bitcoin, in everyday words · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app/wallet",
+      "status": 200,
+      "title": "Wallet lab · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app/achievements",
+      "status": 200,
+      "title": "Your achievements · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app/guide",
+      "status": 200,
+      "title": "Course guide · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/academy/app/profile",
+      "status": 200,
+      "title": "Your profile · SatsAcademy",
+      "viewport": 390,
+      "scrollWidth": 390
+    },
+    {
+      "path": "/app",
+      "status": 200,
+      "title": "GreyFinance · Company workspace",
+      "viewport": 390,
+      "scrollWidth": 390
+    }
+  ],
+  "fonts": [
+    "Manrope Variable",
+    "Space Grotesk Variable"
+  ],
+  "asset": "/academy/assets/index-CdgJOsVw.js",
+  "assetHash": "7668523490e4f167e16f07cb8e3b15165cfc4f8b75d0702f12f1641c9aaf146b",
+  "errors": []
+}

@@ -80,4 +80,6 @@ Track lesson completion, time to a first verified invoice, wallet connection fai
 
 The final release passed 339 automated tests and 57 browser checks at 360, 390, 1024 and 1440 pixels, including sign-in, persistent progress, keyboard focus, initial Hausa content, and two explicitly simulated network failures. See [release verification](../evidence/academy-release-checks.json) and [the final browser report](visual-review/2026-11-16T11-50-27-742Z/verification.json).
 
+The public deployment also passed [23 hosted wallet and learning checks](../evidence/academy-convex-regtest.json), including an actual 10-sat payment on private regtest, receiving-wallet proof, account isolation, receipt retention and safe lesson reset. The [hosted browser check](hosted-acceptance/2026-11-16/verification.json) verified eight direct routes, local fonts, security headers and the released JavaScript hash. Both are builder-controlled checks, not independent learner validation.
+
 See [security and constraints](SECURITY.md), [the three-minute demo](DEMO.md), and [the design contract](../../apps/satsacademy/DESIGN.md).

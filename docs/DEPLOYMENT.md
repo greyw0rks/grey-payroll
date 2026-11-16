@@ -33,3 +33,13 @@ The existing public domain completed a fresh [hosted payment check](evidence/gre
 The public landing page passed at 1440, 1024, 390 and 360px. Separate browser acceptance verified actual NIP-98 sign-in, all six workspace views, ledger exports, exact-name company deletion, retained identity and sign-out at 1440, 390 and 360px. See [release evidence](evidence/greyfinance-personal-release.json) for the exact code revisions, deployment IDs and checks.
 
 Temporary `GREY_REGTEST_RELAY_HOST` permission has been removed. The two relay-only test tunnels and their proxy were stopped after acceptance. Production inspection found no connected test wallets, unresolved payment attempts or duplicate company owners. Independent adoption and mainnet settlement are not claimed.
+
+## SatsAcademy release
+
+SatsAcademy is public at [grey-finance.vercel.app/academy](https://grey-finance.vercel.app/academy). Source revision `0cb796eab39c230202bc395b1034dabf46748516` was published to the existing personal repository. Its production deployment is [grey-finance-d2893yepy-greyw0rks-projects.vercel.app](https://grey-finance-d2893yepy-greyw0rks-projects.vercel.app).
+
+The release adds separate Academy profile, progress, quiz, achievement and receiving-wallet tables to the existing Convex production deployment. Existing company tables and indexes were retained. Academy wallet credentials have a separate encryption scope and expose receiving operations only.
+
+[Release checks](evidence/academy-release-checks.json) record 339 passing tests, production builds and typechecks, and 57 passing local browser checks. [Hosted wallet evidence](evidence/academy-convex-regtest.json) records 23 checks and an actual 10-sat private-regtest payment. The receiving wallet supplied the matching preimage before the practical badge was awarded. [Hosted browser acceptance](satsacademy/hosted-acceptance/2026-11-16/verification.json) covers eight direct routes, fonts, security headers, exact build assets and GreyFinance's Connect sign-in.
+
+The temporary signed-NWC relay permission was removed after this Academy check. Its proxy and tunnel were stopped, and disposable wallet connections and sessions were removed. Recorded receipts remain. No mainnet payment, independent adoption or Devpost submission is claimed. Connect and GreyFinance video preview ports 4417–4420 remain closed at the user's request; final video rendering, export and submission URLs are the user's responsibility.

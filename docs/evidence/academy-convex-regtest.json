@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-11-16T13:44:13.288Z",
+  "origin": "https://grey-finance.vercel.app",
+  "backend": "convex",
+  "network": "regtest",
+  "monetaryValue": false,
+  "classification": "Builder-controlled end-to-end integration using actual LND and NWC. No independent adoption or mainnet payment claim.",
+  "exercise": {
+    "id": "kx78p68g4rztcqgere5vmhvdf98jbh0y",
+    "amountSats": 10,
+    "paymentHash": "f11fe81dbd65d92c7e5929cfd43abcc0535ca6d5133fb3f0ccc57b0c71326de5",
+    "preimage": "88cc2602b098ca6dc245d49ff87c6a85e7ab2a927060769ba629cd829db66320",
+    "settledAt": 1794836647000,
+    "verifiedByReceivingWallet": true
+  },
+  "checks": [
+    "Convex healthy",
+    "Preview personas disabled",
+    "NIP-98 login and replay denial",
+    "Secure session cookie",
+    "Persistent bilingual profile",
+    "Three server-graded lessons",
+    "Knowledge and payment badges distinct",
+    "Learner isolation",
+    "Real NWC receiving wallet",
+    "Real BOLT11 regtest invoice",
+    "Idempotent invoice creation",
+    "Pending remains unverified",
+    "Forged status rejected",
+    "Cross-account exercise rejected",
+    "Exact action paths",
+    "Actual 10-sat LND payment",
+    "Preimage verified on receiving wallet",
+    "Single atomic verified badge",
+    "Receipt survives wallet disconnect",
+    "Reset requires exact confirmation",
+    "Reset preserves payment evidence",
+    "Owner-only paginated secret-free export",
+    "Grounded course guidance"
+  ],
+  "sourceHashes": {
+    "convex/academy.ts": "e0a1eb810e5de6c179e647b3beba220cac21c7b0b277bb66d03f43c8c307320a",
+    "convex/academySchema.ts": "95367cdb276fb1ac2b3ee5698b7e144869d65061d82284e33e57cedf57aac668",
+    "convex/academyHttp.ts": "18e2452e2b33bc6bb9e94a541c6326c807e6745f45abd29a12c74802c17b6859",
+    "convex/http.ts": "7b3c37e6943ca5e2ea9d081e9914d29b51693248b4f834243eba7c8e6c34c30e",
+    "server/academy.ts": "b880ef0f8f777e88d4c806e79fc9ab7f62254e9910666f1abc387c8283ec35b9"
+  }
+}
