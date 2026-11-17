@@ -26,11 +26,13 @@ if (!existsSync(binary)) {
 const credentialsPath = resolve(bitcoinDir, 'rpc.json');
 const rpcPort = Number(process.env.BITCOIN_RPC_PORT || 18443);
 if (!Number.isSafeInteger(rpcPort) || rpcPort < 1024 || rpcPort > 65535) throw new Error('Choose a valid private Bitcoin RPC port.');
+const keypoolSize = Number(process.env.BITCOIN_KEYPOOL_SIZE || 1000);
+if (!Number.isSafeInteger(keypoolSize) || keypoolSize < 16 || keypoolSize > 1000) throw new Error('Choose a regtest wallet address pool between 16 and 1000.');
 if (!existsSync(credentialsPath)) writeFileSync(credentialsPath, JSON.stringify({ user: 'sats-lab', password: randomBytes(32).toString('hex'), port: rpcPort }), { mode: 0o600 });
 const credentials = JSON.parse(readFileSync(credentialsPath, 'utf8')) as { user: string; password: string; port: number };
 if (credentials.port !== rpcPort) throw new Error('The requested RPC port differs from this lab. Choose a separate data directory.');
 const zmq = process.env.BITCOIN_ZMQ === '0' ? '' : 'zmqpubrawblock=tcp://127.0.0.1:28332\nzmqpubrawtx=tcp://127.0.0.1:28333\n';
-const config = `regtest=1\nserver=1\nlisten=0\ndnsseed=0\nfixedseeds=0\ntxindex=1\nblockfilterindex=1\nfallbackfee=0.00001000\n[regtest]\nrpcbind=127.0.0.1\nrpcallowip=127.0.0.1\nrpcport=${credentials.port}\nrpcuser=${credentials.user}\nrpcpassword=${credentials.password}\n${zmq}`;
+const config = `regtest=1\nserver=1\nlisten=0\ndnsseed=0\nfixedseeds=0\ntxindex=1\nblockfilterindex=1\nfallbackfee=0.00001000\nkeypool=${keypoolSize}\n[regtest]\nrpcbind=127.0.0.1\nrpcallowip=127.0.0.1\nrpcport=${credentials.port}\nrpcuser=${credentials.user}\nrpcpassword=${credentials.password}\n${zmq}`;
 writeFileSync(resolve(bitcoinDir, 'bitcoin.conf'), config, { mode: 0o600 });
 if (!await bitcoinReady()) {
   const log = openSync(resolve(bitcoinDir, 'process.log'), 'a', 0o600);

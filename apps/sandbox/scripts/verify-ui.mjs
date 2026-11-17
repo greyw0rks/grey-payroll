@@ -431,6 +431,7 @@ try {
       (await page.locator("#to-wallet").inputValue()) === recoveryPreview.to,
   );
   for (const viewport of [
+    ...(hosted ? [{ width: 1024, height: 900 }] : []),
     { width: 390, height: 844 },
     { width: 360, height: 800 },
   ]) {
@@ -469,6 +470,10 @@ try {
     .catch(() => {});
   process.exitCode = 1;
 } finally {
+  if (hosted) {
+    try { await page.request.post(origin + "/api/session/logout", { data: {} }); }
+    catch { report.sessionCleanup = "A disposable builder session may need cleanup."; }
+  }
   report.finishedAt = new Date().toISOString();
   writeFileSync(
     resolve(output, "ui-verification.json"),

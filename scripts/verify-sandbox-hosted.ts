@@ -21,7 +21,9 @@ type Progress = { experiments: Array<{ id: string; completed: boolean; txid?: st
 type Snapshot = { network: string; runId: string; blockHeight: number; createdAt: number; wallets: Array<{ id: string; address: string; balanceSats: number; utxos: Array<{ txid: string; vout: number; amountSats: number }> }>; progress: Progress };
 type Preview = { id: string; runId: string; from: string; to: string; amountSats: number; feeRate: number; feeSats: number; state: string; txid?: string; inputs: Array<{ txid: string; vout: number; amountSats: number }>; outputs: Array<{ index: number; type: string; amountSats: number; address: string }> };
 const actors: Actor[] = [];
+const requestTimings: Array<{ method: string; path: string; elapsedMs: number }> = [];
 async function request<T = Record<string, unknown>>(actor: Actor | undefined, path: string, method = 'GET', body?: unknown, expected = 200): Promise<T> {
+  const startedAt = performance.now();
   const response = await fetch(`${base}${path}`, {
     method,
     headers: { Origin: origin, ...(actor ? { Cookie: actor.cookie } : {}), ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
@@ -31,6 +33,7 @@ async function request<T = Record<string, unknown>>(actor: Actor | undefined, pa
   const result = await response.json();
   assert.equal(response.status, expected, `${method} ${path}: ${String(result.error || result.code || 'unexpected response')}`);
   assert.match(response.headers.get('cache-control') || '', /no-store/);
+  if (expected < 400) requestTimings.push({ method, path, elapsedMs: Math.round(performance.now() - startedAt) });
   return result as T;
 }
 async function login(key: Uint8Array) {
@@ -106,6 +109,7 @@ try {
   passed('Reset requires explicit confirmation');
   const reset = await request<Snapshot>(learner, '/api/sandbox/reset', 'POST', { confirmed: true });
   passed('Reset creates a newly funded wallet run', reset.runId !== lab.runId && reset.wallets.every(wallet => wallet.balanceSats === 1_000_000));
+  passed('Hosted wallet setup and reset finish within the bridge request budget', requestTimings.filter(item => item.path === '/api/sandbox/start' || item.path === '/api/sandbox/reset').every(item => item.elapsedMs < 25000));
   const retained = await request<Progress>(learner, '/api/sandbox/progress');
   passed('Reset retains verified achievements', retained.experiments.every(item => item.completed && item.txid === sent.txid));
   const exported = await request<{ receipts: Array<Preview & { txid: string }> }>(learner, '/api/sandbox/export');
@@ -117,14 +121,14 @@ try {
   passed('Sign-out revokes lab access');
   const restored = await login(learnerKey);
   passed('Same Nostr identity restores its persisted lab', (await request<Snapshot>(restored, '/api/sandbox/state')).runId === reset.runId);
-  const sourceFiles = ['convex/sandboxHttp.ts', 'convex/sandboxModel.ts', 'convex/sandboxSchema.ts', 'convex/http.ts', 'server/sandbox.ts', 'server/sandbox-runner-app.ts', 'packages/sandbox/src/bridge.ts', 'scripts/verify-sandbox-hosted.ts'];
+  const sourceFiles = ['convex/sandboxHttp.ts', 'convex/sandboxModel.ts', 'convex/sandboxSchema.ts', 'convex/http.ts', 'server/sandbox.ts', 'server/sandbox-runner-app.ts', 'packages/sandbox/src/bridge.ts', 'scripts/setup-bitcoin.ts', 'scripts/setup-sandbox.ts', 'scripts/verify-sandbox-hosted.ts'];
   const evidence = {
     status: 'passed', checkedAt: new Date().toISOString(), origin: base, backend: 'convex', network: 'regtest', monetaryValue: false,
     classification: 'Builder-controlled hosted protocol verification with actual Bitcoin Core transactions. No mainnet payment or independent learner adoption is claimed.',
     availability: 'Vercel interface and Convex persistence; the signed private Core runner and free demo tunnel require the host computer to remain running.',
     transaction: { txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, inputs: preview.inputs, outputs: preview.outputs, confirmations: confirmed.confirmations },
     block: { hash: mined.blockHash, height: mined.snapshot.blockHeight },
-    progress, retainedAcrossReset: true, checks,
+    progress, retainedAcrossReset: true, requestTimings, checks,
     sourceHashes: Object.fromEntries(sourceFiles.map(file => [file, createHash('sha256').update(readFileSync(file)).digest('hex')]))
   };
   mkdirSync(resolve(evidenceFile, '..'), { recursive: true });

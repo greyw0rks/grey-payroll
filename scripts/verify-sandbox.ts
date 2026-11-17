@@ -10,10 +10,13 @@ if (!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) throw new Error('This
 const report: Record<string, unknown> = { startedAt: new Date().toISOString(), classification: 'Builder-controlled real Bitcoin Core regtest; coins have no monetary value. These are not independent learner outcomes.', origin, api: base, checks: [] };
 const checks = report.checks as { name: string; passed: boolean }[];
 const pass = (name: string, value: unknown = true) => { assert.ok(value, name); checks.push({ name, passed: true }); };
+const requestTimings: { method: string; path: string; elapsedMs: number }[] = [];
 let cookie = '';
 async function request<T = Record<string, unknown>>(path: string, method = 'GET', body?: unknown, expected = 200, suppliedCookie = cookie, authorization?: string): Promise<T> {
+  const startedAt = performance.now();
   const response = await fetch(`${base}${path}`, { method, headers: { Origin: origin, 'Content-Type': 'application/json', ...(suppliedCookie ? { Cookie: suppliedCookie } : {}), ...(authorization ? { Authorization: authorization } : {}) }, ...(method !== 'GET' ? { body: JSON.stringify(body ?? {}) } : {}), signal: AbortSignal.timeout(30000) });
   const result = await response.json(); assert.equal(response.status, expected, `${method} ${path}: ${result.message || 'unexpected status'}`);
+  if (expected < 400) requestTimings.push({ method, path, elapsedMs: Math.round(performance.now() - startedAt) });
   const next = response.headers.get('set-cookie'); if (next && !authorization) cookie = next.split(';')[0];
   return result as T;
 }
@@ -66,13 +69,14 @@ try {
   const preferences = await request<{ unit: string; reduceMotion: boolean }>('/api/sandbox/preferences'); pass('Display preferences persist on the server', preferences.unit === 'btc' && preferences.reduceMotion);
   await new Promise(done => setTimeout(done, Math.max(0, lab.createdAt + 10050 - Date.now())));
   const reset = await request<Snapshot>('/api/sandbox/reset', 'POST', { confirmed: true }); pass('Reset creates a newly funded run', reset.runId !== lab.runId && reset.wallets.every(wallet => wallet.balanceSats === 1000000));
+  pass('Local wallet setup and reset finish within the hosted bridge request budget', requestTimings.filter(item => item.path === '/api/sandbox/start' || item.path === '/api/sandbox/reset').every(item => item.elapsedMs < 25000));
   const retained = await request<Snapshot['progress']>('/api/sandbox/progress'); pass('Reset preserves earned achievements and transaction evidence', retained.experiments.every(item => item.completed && item.txid === sent.txid));
   const exported = await request<{ receipts: Array<Preview & { txid: string }>; progress: Snapshot['progress'] }>('/api/sandbox/export');
   pass('Export contains the original verified receipt after reset', exported.receipts.some(row => row.txid === sent.txid && row.runId === lab.runId));
   pass('Exports contain no keys, PSBTs, raw signed transactions or credentials', !/"(?:psbt|signed_hex|signedHex|privateKey|secret|rpcPassword|password)"\s*:/.test(JSON.stringify(exported)));
   const historical = await request<{ txid: string }>(`/api/sandbox/transactions/${sent.txid}`); pass('Explorer retains older owned receipts', historical.txid === sent.txid);
   const sourceHashes = Object.fromEntries(['server/sandbox.ts', 'server/bitcoin.ts', 'server/sandbox-local.ts', 'scripts/setup-bitcoin.ts', 'scripts/setup-sandbox.ts', 'scripts/verify-sandbox.ts'].map(path => [path, createHash('sha256').update(readFileSync(path)).digest('hex')]));
-  Object.assign(report, { status: 'passed', finishedAt: new Date().toISOString(), transaction: { txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, inputs: preview.inputs, outputs: preview.outputs, confirmations: confirmed.confirmations }, block: { hash: mined.blockHash, height: mined.snapshot.blockHeight }, progress, retainedAcrossReset: true, sourceHashes });
+  Object.assign(report, { status: 'passed', finishedAt: new Date().toISOString(), transaction: { txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, inputs: preview.inputs, outputs: preview.outputs, confirmations: confirmed.confirmations }, block: { hash: mined.blockHash, height: mined.snapshot.blockHeight }, progress, retainedAcrossReset: true, requestTimings, sourceHashes });
   await request('/api/session/logout', 'POST'); await request('/api/sandbox/state', 'GET', undefined, 401); pass('Sign-out revokes lab access');
   mkdirSync(resolve('docs/evidence'), { recursive: true }); writeFileSync(resolve('docs/evidence/sandbox-regtest.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ status: report.status, passed: checks.length, report: 'docs/evidence/sandbox-regtest.json', txid: sent.txid, amountSats: preview.amountSats, feeSats: preview.feeSats, network: 'regtest', monetaryValue: 'none' }));
