@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:38:39.116Z",
+  "origin": "https://grey-finance.vercel.app",
+  "deploymentId": "dpl_BqFH4W6ncumbZkzPCLyiQNqWnj7h",
+  "implementationRevision": "0e2a6fb337598da3e44fc5fcb05965737397a003",
+  "classification": "Read-only public deployment checks; no payment or independent adoption claim.",
+  "checks": [
+    "All three product interfaces are publicly accessible",
+    "Published JavaScript and CSS match the verified local production build",
+    "Existing Finance and Academy routes are retained",
+    "Security headers and immutable assets are delivered",
+    "Same-origin API uses Convex"
+  ],
+  "products": [
+    {
+      "product": "GreyFinance",
+      "path": "/",
+      "status": 200,
+      "assets": [
+        {
+          "path": "/assets/index-ByvIItRL.js",
+          "sha256": "231f8888ec52b2b74688667a182990e4efc1f488a712964b638909d2e3923ef5",
+          "bytes": 248722
+        },
+        {
+          "path": "/assets/index-C3jFuhq3.css",
+          "sha256": "5594123e88e85f1c191bd99c4c43aa8849566623d83935afb48d5749906f1dd8",
+          "bytes": 23521
+        }
+      ],
+      "securityHeadersVerified": true
+    },
+    {
+      "product": "SatsAcademy",
+      "path": "/academy/",
+      "status": 200,
+      "assets": [
+        {
+          "path": "/academy/assets/index-CdgJOsVw.js",
+          "sha256": "7668523490e4f167e16f07cb8e3b15165cfc4f8b75d0702f12f1641c9aaf146b",
+          "bytes": 443485
+        },
+        {
+          "path": "/academy/assets/index-B8gihMk1.css",
+          "sha256": "1a210c1ee0966153a33f6176b3c7c4024147913c898cc478662ced8f343caf4c",
+          "bytes": 103247
+        }
+      ],
+      "securityHeadersVerified": true
+    },
+    {
+      "product": "Bitcoin Sandbox",
+      "path": "/sandbox/",
+      "status": 200,
+      "assets": [
+        {
+          "path": "/sandbox/assets/index-DYUxktAy.js",
+          "sha256": "b62d59e4965d2cc2909d0468a97433cf709afeebefe4fc1b3b4aded2144d89e5",
+          "bytes": 364841
+        },
+        {
+          "path": "/sandbox/assets/index-CEZC0naZ.css",
+          "sha256": "1335469afdec18ae7b2137c4f49cba669030b4a3b559b1773efabeee81fcf1f4",
+          "bytes": 86160
+        }
+      ],
+      "securityHeadersVerified": true
+    }
+  ],
+  "sourceHashes": {
+    "scripts/build-release.ts": "5fdd3c52ccb7379e4755474eda457c53ed418b2d99c7ae4ae418c149f619265a",
+    "vercel.json": "723cfe08ed959cee38d00acc96c764ffe38ea210f3b5c7f0701636b7971f54f0",
+    "scripts/verify-sandbox-public.mjs": "1287989f8fa9a9fec5f630a9c7dd2cc389694d59ddb5967b1ac347023c3b6a62"
+  }
+}

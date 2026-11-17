@@ -1,0 +1,75 @@
+{
+  "projectName": "Bitcoin Sandbox",
+  "elevatorPitch": "Learn Bitcoin by building real regtest transactions. Explore wallets, UTXOs, change, fees, and confirmations in a hands-on lab without risking real money.",
+  "aboutProjectMarkdown": "## Inspiration\n\nA Bitcoin balance is easy to read. Understanding how that balance becomes a payment takes practice: which outputs are spent, where change goes, why a fee exists, and when a transaction is confirmed.\n\nWe built Bitcoin Sandbox for beginners, developer workshops, and Bitcoin study groups in Nigeria and West Africa. The goal is a repeatable learning environment where someone can perform each step and explain the result.\n\n## What it does\n\nBitcoin Sandbox is a browser laboratory backed by Bitcoin Core regtest, a private testing network whose coins have no monetary value.\n\nA learner creates Alpha and Beta learning wallets, inspects real unspent outputs, builds a transaction, and reviews its payment, change, fee, and size. Broadcast requires a separate confirmation. Explorer shows the transaction before mining, then a mined regtest block makes its confirmations visible.\n\nThree guided experiments verify a first transaction, an actual change output with value conservation, and a confirmed transaction. The server checks Core before saving completion. Settings and learning records persist; a reset creates new wallets while preserving previous achievements and receipts.\n\nIf a browser response is lost during broadcast, the app retains the original review and checks the original transaction. This recovery does not sign or send another payment.\n\n## How we built it\n\nThe interface uses React, TypeScript, Vite, locally bundled IBM Plex fonts, and an ink-and-amber visual system. Readable transaction diagrams, horizontal navigation, and a focused payment review carry the experience across desktop and 360px phones.\n\nBitcoin Core creates and funds the learning wallets, constructs partially signed transactions, signs them, broadcasts them, and generates regtest blocks. Nostr signatures authenticate the learner independently of those Bitcoin wallets.\n\nThe local API uses Node.js, Express, SQLite, and Zod validation. The public app uses Convex for authenticated preferences, progress, and receipts, with a private Core runner and durable protocol journal. HMACs bind each runner request and response; the browser never receives Core credentials or PSBT signing material.\n\n## What we learned\n\nA transaction is a useful explanation of Bitcoin's accounting: input value equals payment plus change plus fee. Letting learners inspect real outputs makes that relationship concrete.\n\nPrepared, broadcast, and confirmed are different states. Keeping those states clear improves teaching and also makes retry and recovery behavior safer.\n\n## Challenges we faced\n\nWe needed convenient workshop setup while protecting other learners' wallets and the runner's resources. We addressed account isolation, bounded operations, stale previews, concurrent requests, and uncertain broadcast outcomes. Core's default address look-ahead also made lab creation too slow for the existing request budget. A Sandbox-only smaller pool keeps normal descriptor wallets and automatic replenishment; fresh and hosted checks confirmed creation and reset within the unchanged budget.\n\nPhone layouts also needed to make long identifiers and several transaction outputs readable without hiding the payment review. We tested the actual lab, builder, Explorer, experiments, settings, reload, and recovery flows in the browser.\n\n## Accomplishments and next steps\n\nThe public Core and Convex flow passed 36 checks covering real wallet funding, reviewed broadcast, output conservation, mining, all three verified experiments, owner boundaries, replay protection, persistent records, reset, export, and sign-out. A fresh one-command setup installed dependencies and Core in a new directory, ran 32 real Core checks, and stopped its disposable services afterward.\n\nThe public browser flow passed 63 checks with 21 captures across 360px and 390px phones, a 1024px tablet, and a 1440px desktop. It had no page errors or horizontal overflow, and a separate lost-response recovery restored its original 10,000-sat transaction with no extra broadcasts. Local UI acceptance separately passed 58 checks.\n\nThe shared repository suite passed 445 tests, including 56 Sandbox regressions. The supervisor recovered an expired free tunnel and a stopped private runner while preserving the original verified transaction and Core data. The release record links each accepted run and its source hashes.\n\nOur next step is a small consented workshop with at least five independent learners. We will measure time to a first verified transaction, correct identification of payment/change/fee, and understanding of broadcast versus confirmation.\n\nThe runner controls these educational wallet keys. Account wallets share its regtest chain, and mining advances that shared chain. The free demo requires the builder's computer and private runner to remain online. Builder-controlled tests demonstrate protocol behavior; independent learner outcomes and mainnet use remain outside the current evidence.",
+  "builtWith": [
+    "TypeScript",
+    "React",
+    "Vite",
+    "Node.js",
+    "Express.js",
+    "SQLite",
+    "Convex",
+    "Bitcoin Core",
+    "Bitcoin Regtest",
+    "Bitcoin RPC",
+    "PSBT",
+    "Nostr",
+    "nostr-tools",
+    "Zod",
+    "CSS",
+    "IBM Plex",
+    "Phosphor Icons",
+    "Playwright",
+    "Cloudflare",
+    "Docker"
+  ],
+  "tryItOutLinks": [
+    {
+      "label": "Try Bitcoin Sandbox",
+      "url": "https://grey-finance.vercel.app/sandbox/"
+    },
+    {
+      "label": "GitHub source",
+      "url": "https://github.com/greyw0rks/grey-payroll"
+    },
+    {
+      "label": "First published implementation",
+      "url": "https://github.com/greyw0rks/grey-payroll/commit/0e2a6fb337598da3e44fc5fcb05965737397a003"
+    }
+  ],
+  "thumbnail": "docs/sandbox/submission/media/00-thumbnail.png",
+  "gallery": [
+    "docs/sandbox/submission/media/01-landing.png",
+    "docs/sandbox/submission/media/02-wallets-and-utxo.png",
+    "docs/sandbox/submission/media/03-transaction-anatomy.png",
+    "docs/sandbox/submission/media/04-explicit-review.png",
+    "docs/sandbox/submission/media/05-core-confirmation-proof.png",
+    "docs/sandbox/submission/media/06-recovery-and-mobile.png"
+  ],
+  "videoUrl": null,
+  "additionalInfo": "Wallet implementation: Bitcoin Core regtest, including actual wallet creation/funding, PSBT construction, signing, broadcast, UTXO inspection, and block confirmations. Regtest coins have no monetary value. The runner controls the educational keys; per-account wallets share its chain.\n\nFirst published implementation: 0e2a6fb337598da3e44fc5fcb05965737397a003, in greyw0rks/grey-payroll. Accepted runtime source base: 92b56752848fa4206a348611cc6ec05abd01c37a; the final kit's SHA-256 manifest identifies its actual source and documentation. The public Core and Convex flow passed 36 checks; the current fresh setup passed 32 Core checks and verified cleanup. The local Core report is that same fresh-setup protocol run. The shared repository passed 445 tests, including 56 Sandbox regressions. Hosted browser acceptance passed 63 checks with 21 captures across phone, tablet, and desktop; local UI acceptance separately passed 58 checks. Expired-tunnel and stopped-runner recovery preserved the original verified transaction and Core data. See RELEASE.md for exact timestamps and source hashes.\n\nThe free demo requires the builder's computer and private Core runner to stay online. It is not an always-on service. Account deletion and automatic cleanup are further work. No independent learner adoption or mainnet settlement is claimed.\n\nThe user will render/export the demo, upload it to YouTube or Vimeo, and enter the final URL at submission. This kit is prepared material, not a confirmed Devpost entry.",
+  "uploadFile": "docs/sandbox/submission/bitcoin-sandbox-devpost.zip",
+  "submissionConfirmed": false,
+  "projectUrl": null,
+  "releaseState": "engineering-acceptance-complete-kit-prepared",
+  "pendingLinks": {
+    "videoUrl": null
+  },
+  "evidence": {
+    "localCore": "docs/evidence/sandbox-regtest.json",
+    "localBrowser": "docs/sandbox/submission/media/sources/ui-verification.json",
+    "currentRevisionAcceptance": "Accepted runtime frozen at 92b56752848fa4206a348611cc6ec05abd01c37a. Current 32-check fresh/local Core, 36-check hosted Core/Convex, 63-check hosted browser, 445 automated tests, controlled Core restart, and all source/media hashes accepted. Kit CRC and extracted-file SHA-256 validation passed.",
+    "hostedAcceptance": "docs/evidence/sandbox-convex-regtest.json",
+    "implementationRevision": "92b56752848fa4206a348611cc6ec05abd01c37a",
+    "freshSetup": "docs/evidence/sandbox-fresh-setup.json",
+    "releaseChecks": "docs/evidence/sandbox-release-checks.json",
+    "hostedBrowser": "docs/sandbox/hosted-acceptance/2026-11-17T18-09-28-737Z/ui-verification.json",
+    "publicRelease": "docs/evidence/sandbox-public-release.json",
+    "availability": "docs/evidence/sandbox-availability.json",
+    "runnerRecovery": "docs/evidence/sandbox-runner-recovery.json",
+    "firstPublishedImplementation": "0e2a6fb337598da3e44fc5fcb05965737397a003",
+    "walletSetup": "docs/evidence/sandbox-wallet-setup.json"
+  },
+  "pendingTags": []
+}

@@ -1,0 +1,162 @@
+{
+  "status": "passed",
+  "archive": "bitcoin-sandbox-devpost.zip",
+  "bytes": 3822357,
+  "sha256": "ff3ef35e5ecb06b82f252708874f2b37f92ce3eb5d47217b6c78f659de847dde",
+  "entries": 249,
+  "sourceBaseRevision": "92b56752848fa4206a348611cc6ec05abd01c37a",
+  "sourceSnapshotIntegrity": "SHA256SUMS records the actual packaged worktree; base revision alone does not identify modified files.",
+  "nameCharacters": 15,
+  "pitchCharacters": 154,
+  "tags": 20,
+  "images": [
+    {
+      "file": "00-thumbnail.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 90234,
+      "sha256": "61b4cce5b631de6662bd7e7a4c1998ed620feb19ccb6fb2313af1c2f30aeb2c4"
+    },
+    {
+      "file": "01-landing.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 165407,
+      "sha256": "5762bf4d17e273bca6be4e0be164adb15aab35e33cd564da68b95c1d4291c1c2"
+    },
+    {
+      "file": "02-wallets-and-utxo.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 114541,
+      "sha256": "5e83dacd4d7ff28a4e6b5f8546d928e0d27144a11432d3df9a6f7a0218c02708"
+    },
+    {
+      "file": "03-transaction-anatomy.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 101582,
+      "sha256": "367b8e52b1b9485b7708e436ea59500ac3018b7278869181b9a60dfa0dfbbc58"
+    },
+    {
+      "file": "04-explicit-review.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 97454,
+      "sha256": "7da8cf26001c6561187b89bca7bf5d541693392c93766a4e060d53b5283831ea"
+    },
+    {
+      "file": "05-core-confirmation-proof.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 94937,
+      "sha256": "a7df5567e2dac20f8eb38db69c10e3321e46ea06b8cd959873b2fa0cbd3e81b6"
+    },
+    {
+      "file": "06-recovery-and-mobile.png",
+      "format": "PNG",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 158309,
+      "sha256": "490f4493d8e5e54f54136a7abb5f68848a2a07b5faa61e199a1518ee47d3f5f4"
+    }
+  ],
+  "mediaProvenance": {
+    "assets": 7,
+    "visualReviewsAccepted": true,
+    "sourceAndOutputHashesMatch": true
+  },
+  "evidence": [
+    {
+      "file": "sandbox-regtest.json",
+      "sourceFile": "docs/evidence/sandbox-regtest.json",
+      "checks": 32,
+      "finishedAt": "2026-11-17T18:29:17.271Z",
+      "sourceHashesMatch": true,
+      "classification": "Builder-controlled real Bitcoin Core regtest; coins have no monetary value. These are not independent learner outcomes."
+    },
+    {
+      "file": "local-ui-verification.json",
+      "sourceFile": "apps/sandbox/.qa/ui-verification.json",
+      "checks": 58,
+      "finishedAt": "2026-11-16T15:02:47.354Z",
+      "sourceHashesMatch": true,
+      "classification": "builder-controlled Chromium regtest UI test; no monetary value or independent adoption"
+    },
+    {
+      "file": "sandbox-availability.json",
+      "sourceFile": "docs/evidence/sandbox-availability.json",
+      "checks": 5,
+      "finishedAt": "2026-11-17T18:15:16.140Z",
+      "sourceHashesMatch": true,
+      "classification": "Builder-controlled read-only verification after a real free-tunnel expiry; no mainnet activity or independent adoption."
+    },
+    {
+      "file": "sandbox-convex-regtest.json",
+      "sourceFile": "docs/evidence/sandbox-convex-regtest.json",
+      "checks": 36,
+      "finishedAt": "2026-11-17T18:37:03.153Z",
+      "sourceHashesMatch": true,
+      "classification": "Builder-controlled hosted protocol verification with actual Bitcoin Core transactions. No mainnet payment or independent learner adoption is claimed."
+    },
+    {
+      "file": "sandbox-fresh-setup.json",
+      "sourceFile": "docs/evidence/sandbox-fresh-setup.json",
+      "checks": 7,
+      "finishedAt": "2026-11-17T18:29:17.310Z",
+      "sourceHashesMatch": true,
+      "classification": "Fresh Linux x64 setup with newly installed dependencies and new Bitcoin Core regtest data; no monetary value or independent learner adoption."
+    },
+    {
+      "file": "sandbox-public-release.json",
+      "sourceFile": "docs/evidence/sandbox-public-release.json",
+      "checks": 5,
+      "finishedAt": "2026-11-17T18:38:39.116Z",
+      "sourceHashesMatch": true,
+      "classification": "Read-only public deployment checks; no payment or independent adoption claim."
+    },
+    {
+      "file": "sandbox-release-checks.json",
+      "sourceFile": "docs/evidence/sandbox-release-checks.json",
+      "checks": 7,
+      "finishedAt": "2026-11-17T18:43:00.901Z",
+      "sourceHashesMatch": true,
+      "classification": "Current isolated builder tests, strict typechecks and production build; no mainnet or independent adoption."
+    },
+    {
+      "file": "sandbox-runner-recovery.json",
+      "sourceFile": "docs/evidence/sandbox-runner-recovery.json",
+      "checks": 5,
+      "finishedAt": "2026-11-17T18:15:16.140Z",
+      "sourceHashesMatch": true,
+      "classification": "Builder-controlled actual runner interruption and recovery on Bitcoin Core regtest; no transactions were sent by this check."
+    },
+    {
+      "file": "sandbox-wallet-setup.json",
+      "sourceFile": "docs/evidence/sandbox-wallet-setup.json",
+      "checks": 6,
+      "finishedAt": "2026-11-17T18:34:29.199Z",
+      "sourceHashesMatch": true,
+      "classification": "Builder-controlled maintenance of the dedicated no-value Core regtest node; no transaction was sent."
+    },
+    {
+      "file": "hosted-ui-verification.json",
+      "sourceFile": "docs/sandbox/hosted-acceptance/2026-11-17T18-09-28-737Z/ui-verification.json",
+      "checks": 63,
+      "finishedAt": "2026-11-17T18:10:27.820Z",
+      "sourceHashesMatch": true,
+      "classification": "builder-controlled Chromium hosted Convex regtest UI test; no monetary value or independent adoption"
+    }
+  ],
+  "zipCrcVerified": true,
+  "extractedHashesVerified": true,
+  "freshSetupExecuted": false,
+  "videoRenderingOwner": "user",
+  "submissionConfirmed": false
+}

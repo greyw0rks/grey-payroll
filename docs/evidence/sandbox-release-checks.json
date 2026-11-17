@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:43:00.901Z",
+  "implementationRevision": "92b56752848fa4206a348611cc6ec05abd01c37a",
+  "deployedInterfaceRevision": "0e2a6fb337598da3e44fc5fcb05965737397a003",
+  "classification": "Current isolated builder tests, strict typechecks and production build; no mainnet or independent adoption.",
+  "checks": [
+    {
+      "name": "150 Node checks",
+      "command": "pnpm test",
+      "passed": true,
+      "count": 150
+    },
+    {
+      "name": "295 Convex checks including56 Sandbox regressions",
+      "command": "pnpm test",
+      "passed": true,
+      "count": 295
+    },
+    {
+      "name": "Strict Sandbox TypeScript",
+      "command": "pnpm typecheck:sandbox",
+      "passed": true
+    },
+    {
+      "name": "Strict Convex TypeScript",
+      "command": "pnpm typecheck:convex",
+      "passed": true
+    },
+    {
+      "name": "Combined GreyFinance, Academy and Sandbox production build",
+      "command": "pnpm build:release",
+      "passed": true
+    },
+    {
+      "name": "Docker Compose configuration validation",
+      "command": "docker compose -f compose.sandbox.yml config -q",
+      "passed": true
+    },
+    {
+      "name": "Convex additive schema preserved from accepted deployment",
+      "passed": true,
+      "verifiedDuring": "November16 deployment; unchanged schema source rechecked November17"
+    }
+  ],
+  "sourceHashes": {
+    "scripts/build-release.ts": "5fdd3c52ccb7379e4755474eda457c53ed418b2d99c7ae4ae418c149f619265a",
+    "scripts/build.ts": "6a443d71b6c4ddc76a2753146e312d8b920eaeca396ca732258a17718c1c18fd",
+    "vercel.json": "723cfe08ed959cee38d00acc96c764ffe38ea210f3b5c7f0701636b7971f54f0",
+    "convex/http.ts": "be82b4df17216b617172095fcda6bff68180ef59809234615bbb32a05a38ecc3",
+    "convex/sandboxHttp.ts": "4134ef6871d289c6134d4174a96a97833cf59d01bceddb2aa5d82283e5d34f15",
+    "convex/sandboxModel.ts": "23e7f826a62f0d4a259a452ba6a831fb5a79d4b306cfbc332929a1fb7eccf39e",
+    "convex/sandboxSchema.ts": "8b26e03ad2dc4a06ea410eed180e52b897388eb22a78fd29b3249f92db61fcd9",
+    "tests/convex-sandbox.test.ts": "e0c4beae8d67e499813ec0a3e5f9e65824d679d445e9ecca503f80b47212a08d",
+    "server/sandbox.ts": "23923f0c32e815db39386e809276cda79e4678861bf493e908f51d6abd72f33e",
+    "server/sandbox-runner-app.ts": "44e0f6c6a037a802a97510a22d13fe55fa00b24d82b042d4ab41babd269a067f",
+    "scripts/setup-bitcoin.ts": "546857b2a81d9cd5f5ec7e3c90d94607d4b3feedf89f1475450a186fb280df12",
+    "Dockerfile.sandbox": "e5b88dcd9e50be36cbb6e80cd38727c8226dda87ae99c70c6696b158f42ebeac",
+    "scripts/setup-sandbox.ts": "be764f0b9486555ac1ef81936a4c49df8aafa8bc5167ca897b68da448f3cc712",
+    "scripts/verify-sandbox.ts": "d6b1bdcc2f18138770d4a1253860fb861eddd4324619b21d8c3a841ef6a3d0eb",
+    "scripts/verify-sandbox-hosted.ts": "6ce5fa4cb5b3387b551884c46cbaa629c12ec9017711abba5a352e72386b210e",
+    "scripts/restart-sandbox-core.mjs": "350564ed2fd1f2c2bfbd6067a885fbd907529a8c2e4d9ea0dba72edbccc12a33",
+    "package.json": "9941b1099f040816ef2ef96530352462b3e1f8fda4461ca56111e10b1b990ea3"
+  },
+  "recordedAt": "2026-11-17T18:43:00.903Z",
+  "testsExecutedDuring": "November17,2026 after the dedicated regtest setup fix.",
+  "scope": "445 isolated checks plus current build/typecheck/Compose validation. Fresh32-check Core acceptance, hosted36-check protocol acceptance, and controlled node/runner recovery are recorded separately."
+}

@@ -1,0 +1,354 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:37:03.153Z",
+  "origin": "https://grey-finance.vercel.app",
+  "backend": "convex",
+  "network": "regtest",
+  "monetaryValue": false,
+  "classification": "Builder-controlled hosted protocol verification with actual Bitcoin Core transactions. No mainnet payment or independent learner adoption is claimed.",
+  "availability": "Vercel interface and Convex persistence; the signed private Core runner and free demo tunnel require the host computer to remain running.",
+  "transaction": {
+    "txid": "6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d",
+    "amountSats": 25000,
+    "feeSats": 282,
+    "inputs": [
+      {
+        "amountSats": 1000000,
+        "txid": "c21fda0146a9a9655d20c061ff657fe2ef39f921ef92908c3c4af8ef88a2423c",
+        "vout": 1
+      }
+    ],
+    "outputs": [
+      {
+        "address": "bcrt1q7l6qqy0heprdaa94tsh0us4l7fahqmgr32rmp3",
+        "amountSats": 974718,
+        "index": 0,
+        "type": "change"
+      },
+      {
+        "address": "bcrt1qs9dt483uc22s6lcaced8halk263n3vv05r0g0x",
+        "amountSats": 25000,
+        "index": 1,
+        "type": "payment"
+      }
+    ],
+    "confirmations": 1
+  },
+  "block": {
+    "hash": "79d4b451a02c2787b92863ac903b47592daee9b0861129dcaa41274c2019ac51",
+    "height": 123
+  },
+  "progress": {
+    "experiments": [
+      {
+        "completed": true,
+        "completedAt": 1794940606910,
+        "id": "first-transaction",
+        "txid": "6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d"
+      },
+      {
+        "completed": true,
+        "completedAt": 1794940608822,
+        "id": "utxos",
+        "txid": "6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d"
+      },
+      {
+        "completed": true,
+        "completedAt": 1794940612131,
+        "id": "confirmations",
+        "txid": "6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d"
+      }
+    ],
+    "stats": {
+      "broadcasts": 1,
+      "minedBlocks": 1,
+      "runs": 1
+    }
+  },
+  "retainedAcrossReset": true,
+  "requestTimings": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "elapsedMs": 773
+    },
+    {
+      "method": "GET",
+      "path": "/api/config",
+      "elapsedMs": 290
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/status",
+      "elapsedMs": 820
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/start",
+      "elapsedMs": 11554
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/start",
+      "elapsedMs": 8601
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/start",
+      "elapsedMs": 1016
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/preview",
+      "elapsedMs": 1093
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/broadcast",
+      "elapsedMs": 1216
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/transactions/6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d",
+      "elapsedMs": 978
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/experiments/first-transaction/complete",
+      "elapsedMs": 866
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/experiments/utxos/complete",
+      "elapsedMs": 1196
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/mine",
+      "elapsedMs": 928
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/transactions/6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d",
+      "elapsedMs": 863
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/experiments/confirmations/complete",
+      "elapsedMs": 847
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/progress",
+      "elapsedMs": 468
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/broadcast",
+      "elapsedMs": 529
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/previews/4b811e7c-d877-4fc1-b340-96065a216fb0/reconcile",
+      "elapsedMs": 1079
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/sandbox/preferences",
+      "elapsedMs": 480
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/preferences",
+      "elapsedMs": 470
+    },
+    {
+      "method": "POST",
+      "path": "/api/sandbox/reset",
+      "elapsedMs": 2486
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/progress",
+      "elapsedMs": 514
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/export",
+      "elapsedMs": 675
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/transactions/6226505be8fd2a608d5b788f471b5fcda6cd838626e67e8a9f2b5b6fd951f06d",
+      "elapsedMs": 738
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/logout",
+      "elapsedMs": 357
+    },
+    {
+      "method": "GET",
+      "path": "/api/sandbox/state",
+      "elapsedMs": 1072
+    }
+  ],
+  "checks": [
+    {
+      "name": "Public API uses Convex",
+      "passed": true
+    },
+    {
+      "name": "Predictable demo identities are disabled",
+      "passed": true
+    },
+    {
+      "name": "Authenticated private Core runner reports regtest",
+      "passed": true
+    },
+    {
+      "name": "Anonymous lab creation is denied",
+      "passed": true
+    },
+    {
+      "name": "Two genuine NIP-98 sessions and replay denial",
+      "passed": true
+    },
+    {
+      "name": "Session cookies are secure and HttpOnly",
+      "passed": true
+    },
+    {
+      "name": "Two owner-selected real Core wallets are funded",
+      "passed": true
+    },
+    {
+      "name": "Different accounts have distinct runs and addresses",
+      "passed": true
+    },
+    {
+      "name": "Continue reuses the owner lab",
+      "passed": true
+    },
+    {
+      "name": "Core preview preserves the requested payment",
+      "passed": true
+    },
+    {
+      "name": "Input value equals payment, change and fee",
+      "passed": true
+    },
+    {
+      "name": "Payment output belongs to the selected receiving wallet",
+      "passed": true
+    },
+    {
+      "name": "Broadcast requires explicit literal confirmation",
+      "passed": true
+    },
+    {
+      "name": "Cross-account preview and broadcast are denied",
+      "passed": true
+    },
+    {
+      "name": "Actual Core transaction is broadcast",
+      "passed": true
+    },
+    {
+      "name": "Core reports zero confirmations before mining",
+      "passed": true
+    },
+    {
+      "name": "Core output values match the reviewed outputs",
+      "passed": true
+    },
+    {
+      "name": "Private transaction inspection is owner-scoped",
+      "passed": true
+    },
+    {
+      "name": "An incorrect change-output answer is denied",
+      "passed": true
+    },
+    {
+      "name": "UTXO achievement checks real transaction conservation",
+      "passed": true
+    },
+    {
+      "name": "Unconfirmed transactions cannot earn a confirmation achievement",
+      "passed": true
+    },
+    {
+      "name": "Core mines a real regtest block",
+      "passed": true
+    },
+    {
+      "name": "Core transaction becomes confirmed",
+      "passed": true
+    },
+    {
+      "name": "All three verified achievements persist in Convex",
+      "passed": true
+    },
+    {
+      "name": "Duplicate broadcast returns the cached original transaction",
+      "passed": true
+    },
+    {
+      "name": "Reconciliation reads the original transaction",
+      "passed": true
+    },
+    {
+      "name": "Preferences persist in Convex",
+      "passed": true
+    },
+    {
+      "name": "Reset requires explicit confirmation",
+      "passed": true
+    },
+    {
+      "name": "Reset creates a newly funded wallet run",
+      "passed": true
+    },
+    {
+      "name": "Hosted wallet setup and reset finish within the bridge request budget",
+      "passed": true
+    },
+    {
+      "name": "Reset retains verified achievements",
+      "passed": true
+    },
+    {
+      "name": "Export retains the original receipt",
+      "passed": true
+    },
+    {
+      "name": "Export excludes signing material and credentials",
+      "passed": true
+    },
+    {
+      "name": "Historical transaction remains inspectable after reset",
+      "passed": true
+    },
+    {
+      "name": "Sign-out revokes lab access",
+      "passed": true
+    },
+    {
+      "name": "Same Nostr identity restores its persisted lab",
+      "passed": true
+    }
+  ],
+  "sourceHashes": {
+    "convex/sandboxHttp.ts": "4134ef6871d289c6134d4174a96a97833cf59d01bceddb2aa5d82283e5d34f15",
+    "convex/sandboxModel.ts": "23e7f826a62f0d4a259a452ba6a831fb5a79d4b306cfbc332929a1fb7eccf39e",
+    "convex/sandboxSchema.ts": "8b26e03ad2dc4a06ea410eed180e52b897388eb22a78fd29b3249f92db61fcd9",
+    "convex/http.ts": "be82b4df17216b617172095fcda6bff68180ef59809234615bbb32a05a38ecc3",
+    "server/sandbox.ts": "23923f0c32e815db39386e809276cda79e4678861bf493e908f51d6abd72f33e",
+    "server/sandbox-runner-app.ts": "44e0f6c6a037a802a97510a22d13fe55fa00b24d82b042d4ab41babd269a067f",
+    "packages/sandbox/src/bridge.ts": "c647a1c1228ece795d13bba8ac2d4395ecd32efe0e34cc1630f2520976acedf2",
+    "scripts/setup-bitcoin.ts": "546857b2a81d9cd5f5ec7e3c90d94607d4b3feedf89f1475450a186fb280df12",
+    "scripts/setup-sandbox.ts": "be764f0b9486555ac1ef81936a4c49df8aafa8bc5167ca897b68da448f3cc712",
+    "scripts/verify-sandbox-hosted.ts": "6ce5fa4cb5b3387b551884c46cbaa629c12ec9017711abba5a352e72386b210e"
+  }
+}

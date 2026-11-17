@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:34:29.199Z",
+  "classification": "Builder-controlled maintenance of the dedicated no-value Core regtest node; no transaction was sent.",
+  "checks": [
+    "Verified dedicated process ownership and regtest network",
+    "No active runner/Core operation or uncertain broadcast before restart",
+    "Only dedicated Core restarted with its existing wallet and chain data",
+    "Sandbox address look-ahead configured to32 per descriptor pool",
+    "Prior confirmed transaction preserved",
+    "Runner, tunnel and supervisor retained"
+  ],
+  "previousCorePid": 318439,
+  "newCorePid": 336132,
+  "keypoolSize": 32,
+  "preservedTransaction": {
+    "txid": "a08baba2172066a5e952e8cc5a8830773aba4bade3b5faa659bc9542bab07d25",
+    "confirmations": 5
+  },
+  "sourceHashes": {
+    "scripts/setup-bitcoin.ts": "546857b2a81d9cd5f5ec7e3c90d94607d4b3feedf89f1475450a186fb280df12",
+    "scripts/setup-sandbox.ts": "be764f0b9486555ac1ef81936a4c49df8aafa8bc5167ca897b68da448f3cc712",
+    "scripts/restart-sandbox-core.mjs": "350564ed2fd1f2c2bfbd6067a885fbd907529a8c2e4d9ea0dba72edbccc12a33"
+  }
+}

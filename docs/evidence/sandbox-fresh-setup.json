@@ -1,0 +1,353 @@
+{
+  "checkedAt": "2026-11-17T18:29:17.310Z",
+  "status": "passed",
+  "command": "./start.sh sandbox",
+  "stage": "/tmp/bitcoin-sandbox-fresh-YN6amq",
+  "ports": {
+    "ui": 33585,
+    "api": 39507,
+    "rpc": 40945
+  },
+  "classification": "Fresh Linux x64 setup with newly installed dependencies and new Bitcoin Core regtest data; no monetary value or independent learner adoption.",
+  "initialState": {
+    "nodeModules": false,
+    "walletData": false,
+    "downloadedTools": false
+  },
+  "sourceHashes": {
+    "start.sh": "9fd77c757e98a53928e653adca8fb6734381d132c7853349a6055b1dabebd818",
+    "package.json": "9941b1099f040816ef2ef96530352462b3e1f8fda4461ca56111e10b1b990ea3",
+    "pnpm-lock.yaml": "ac4a68d973a3e81ced75f55def7d598fa5bc44cae0e40be78c1ca14c0a8e6b58",
+    "pnpm-workspace.yaml": "ac02d96368617c760f093cfe61fdec64b6244007ab3553e0d6621f706f54a353",
+    "tsconfig.json": "5c405f7d819a6d9028565e590c66c62550c26778242784a80e51d4e83d0b0afd",
+    "tsconfig.sandbox.json": "5a5ede28c1615148465a0279950ec3a45b93102b1e54605b49f15ef43bf74b63",
+    "scripts/setup-bitcoin.ts": "546857b2a81d9cd5f5ec7e3c90d94607d4b3feedf89f1475450a186fb280df12",
+    "scripts/setup-sandbox.ts": "be764f0b9486555ac1ef81936a4c49df8aafa8bc5167ca897b68da448f3cc712",
+    "scripts/dev-sandbox.ts": "f4e6f411df417d51523bcaae41c2655f08b0afd8bfa785ac5df6030e6689dfd8",
+    "server/sandbox-local.ts": "5d90508ab94224bb96dc1907376645faf82e4b2200e59918b7fb06425c89f55d",
+    "server/sandbox.ts": "23923f0c32e815db39386e809276cda79e4678861bf493e908f51d6abd72f33e",
+    "apps/sandbox/vite.config.ts": "52b92be225076ddee199eae99818556eb5d94b37f972adfc8eb1d7ec3de50f8e"
+  },
+  "coreVerification": {
+    "startedAt": "2026-11-17T18:29:05.828Z",
+    "classification": "Builder-controlled real Bitcoin Core regtest; coins have no monetary value. These are not independent learner outcomes.",
+    "origin": "http://127.0.0.1:33585",
+    "api": "http://127.0.0.1:39507",
+    "checks": [
+      {
+        "name": "Actual Core is available on regtest",
+        "passed": true
+      },
+      {
+        "name": "Anonymous lab creation rejected",
+        "passed": true
+      },
+      {
+        "name": "Used Nostr authentication cannot be replayed",
+        "passed": true
+      },
+      {
+        "name": "Two distinct Core wallets are funded",
+        "passed": true
+      },
+      {
+        "name": "Every initial UTXO has a real transaction id",
+        "passed": true
+      },
+      {
+        "name": "Continuing a lab reuses its original run",
+        "passed": true
+      },
+      {
+        "name": "Preview binds to the current run",
+        "passed": true
+      },
+      {
+        "name": "Input value equals payment plus change plus fee",
+        "passed": true
+      },
+      {
+        "name": "Core produces an inspectable change output",
+        "passed": true
+      },
+      {
+        "name": "Broadcast requires literal confirmation",
+        "passed": true
+      },
+      {
+        "name": "Another identity cannot inspect the transaction preview",
+        "passed": true
+      },
+      {
+        "name": "Signed transaction is broadcast to Core",
+        "passed": true
+      },
+      {
+        "name": "Core reports the unconfirmed transaction",
+        "passed": true
+      },
+      {
+        "name": "Raw transaction outputs match the reviewed amounts",
+        "passed": true
+      },
+      {
+        "name": "Another identity cannot inspect a private lab receipt",
+        "passed": true
+      },
+      {
+        "name": "First transaction experiment is verified from its receipt",
+        "passed": true
+      },
+      {
+        "name": "Wrong change output is rejected",
+        "passed": true
+      },
+      {
+        "name": "UTXO experiment checks real conservation and change",
+        "passed": true
+      },
+      {
+        "name": "Unconfirmed transaction cannot earn confirmation achievement",
+        "passed": true
+      },
+      {
+        "name": "Core mines a real regtest block",
+        "passed": true
+      },
+      {
+        "name": "Receipt becomes confirmed after mining",
+        "passed": true
+      },
+      {
+        "name": "Confirmed receipt earns the last achievement",
+        "passed": true
+      },
+      {
+        "name": "All three experiments persist",
+        "passed": true
+      },
+      {
+        "name": "Duplicate broadcast returns the same transaction",
+        "passed": true
+      },
+      {
+        "name": "Display preferences persist on the server",
+        "passed": true
+      },
+      {
+        "name": "Reset creates a newly funded run",
+        "passed": true
+      },
+      {
+        "name": "Local wallet setup and reset finish within the hosted bridge request budget",
+        "passed": true
+      },
+      {
+        "name": "Reset preserves earned achievements and transaction evidence",
+        "passed": true
+      },
+      {
+        "name": "Export contains the original verified receipt after reset",
+        "passed": true
+      },
+      {
+        "name": "Exports contain no keys, PSBTs, raw signed transactions or credentials",
+        "passed": true
+      },
+      {
+        "name": "Explorer retains older owned receipts",
+        "passed": true
+      },
+      {
+        "name": "Sign-out revokes lab access",
+        "passed": true
+      }
+    ],
+    "status": "passed",
+    "finishedAt": "2026-11-17T18:29:17.271Z",
+    "transaction": {
+      "txid": "e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76",
+      "amountSats": 25000,
+      "feeSats": 282,
+      "inputs": [
+        {
+          "txid": "3b2659d5f0cfb98babea918c8ae3ffbd54911b1d7901dc78a8b6fda203ce7eab",
+          "vout": 1,
+          "amountSats": 1000000
+        }
+      ],
+      "outputs": [
+        {
+          "index": 0,
+          "address": "bcrt1qsg3edaltuz5zcf9ztd0r5kxkggxnmv3yjldqfv",
+          "amountSats": 974718,
+          "type": "change"
+        },
+        {
+          "index": 1,
+          "address": "bcrt1qznnfa9876wp6d94e2qgm8q38mtpzww9g7m0lcv",
+          "amountSats": 25000,
+          "type": "payment"
+        }
+      ],
+      "confirmations": 1
+    },
+    "block": {
+      "hash": "2166b20f5d61e82003ad7e3ffebb83b0ad0b986c4f926661ba14528dc6bd16e6",
+      "height": 113
+    },
+    "progress": {
+      "experiments": [
+        {
+          "id": "first-transaction",
+          "completed": true,
+          "completedAt": 1794940150048,
+          "txid": "e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76"
+        },
+        {
+          "id": "utxos",
+          "completed": true,
+          "completedAt": 1794940150085,
+          "txid": "e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76"
+        },
+        {
+          "id": "confirmations",
+          "completed": true,
+          "completedAt": 1794940150219,
+          "txid": "e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76"
+        }
+      ],
+      "stats": {
+        "runs": 1,
+        "broadcasts": 1,
+        "minedBlocks": 1
+      }
+    },
+    "retainedAcrossReset": true,
+    "requestTimings": [
+      {
+        "method": "GET",
+        "path": "/api/sandbox/status",
+        "elapsedMs": 78
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/start",
+        "elapsedMs": 1952
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/start",
+        "elapsedMs": 46
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/preview",
+        "elapsedMs": 90
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/start",
+        "elapsedMs": 1102
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/broadcast",
+        "elapsedMs": 129
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/transactions/e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76",
+        "elapsedMs": 18
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/experiments/first-transaction/complete",
+        "elapsedMs": 33
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/experiments/utxos/complete",
+        "elapsedMs": 21
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/mine",
+        "elapsedMs": 73
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/transactions/e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76",
+        "elapsedMs": 18
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/experiments/confirmations/complete",
+        "elapsedMs": 22
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/progress",
+        "elapsedMs": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/broadcast",
+        "elapsedMs": 32
+      },
+      {
+        "method": "PATCH",
+        "path": "/api/sandbox/preferences",
+        "elapsedMs": 16
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/preferences",
+        "elapsedMs": 3
+      },
+      {
+        "method": "POST",
+        "path": "/api/sandbox/reset",
+        "elapsedMs": 652
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/progress",
+        "elapsedMs": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/export",
+        "elapsedMs": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/sandbox/transactions/e17835250e87c54495e0b833a4131cda322a99bbd6df4cd1ca220e303eeb4c76",
+        "elapsedMs": 13
+      },
+      {
+        "method": "POST",
+        "path": "/api/session/logout",
+        "elapsedMs": 8
+      }
+    ],
+    "sourceHashes": {
+      "server/sandbox.ts": "23923f0c32e815db39386e809276cda79e4678861bf493e908f51d6abd72f33e",
+      "server/bitcoin.ts": "a14942d01de33d8a0161b8840800cf4477cf3c1f8bc9b1e7ade69562a9690bb6",
+      "server/sandbox-local.ts": "5d90508ab94224bb96dc1907376645faf82e4b2200e59918b7fb06425c89f55d",
+      "scripts/setup-bitcoin.ts": "546857b2a81d9cd5f5ec7e3c90d94607d4b3feedf89f1475450a186fb280df12",
+      "scripts/setup-sandbox.ts": "be764f0b9486555ac1ef81936a4c49df8aafa8bc5167ca897b68da448f3cc712",
+      "scripts/verify-sandbox.ts": "d6b1bdcc2f18138770d4a1253860fb861eddd4324619b21d8c3a841ef6a3d0eb"
+    }
+  },
+  "checks": [
+    "No initial node_modules, tools or wallet data",
+    "Frozen dependency install",
+    "Checksum-pinned Core download",
+    "New dedicated regtest node",
+    "Frontend and API ready",
+    "32 actual Core checks",
+    "Disposable services stopped after verification"
+  ],
+  "cleanupVerified": true
+}

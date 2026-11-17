@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:15:16.140Z",
+  "classification": "Builder-controlled actual runner interruption and recovery on Bitcoin Core regtest; no transactions were sent by this check.",
+  "checks": [
+    "Stopped only the verified Sandbox runner process group",
+    "Supervisor automatically relaunched the runner",
+    "Healthy tunnel process and URL retained",
+    "Public Convex regtest status restored",
+    "Prior confirmed transaction and Core data preserved"
+  ],
+  "restoredRunnerPid": 331370,
+  "healthyTunnelRetained": true,
+  "preservedTransaction": {
+    "txid": "a08baba2172066a5e952e8cc5a8830773aba4bade3b5faa659bc9542bab07d25",
+    "confirmations": 5
+  },
+  "sourceHashes": {
+    "scripts/start-sandbox-hosted.mjs": "ce9a50f8c3135433c9cb6bf42637430a040bcf79e81190d1820a5372f548018c",
+    "scripts/watch-sandbox-hosted.mjs": "8d8f741acba114b2426ee7527cbdf3e89ddb6bc8c3ac002f9bae26e310436dd8",
+    "scripts/verify-sandbox-runner-recovery.mjs": "c49618da2d985de7c2d49773ad97ad8ea8e1caae196e47cb1de8b9a76c073a0a"
+  }
+}

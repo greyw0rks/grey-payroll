@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "archive": "/home/greyw0rks/bitcoin-sandbox-release/docs/sandbox/submission/bitcoin-sandbox-devpost.zip",
+  "sha256": "ff3ef35e5ecb06b82f252708874f2b37f92ce3eb5d47217b6c78f659de847dde",
+  "bytes": 3822357,
+  "entries": 249,
+  "manifestEntries": 248,
+  "sourceFilesComparedWithWorktree": 217,
+  "imagesVerified": 7,
+  "zipCrcVerified": true,
+  "extractedManifestHashesVerified": true,
+  "privateRuntimePathsExcluded": true,
+  "localFreshSameRunConfirmed": true,
+  "acceptedCounts": {
+    "localCore": 32,
+    "hostedCoreConvex": 36,
+    "hostedBrowser": 63,
+    "automatedTests": 445
+  },
+  "runtimeSourceBase": "92b56752848fa4206a348611cc6ec05abd01c37a",
+  "videoRenderingOwner": "user",
+  "submissionConfirmed": false
+}

@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-11-17T18:15:16.140Z",
+  "classification": "Builder-controlled read-only verification after a real free-tunnel expiry; no mainnet activity or independent adoption.",
+  "checks": [
+    "Supervisor recovered the expired tunnel",
+    "Signed regtest status verified by supervisor",
+    "Public Convex status is ready",
+    "Repeated startup reused the recorded supervisor",
+    "Prior verified Core transaction preserved after recovery"
+  ],
+  "recoveries": 1,
+  "preservedTransaction": {
+    "txid": "a08baba2172066a5e952e8cc5a8830773aba4bade3b5faa659bc9542bab07d25",
+    "confirmations": 3
+  },
+  "availability": "The supervisor needs this computer and its private Convex access to remain available; it is not an always-on hosted node.",
+  "sourceHashes": {
+    "scripts/start-sandbox-hosted.mjs": "ce9a50f8c3135433c9cb6bf42637430a040bcf79e81190d1820a5372f548018c",
+    "scripts/watch-sandbox-hosted.mjs": "8d8f741acba114b2426ee7527cbdf3e89ddb6bc8c3ac002f9bae26e310436dd8"
+  },
+  "expiryRecoveryRecordedAt": "2026-11-17T18:09:51.547Z",
+  "currentHelperRecheck": "docs/evidence/sandbox-runner-recovery.json",
+  "scope": "Initial expired-tunnel recovery was observed before the final launcher refinement. The current helper source passed the separate controlled runner recovery and preserved the same transaction."
+}

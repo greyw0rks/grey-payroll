@@ -1,0 +1,400 @@
+{
+  "startedAt": "2026-11-16T15:01:45.723Z",
+  "origin": "http://127.0.0.1:4404",
+  "classification": "builder-controlled Chromium regtest UI test; no monetary value or independent adoption",
+  "sourceHashes": {
+    "App.tsx": "6128078772cb2a4a3db544bb491c6a660179b276d02ab3d20503097958e814f0",
+    "api.ts": "4b7505c67eed7128e0133890272912e3bf8ecde7f0e86efb2fad2a0828f606eb",
+    "components.tsx": "749ea40d8c0d77065ad7aef72cae88ae1a11c6593686bfe13e2ee624e5861be4",
+    "content.ts": "a2d15372dafd26e3e26676a1466ddcbf329bbe1dab4fd5d744fdf64b88a29e13",
+    "styles.css": "bbb02af8a99193dfb0b10a04031ed37bf10948e0dbc10bf5828cc8d3f0c0036d"
+  },
+  "checks": [
+    {
+      "name": "Actual Core regtest node is ready",
+      "pass": true
+    },
+    {
+      "name": "Temporary identity uses a real signed session",
+      "pass": true
+    },
+    {
+      "name": "Owned lab state is readable",
+      "pass": true
+    },
+    {
+      "name": "Two real wallets are created",
+      "pass": true
+    },
+    {
+      "name": "Both wallets start with valueless regtest sats",
+      "pass": true
+    },
+    {
+      "name": "Selecting a real UTXO reveals its output index",
+      "pass": true
+    },
+    {
+      "name": "desktop-live-lab: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Preview is prepared by Core",
+      "pass": true
+    },
+    {
+      "name": "Input values conserve payment, change and fee",
+      "pass": true
+    },
+    {
+      "name": "Anatomy inspection explains payment output",
+      "pass": true
+    },
+    {
+      "name": "desktop-live-preview: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "desktop-broadcast-review: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Escape closes the protected review",
+      "pass": true
+    },
+    {
+      "name": "Broadcast requires deliberate review",
+      "pass": true
+    },
+    {
+      "name": "Owned lab state is readable",
+      "pass": true
+    },
+    {
+      "name": "The UI broadcast produced a Core transaction",
+      "pass": true
+    },
+    {
+      "name": "Explorer reports pending state before mining",
+      "pass": true
+    },
+    {
+      "name": "Receiving-wallet filter includes the shared transaction",
+      "pass": true
+    },
+    {
+      "name": "desktop-pending-transaction: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Core confirmation appears after mining",
+      "pass": true
+    },
+    {
+      "name": "desktop-confirmed-transaction: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "first-transaction: backend-verified completion",
+      "pass": true
+    },
+    {
+      "name": "utxos: backend-verified completion",
+      "pass": true
+    },
+    {
+      "name": "confirmations: backend-verified completion",
+      "pass": true
+    },
+    {
+      "name": "Owned lab state is readable",
+      "pass": true
+    },
+    {
+      "name": "All three experiments have verified backend records",
+      "pass": true
+    },
+    {
+      "name": "Display preferences persist after reload",
+      "pass": true
+    },
+    {
+      "name": "Reload clearly reports temporary signing-key loss",
+      "pass": true
+    },
+    {
+      "name": "Export contains verified receipts",
+      "pass": true
+    },
+    {
+      "name": "Export omits signing material",
+      "pass": true
+    },
+    {
+      "name": "Reset requires exact confirmation text",
+      "pass": true
+    },
+    {
+      "name": "Owned lab state is readable",
+      "pass": true
+    },
+    {
+      "name": "Reset creates a fresh wallet run",
+      "pass": true
+    },
+    {
+      "name": "Reset retains verified experiment records",
+      "pass": true
+    },
+    {
+      "name": "Preview is prepared by Core",
+      "pass": true
+    },
+    {
+      "name": "Broadcast requires deliberate review",
+      "pass": true
+    },
+    {
+      "name": "Lost response shows a recovery action",
+      "pass": true
+    },
+    {
+      "name": "Uncertain state blocks a new payment preview",
+      "pass": true
+    },
+    {
+      "name": "Uncertain state keeps exact payment fields fixed",
+      "pass": true
+    },
+    {
+      "name": "desktop-lost-response: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Recovery reads the original accepted transaction",
+      "pass": true
+    },
+    {
+      "name": "Recovery does not resend the transaction",
+      "pass": true
+    },
+    {
+      "name": "Reload restores the accepted attempt from safe metadata",
+      "pass": true
+    },
+    {
+      "name": "Reload performs no extra broadcast",
+      "pass": true
+    },
+    {
+      "name": "Reload restores exact accepted payment details",
+      "pass": true
+    },
+    {
+      "name": "390-lab: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "390-builder: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "390-explorer: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "390-experiments: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "390-settings: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "360-lab: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "360-builder: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "360-explorer: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "360-experiments: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "360-settings: no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "Editing a new payment clears the previous review",
+      "pass": true
+    },
+    {
+      "name": "Editing payment details does not broadcast",
+      "pass": true
+    },
+    {
+      "name": "No unhandled page errors",
+      "pass": true
+    }
+  ],
+  "captures": [
+    {
+      "name": "desktop-live-lab",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-live-lab.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Your Bitcoin workbench.",
+      "noOverflow": true
+    },
+    {
+      "name": "desktop-live-preview",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-live-preview.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Build a transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "desktop-broadcast-review",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-broadcast-review.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Build a transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "desktop-pending-transaction",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-pending-transaction.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Follow every transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "desktop-confirmed-transaction",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-confirmed-transaction.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Follow every transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "desktop-lost-response",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/desktop-lost-response.png",
+      "width": 1440,
+      "documentWidth": 1440,
+      "h1": "Build a transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "390-lab",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/390-lab.png",
+      "width": 390,
+      "documentWidth": 390,
+      "h1": "Your Bitcoin workbench.",
+      "noOverflow": true
+    },
+    {
+      "name": "390-builder",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/390-builder.png",
+      "width": 390,
+      "documentWidth": 390,
+      "h1": "Build a transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "390-explorer",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/390-explorer.png",
+      "width": 390,
+      "documentWidth": 390,
+      "h1": "Follow every transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "390-experiments",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/390-experiments.png",
+      "width": 390,
+      "documentWidth": 390,
+      "h1": "Learn by looking closer.",
+      "noOverflow": true
+    },
+    {
+      "name": "390-settings",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/390-settings.png",
+      "width": 390,
+      "documentWidth": 390,
+      "h1": "Make the lab yours.",
+      "noOverflow": true
+    },
+    {
+      "name": "360-lab",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/360-lab.png",
+      "width": 360,
+      "documentWidth": 360,
+      "h1": "Your Bitcoin workbench.",
+      "noOverflow": true
+    },
+    {
+      "name": "360-builder",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/360-builder.png",
+      "width": 360,
+      "documentWidth": 360,
+      "h1": "Build a transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "360-explorer",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/360-explorer.png",
+      "width": 360,
+      "documentWidth": 360,
+      "h1": "Follow every transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "360-experiments",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/360-experiments.png",
+      "width": 360,
+      "documentWidth": 360,
+      "h1": "Follow every transaction.",
+      "noOverflow": true
+    },
+    {
+      "name": "360-settings",
+      "file": "/home/greyw0rks/bitcoin-sandbox-release/apps/sandbox/.qa/360-settings.png",
+      "width": 360,
+      "documentWidth": 360,
+      "h1": "Make the lab yours.",
+      "noOverflow": true
+    }
+  ],
+  "pageErrors": [],
+  "broadcasts": [
+    {
+      "at": "2026-11-16T15:02:09.586Z"
+    },
+    {
+      "at": "2026-11-16T15:02:29.208Z"
+    }
+  ],
+  "complete": true,
+  "runId": "4d46866f-666d-4160-9d2a-d533066cfaf4",
+  "firstTransaction": {
+    "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+    "amountSats": 20000,
+    "feeSats": 282,
+    "network": "regtest"
+  },
+  "recoveryTransaction": {
+    "txid": "f1e2b67edae07f0b4b922fdcfa0964176b1b397ad71e65409c0d17fed78c7e14",
+    "amountSats": 10000,
+    "network": "regtest",
+    "extraBroadcasts": 0
+  },
+  "finishedAt": "2026-11-16T15:02:47.354Z"
+}

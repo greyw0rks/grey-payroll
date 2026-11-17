@@ -1,0 +1,649 @@
+{
+  "version": 1,
+  "project": "Bitcoin Sandbox",
+  "createdAt": "2026-11-16T15:28:55.568Z",
+  "dimensions": {
+    "width": 1500,
+    "height": 1000,
+    "ratio": "3:2"
+  },
+  "scope": "Original authored submission compositions using unmodified actual UI crops; builder-controlled Bitcoin Core regtest, no monetary value, no mainnet or independent user claims.",
+  "renderer": {
+    "file": "docs/sandbox/submission/render-media.mjs",
+    "sha256": "559ded9b27940867e2c7bb9a8d60f70601c58b5bbf7f0e34d7ad9b13c682fc83",
+    "method": "Static HTML/CSS to Chromium PNG. Only data URI images/fonts are loaded; all network requests are blocked. No application navigation, wallets, ports or videos."
+  },
+  "brand": {
+    "palette": {
+      "ink": "#15191e",
+      "panel": "#1c2127",
+      "amber": "#f7b748",
+      "text": "#f2f3f4",
+      "muted": "#acb6c1",
+      "verified": "#a6dabd"
+    },
+    "typography": [
+      {
+        "family": "Plex",
+        "weight": 400,
+        "file": "node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-sans",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "3b646991d30055a93a4ecc499713d4347953a74a947ecab435ab72070cbdab0e",
+        "bytes": 22588
+      },
+      {
+        "family": "Plex",
+        "weight": 500,
+        "file": "node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-500-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-sans",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "0717336fb31fcdcde4b8deb3675bb4a0f7f6d484864afcd6751ac29975962203",
+        "bytes": 24184
+      },
+      {
+        "family": "Plex",
+        "weight": 600,
+        "file": "node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-sans",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "8960851d691c054ed38e259bdcf1a6190d157b4203ed5bb32c632a863fb8ec2f",
+        "bytes": 24252
+      },
+      {
+        "family": "Plex",
+        "weight": 700,
+        "file": "node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-700-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-sans",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "42e7b0c143c19df9d99fd896e76b48f846edf0902d200bc29796b34d12c33aa7",
+        "bytes": 22832
+      },
+      {
+        "family": "Plex Mono",
+        "weight": 400,
+        "file": "node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-mono",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "08949f728dc52d528e69b1667d15c89a5686a4ee9a296ff90983985f99c380f7",
+        "bytes": 14708
+      },
+      {
+        "family": "Plex Mono",
+        "weight": 500,
+        "file": "node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2",
+        "packageName": "@fontsource/ibm-plex-mono",
+        "packageVersion": "5.3.0",
+        "license": "OFL-1.1",
+        "sha256": "01d285447409c8a588692162439a038b8cbd7871309ee20267b0d2d91c6e8e22",
+        "bytes": 14888
+      }
+    ],
+    "originalMark": {
+      "file": "docs/sandbox/submission/media/sources/bitcoin-sandbox-mark.svg",
+      "sha256": "57814269f163f3ef8afc8f367fba4c6889c2ad1602cde308e8eb0a06870e69ee",
+      "source": "Original SVG authored for apps/sandbox/src/components.tsx; reused without third-party imagery."
+    },
+    "designNotes": "docs/sandbox/submission/media/DESIGN-NOTES.md"
+  },
+  "sourceCaptures": {
+    "desktop-landing.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-landing.png",
+      "originalFile": "apps/sandbox/.qa/desktop-landing.png",
+      "width": 1440,
+      "height": 1857,
+      "bytes": 152661,
+      "sha256": "f9220329fc00a1f0d6b79b6a60d4146da1b34962cb88745470c34f95808cce17",
+      "provenance": "Actual anonymous Chromium UI capture; the landing transaction diagram is explicitly illustrative."
+    },
+    "desktop-live-lab.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-live-lab.png",
+      "originalFile": "apps/sandbox/.qa/desktop-live-lab.png",
+      "width": 1440,
+      "height": 1501,
+      "bytes": 116143,
+      "sha256": "0326846867e9e0b0e0f5da702d7728dcae6ab295c37f528a54fdbcb173cc3307",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    },
+    "desktop-live-preview.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-live-preview.png",
+      "originalFile": "apps/sandbox/.qa/desktop-live-preview.png",
+      "width": 1440,
+      "height": 1232,
+      "bytes": 105390,
+      "sha256": "f3ea19a1a80849f4fc511b98e99f4791be25a796ca3af9f174aab4e3760e7f05",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    },
+    "desktop-broadcast-review.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-broadcast-review.png",
+      "originalFile": "apps/sandbox/.qa/desktop-broadcast-review.png",
+      "width": 1440,
+      "height": 1232,
+      "bytes": 109956,
+      "sha256": "6d0c2587031e357de86b3661e7e2e954b59c38baf8a4ea1180a4267787948c96",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    },
+    "desktop-confirmed-transaction.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-confirmed-transaction.png",
+      "originalFile": "apps/sandbox/.qa/desktop-confirmed-transaction.png",
+      "width": 1440,
+      "height": 1543,
+      "bytes": 111801,
+      "sha256": "39f49ee57b727bd6599b152706ffc439ca93da5f9006e29a5b0f7af3ec378f2f",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    },
+    "desktop-lost-response.png": {
+      "file": "docs/sandbox/submission/media/sources/desktop-lost-response.png",
+      "originalFile": "apps/sandbox/.qa/desktop-lost-response.png",
+      "width": 1440,
+      "height": 1485,
+      "bytes": 120467,
+      "sha256": "3af33e473b41532fca307e30f18409bf4276bd540f250548938cbda89dae9755",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    },
+    "360-builder.png": {
+      "file": "docs/sandbox/submission/media/sources/360-builder.png",
+      "originalFile": "apps/sandbox/.qa/360-builder.png",
+      "width": 360,
+      "height": 2344,
+      "bytes": 90622,
+      "sha256": "7ec2d37ff0d8166fb1af5a5b2e2d8804cd020e37af1b2debc2ffe142f6399255",
+      "provenance": "Actual UI capture from the recorded builder-controlled Bitcoin Core regtest verification; no monetary value or independent user trial."
+    }
+  },
+  "verification": {
+    "file": "docs/sandbox/submission/media/sources/ui-verification.json",
+    "originalFile": "apps/sandbox/.qa/ui-verification.json",
+    "sha256": "32ffd35f7f28857bd3fed30b9a5aab81465fe454fc2a9e974318d2e9c9049327",
+    "checks": 58,
+    "complete": true,
+    "firstTransaction": {
+      "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+      "amountSats": 20000,
+      "feeSats": 282,
+      "network": "regtest"
+    },
+    "recoveryTransaction": {
+      "txid": "f1e2b67edae07f0b4b922fdcfa0964176b1b397ad71e65409c0d17fed78c7e14",
+      "amountSats": 10000,
+      "network": "regtest",
+      "extraBroadcasts": 0
+    },
+    "frontendSourceHashesAtCapture": {
+      "App.tsx": "6128078772cb2a4a3db544bb491c6a660179b276d02ab3d20503097958e814f0",
+      "api.ts": "4b7505c67eed7128e0133890272912e3bf8ecde7f0e86efb2fad2a0828f606eb",
+      "components.tsx": "749ea40d8c0d77065ad7aef72cae88ae1a11c6593686bfe13e2ee624e5861be4",
+      "content.ts": "a2d15372dafd26e3e26676a1466ddcbf329bbe1dab4fd5d744fdf64b88a29e13",
+      "styles.css": "bbb02af8a99193dfb0b10a04031ed37bf10948e0dbc10bf5828cc8d3f0c0036d"
+    }
+  },
+  "assets": [
+    {
+      "file": "docs/sandbox/submission/media/00-thumbnail.png",
+      "title": "Bitcoin Sandbox",
+      "role": "Devpost thumbnail",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 90234,
+      "sha256": "61b4cce5b631de6662bd7e7a4c1998ed620feb19ccb6fb2313af1c2f30aeb2c4",
+      "under5MB": true,
+      "contentClaims": [
+        "The artwork uses the real 20,000-sat Core-prepared preview, not a settled mainnet payment.",
+        "Input 1,000,000 = payment 20,000 + change 979,718 + fee 282 regtest sats."
+      ],
+      "context": {
+        "name": "happy-path-20000",
+        "amountSats": 20000,
+        "feeSats": 282,
+        "inputSats": 1000000,
+        "changeSats": 979718,
+        "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json"
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-live-preview.png",
+          "region": {
+            "x": 555,
+            "y": 380,
+            "width": 760,
+            "height": 338
+          },
+          "placement": {
+            "x": 682,
+            "y": 350,
+            "width": 737.1999999999999,
+            "height": 327.86
+          },
+          "scale": 0.97,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "61b4cce5b631de6662bd7e7a4c1998ed620feb19ccb6fb2313af1c2f30aeb2c4"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/01-landing.png",
+      "title": "Make Bitcoin make sense",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 165407,
+      "sha256": "5762bf4d17e273bca6be4e0be164adb15aab35e33cd564da68b95c1d4291c1c2",
+      "under5MB": true,
+      "contentClaims": [
+        "Actual anonymous product landing capture.",
+        "The landing's 100,000-sat input example is illustrative and distinct from the 20,000-sat real-Core happy path."
+      ],
+      "context": {
+        "name": "anonymous-landing",
+        "exampleInputSats": 100000,
+        "examplePaymentSats": 20000,
+        "exampleChangeSats": 79718,
+        "exampleFeeSats": 282,
+        "illustrative": true
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-landing.png",
+          "region": {
+            "x": 100,
+            "y": 177,
+            "width": 1240,
+            "height": 557
+          },
+          "placement": {
+            "x": 74,
+            "y": 256,
+            "width": 1351.6000000000001,
+            "height": 607.13
+          },
+          "scale": 1.09,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "5762bf4d17e273bca6be4e0be164adb15aab35e33cd564da68b95c1d4291c1c2"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/02-wallets-and-utxo.png",
+      "title": "Two wallets and a real output",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 114541,
+      "sha256": "5e83dacd4d7ff28a4e6b5f8546d928e0d27144a11432d3df9a6f7a0218c02708",
+      "under5MB": true,
+      "contentClaims": [
+        "Actual initial Alpha and Beta wallet balances, both 1,000,000 regtest sats.",
+        "The selected Alpha output is shown with its real output index and confirmation count."
+      ],
+      "context": {
+        "name": "happy-path-20000",
+        "amountSats": 20000,
+        "feeSats": 282,
+        "inputSats": 1000000,
+        "changeSats": 979718,
+        "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json",
+        "stage": "initial-wallet-run-before-preview"
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-live-lab.png",
+          "region": {
+            "x": 100,
+            "y": 290,
+            "width": 1240,
+            "height": 189
+          },
+          "placement": {
+            "x": 74,
+            "y": 266,
+            "width": 1351.6000000000001,
+            "height": 206.01000000000002
+          },
+          "scale": 1.09,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        },
+        {
+          "source": "desktop-live-lab.png",
+          "region": {
+            "x": 100,
+            "y": 504,
+            "width": 1240,
+            "height": 370
+          },
+          "placement": {
+            "x": 74,
+            "y": 497,
+            "width": 1351.6000000000001,
+            "height": 403.3
+          },
+          "scale": 1.09,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "5e83dacd4d7ff28a4e6b5f8546d928e0d27144a11432d3df9a6f7a0218c02708"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/03-transaction-anatomy.png",
+      "title": "Know where every sat goes",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 101582,
+      "sha256": "367b8e52b1b9485b7708e436ea59500ac3018b7278869181b9a60dfa0dfbbc58",
+      "under5MB": true,
+      "contentClaims": [
+        "Actual Core-prepared preview: payment 20,000, change 979,718 and fee 282 from one 1,000,000-sat input.",
+        "Authored numeric captions repeat the source preview values; they do not replace or repaint the captured UI."
+      ],
+      "context": {
+        "name": "happy-path-20000",
+        "amountSats": 20000,
+        "feeSats": 282,
+        "inputSats": 1000000,
+        "changeSats": 979718,
+        "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json",
+        "stage": "prepared-not-yet-broadcast"
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-live-preview.png",
+          "region": {
+            "x": 530,
+            "y": 290,
+            "width": 810,
+            "height": 554
+          },
+          "placement": {
+            "x": 74,
+            "y": 277,
+            "width": 891.0000000000001,
+            "height": 609.4000000000001
+          },
+          "scale": 1.1,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "367b8e52b1b9485b7708e436ea59500ac3018b7278869181b9a60dfa0dfbbc58"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/04-explicit-review.png",
+      "title": "Review before broadcasting",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 97454,
+      "sha256": "7da8cf26001c6561187b89bca7bf5d541693392c93766a4e060d53b5283831ea",
+      "under5MB": true,
+      "contentClaims": [
+        "Actual review dialog from the 20,000-sat happy path.",
+        "The unchecked confirmation and disabled broadcast control are preserved.",
+        "Displayed total 20,282 = payment 20,000 + fee 282 regtest sats."
+      ],
+      "context": {
+        "name": "happy-path-20000",
+        "amountSats": 20000,
+        "feeSats": 282,
+        "inputSats": 1000000,
+        "changeSats": 979718,
+        "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json",
+        "stage": "explicit-review-before-signing"
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-broadcast-review.png",
+          "region": {
+            "x": 418,
+            "y": 201,
+            "width": 605,
+            "height": 646
+          },
+          "placement": {
+            "x": 797,
+            "y": 253,
+            "width": 605,
+            "height": 646
+          },
+          "scale": 1,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "7da8cf26001c6561187b89bca7bf5d541693392c93766a4e060d53b5283831ea"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/05-core-confirmation-proof.png",
+      "title": "A real confirmation",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 94937,
+      "sha256": "a7df5567e2dac20f8eb38db69c10e3321e46ea06b8cd959873b2fa0cbd3e81b6",
+      "under5MB": true,
+      "contentClaims": [
+        "Actual transaction details for the happy-path transaction; one confirmation and a Core-supplied block hash.",
+        "The source shows one input and two outputs: payment 20,000 and change 979,718 regtest sats.",
+        "This is proof on the controlled regtest node, not a mainnet transaction or an independent user result."
+      ],
+      "context": {
+        "name": "happy-path-20000",
+        "amountSats": 20000,
+        "feeSats": 282,
+        "inputSats": 1000000,
+        "changeSats": 979718,
+        "txid": "006d79649d226ef36126606446972b1b2726fe458ba5693e8ac0494fc5a78fb4",
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json",
+        "stage": "confirmed-on-shared-regtest-chain",
+        "confirmationsAtCapture": 1
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-confirmed-transaction.png",
+          "region": {
+            "x": 100,
+            "y": 776,
+            "width": 1240,
+            "height": 618
+          },
+          "placement": {
+            "x": 112,
+            "y": 253,
+            "width": 1277.2,
+            "height": 636.54
+          },
+          "scale": 1.03,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "a7df5567e2dac20f8eb38db69c10e3321e46ea06b8cd959873b2fa0cbd3e81b6"
+      }
+    },
+    {
+      "file": "docs/sandbox/submission/media/06-recovery-and-mobile.png",
+      "title": "Recover without a second broadcast",
+      "role": "Devpost gallery image",
+      "format": "image/png",
+      "width": 1500,
+      "height": 1000,
+      "bytes": 158309,
+      "sha256": "490f4493d8e5e54f54136a7abb5f68848a2a07b5faa61e199a1518ee47d3f5f4",
+      "under5MB": true,
+      "contentClaims": [
+        "An actual dropped broadcast response is shown as unresolved in the source capture.",
+        "The original locked payment fields show 10,000 sats.",
+        "The actual 360px screenshot after reconciliation and reload shows the original broadcast restored.",
+        "The builder's request count verifies no additional broadcast was sent during reconciliation or reload."
+      ],
+      "context": {
+        "name": "separate-recovery-10000-after-reset",
+        "amountSats": 10000,
+        "feeSats": 282,
+        "txid": "f1e2b67edae07f0b4b922fdcfa0964176b1b397ad71e65409c0d17fed78c7e14",
+        "extraBroadcasts": 0,
+        "verificationFile": "docs/sandbox/submission/media/sources/ui-verification.json",
+        "stage": "lost-response-read-only-reconciliation-and-reload"
+      },
+      "sourceCrops": [
+        {
+          "source": "desktop-lost-response.png",
+          "region": {
+            "x": 100,
+            "y": 375,
+            "width": 1240,
+            "height": 144
+          },
+          "placement": {
+            "x": 74,
+            "y": 259,
+            "width": 1351.6000000000001,
+            "height": 156.96
+          },
+          "scale": 1.09,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        },
+        {
+          "source": "desktop-lost-response.png",
+          "region": {
+            "x": 100,
+            "y": 543,
+            "width": 405,
+            "height": 323
+          },
+          "placement": {
+            "x": 74,
+            "y": 467,
+            "width": 510.3,
+            "height": 406.98
+          },
+          "scale": 1.26,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        },
+        {
+          "source": "360-builder.png",
+          "region": {
+            "x": 14,
+            "y": 269,
+            "width": 332,
+            "height": 169
+          },
+          "placement": {
+            "x": 1028,
+            "y": 553,
+            "width": 395.08,
+            "height": 201.10999999999999
+          },
+          "scale": 1.19,
+          "operation": "Unmodified screenshot, rectangular crop and uniform scale; no data, controls, colors or state redrawn."
+        }
+      ],
+      "validation": {
+        "loadedFonts": true,
+        "noTextOverflow": true,
+        "noDocumentOverflow": true,
+        "noNetworkRequests": true,
+        "noPageErrors": true
+      },
+      "visualReview": {
+        "status": "accepted",
+        "reviewedAt": "2026-11-16T15:30:34.953Z",
+        "method": "Direct inspection of each exported PNG with view_image after rendering; readable main values/actions, intact source states, contained composition and explicit regtest/run labels.",
+        "reviewedSha256": "490f4493d8e5e54f54136a7abb5f68848a2a07b5faa61e199a1518ee47d3f5f4"
+      }
+    }
+  ],
+  "finalValidation": {
+    "assets": 7,
+    "thumbnails": 1,
+    "galleryImages": 6,
+    "dimensions": "1500x1000",
+    "ratio": "3:2",
+    "allUnder5MB": true,
+    "sourceAndOutputHashesMatch": true,
+    "visualReviewsAccepted": true,
+    "totalOutputBytes": 822464
+  }
+}
